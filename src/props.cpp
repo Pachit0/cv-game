@@ -49,6 +49,9 @@ Props::Props() {
 	}
 	UnloadImage(image);
 
+	propsCoordsLayer1.reserve(10);
+	propsCoordsLayer2.reserve(10);
+
 	propsCoordsLayer1.emplace_back(Rectangle{ groundMap[33][0].x, groundMap[0][12].y,(tileSize * scale) * 4,(tileSize * scale) * 2 });
 	propsCoordsLayer1.emplace_back(Rectangle{ groundMap[27][0].x, groundMap[0][12].y, 6 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
 	propsCoordsLayer1.emplace_back(Rectangle{ groundMap[40][0].x, groundMap[0][11].y, 3 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
@@ -104,7 +107,7 @@ void Props::drawLayer2() const {
 	DrawTexture(lamp[3], groundMap[13][0].x, groundMap[0][10].y, WHITE);
 }
 
-bool Props::underCheck(Vector2 pos, const std::vector<Rectangle>& propsCoords) {
+bool Props::underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCoords) {
 	for (const Rectangle& p : propsCoords ) {
 		if (CheckCollisionPointRec(pos, p)) {
 			return 1;
@@ -113,10 +116,10 @@ bool Props::underCheck(Vector2 pos, const std::vector<Rectangle>& propsCoords) {
 	return 0;
 }
 // Make it better, just make it better
-std::vector<Rectangle> Props::getCoordsLayer1() {
+std::vector<Rectangle>& Props::getCoordsLayer1() {
 	return propsCoordsLayer1;
 }
 
-std::vector<Rectangle> Props::getCoordsLayer2() {
+std::vector<Rectangle>& Props::getCoordsLayer2() {
 	return propsCoordsLayer2;
 }

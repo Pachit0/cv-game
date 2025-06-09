@@ -35,11 +35,11 @@ public:
 
 	void inputHandling();
 	void handleCurrentDirection();
-	void Update(float deltaTime);
+	void Update(const float& deltaTime);
 	void Draw();
 
 	Vector2 getPos() const { return Pos; }
-	void setPos(Vector2 newPos) { Pos = newPos; }
+	void setPos(const Vector2& newPos) { Pos = newPos; }
 	Vector2 getVelocity() const { return velocity; }
-	void setVelocity(Vector2 newVelocity) { velocity = newVelocity; }
+	void setVelocity(const Vector2& newVelocity) { velocity = newVelocity; }
 };

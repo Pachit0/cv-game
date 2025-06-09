@@ -9,6 +9,6 @@ public:
 	Physics();
 	~Physics();
 	void objectCoords();
-	void draw(Vector2 Pos);
-	Vector2 collisionObjectWall(Vector2 Pos, Vector2 velocity, float deltaTime);
+	void draw();
+	Vector2 collisionObjectWall(const Vector2& Pos, Vector2 velocity, const float& deltaTime);
 };

@@ -1,6 +1,6 @@
 #include "tilemap.h"
 
-Tilemap::Tilemap() : mousePos({ 0,0 }) {
+Tilemap::Tilemap() {
 
 	image = LoadImage(RESOURCES_PATH "The Fan-tasy Tileset/Art/Ground Tileset/Tileset_Ground.png");
 	ImageResize(&image, image.width * scale, image.height * scale);
@@ -66,21 +66,15 @@ Tilemap::~Tilemap() {
 	UnloadTexture(trees2);
 }
 
-void Tilemap::update(Camera2D camera) {
-	mousePos = GetScreenToWorld2D(GetMousePosition(), camera);
-}
+void Tilemap::update() {}
 
-void Tilemap::draw(Vector2 pos) {
+void Tilemap::draw() {
 	DrawTexture(layerGrass, 100, 0, WHITE);
 	DrawTexture(layerPath, 100, 0, WHITE);
 	DrawTexture(fences, 100, -((tileSize - 4) * scale), WHITE);
 	DrawTexture(layerProps1, 100, -(tileSize * scale), WHITE);
 	DrawTexture(layerProps2, 100, -(tileSize * scale), WHITE);
 
-	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-		//std::cout << "Mouse X: " << mousePos.x << "  " << "Mouse Y: " << mousePos.y << std::endl;
-		DrawRectangle(mousePos.x, mousePos.y, tileSize * scale, tileSize * scale, PURPLE);
-	}
 }
 
 void Tilemap::drawTrees() const {
@@ -88,7 +82,7 @@ void Tilemap::drawTrees() const {
 	DrawTexture(trees2, 100, -(tileSize * scale), WHITE);
 }
 
-void Tilemap::debugLines() {
+void Tilemap::debugLines() const {
 	int aspectRatioY = (baseHeight / tileSize) + 2;
 	int aspectRatioX = (baseWidth / tileSize) + 6;
 

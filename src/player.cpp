@@ -89,7 +89,7 @@ void Player::handleCurrentDirection() {
 	}
 }
 
-void Player::Update(float deltaTime) {
+void Player::Update(const float& deltaTime) {
 
 
 	Pos.x += velocity.x * deltaTime;

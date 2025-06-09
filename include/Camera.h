@@ -5,9 +5,9 @@
 class Camera_c {
 private:
 	Camera2D camera;
-	Vector2 cameraVelocity; // 0 0
+	Vector2 cameraVelocity;
 public:
 	Camera_c();
-	void update(const Player& player);
+	void update(const Vector2& pos);
 	Camera2D getCamera() const { return camera; }
 };

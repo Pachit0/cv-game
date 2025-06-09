@@ -16,7 +16,7 @@ void Triggers::triggerCoords() {
 	triggers.emplace_back(Rectangle{ groundMap[34][0].x, groundMap[0][13].y, 3 * (tileSize * scale), 1 * (tileSize * scale) });
 }
 
-void Triggers::collisionTrigger(Vector2 Pos) {
+void Triggers::collisionTrigger(const Vector2& Pos) {
 	triggerCoords();
 	Rectangle correctCollision = { Pos.x, Pos.y, tileSize * scale, tileSize * scale };
 	for (const Rectangle& trigger : triggers) {
@@ -42,12 +42,12 @@ void Triggers::collisionTrigger(Vector2 Pos) {
 	}
 }
 
-void Triggers::update(Vector2 Pos) {
+void Triggers::update(const Vector2& Pos) {
 	collisionTrigger(Pos);
 }
 
 
-void Triggers::draw(Vector2 Pos) {
+void Triggers::draw(const Vector2& Pos) {
 
 	if (IsKeyDown(KEY_T)) {
 		for (Rectangle& trigger : triggers) {

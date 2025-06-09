@@ -13,7 +13,7 @@ public:
 	Triggers();
 	~Triggers();
 	void triggerCoords();
-	void collisionTrigger(Vector2 Pos);
-	void update(Vector2 Pos);
-	void draw(Vector2 Pos);
+	void collisionTrigger(const Vector2& Pos);
+	void update(const Vector2& Pos);
+	void draw(const Vector2& Pos);
 };

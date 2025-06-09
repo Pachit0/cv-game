@@ -1,6 +1,8 @@
 #include "physics.h"
 
-Physics::Physics() {}
+Physics::Physics() {
+	obstacles.reserve(50);
+}
 
 Physics::~Physics() {}
 
@@ -49,7 +51,7 @@ void Physics::objectCoords() {
 	
 }
 
-Vector2 Physics::collisionObjectWall(Vector2 Pos, Vector2 velocity, float deltaTime) {
+Vector2 Physics::collisionObjectWall(const Vector2& Pos,Vector2 velocity,const float& deltaTime) {
 
 	objectCoords();
 	Rectangle nextPos = { Pos.x + velocity.x * deltaTime, Pos.y + velocity.y * deltaTime, tileSize * scale, tileSize * scale };
@@ -76,7 +78,7 @@ Vector2 Physics::collisionObjectWall(Vector2 Pos, Vector2 velocity, float deltaT
 	return velocity;
 }
 
-void Physics::draw(Vector2 Pos) {
+void Physics::draw() {
 	if (IsKeyDown(KEY_O)) {
 		for (Rectangle& obstacle : obstacles) {
 			DrawRectangleLines(obstacle.x + tileSize * scale, obstacle.y + (tileSize * 2) * scale, obstacle.width, obstacle.height, BLACK);

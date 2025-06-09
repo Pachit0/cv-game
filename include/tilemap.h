@@ -3,7 +3,6 @@
 
 class Tilemap {
 private:
-	Vector2 mousePos;
 	Rectangle tileset_rect[12][12];
 
 	Texture2D tileset;
@@ -12,10 +11,8 @@ private:
 	Texture2D layerProps1;
 	Texture2D layerProps2;
 	Texture2D fences;
-	Texture2D house;
 	Texture2D trees1;
 	Texture2D trees2;
-
 
 	Image image;
 public:
@@ -23,8 +20,8 @@ public:
 	Tilemap();
 	~Tilemap();
 
-	void update(Camera2D camera);
-	void draw(Vector2 pos);
+	void update();
+	void draw();
 	void drawTrees() const;
-	void debugLines();
+	void debugLines() const;
 };

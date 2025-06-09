@@ -23,7 +23,7 @@ public:
 
 	void drawLayer1() const;
 	void drawLayer2() const;
-	bool underCheck(Vector2 pos, const std::vector<Rectangle>& propsCoords);
-	std::vector<Rectangle> getCoordsLayer1();
-	std::vector<Rectangle> getCoordsLayer2();
+	bool underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCoords);
+	std::vector<Rectangle>& getCoordsLayer1();
+	std::vector<Rectangle>& getCoordsLayer2();
 };

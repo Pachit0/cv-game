@@ -6,6 +6,7 @@
 #include "physics.h"
 #include "Triggers.h"
 #include "Camera.h"
+#include "mouse.h"
 #include "structures.h"
 
 class Game {
@@ -15,6 +16,7 @@ public:
 	Camera_c camera_c = Camera_c();
 	Physics collisions = Physics();
 	Triggers triggers = Triggers();
+	handleMouse mouse = handleMouse();
 	Props props = Props();
 	Structures structures = Structures();
 	UIManager ui;
@@ -23,9 +25,10 @@ public:
 		player.handleCurrentDirection();
 		player.inputHandling();
 		player.setVelocity(collisions.collisionObjectWall(player.getPos(), player.getVelocity(), deltaTime));
-		camera_c.update(player);
+		camera_c.update(player.getPos());
 		player.Update(deltaTime);
-		tilemap.update(camera_c.getCamera());
+		mouse.update(camera_c.getCamera());
+		tilemap.update();
 		triggers.update(player.getPos());
 	}
 
@@ -55,13 +58,13 @@ public:
 
 	void Draw() {
 		ClearBackground(WHITE);
-		tilemap.draw(player.getPos());
-		tilemap.debugLines();	//press C
+		tilemap.draw();
 		playerDrawPriorityLayer1(); // fix it - done!
 		playerDrawPriorityLayer2();
 		tilemap.drawTrees();
-		//structures.drawStructures();
-		collisions.draw(player.getPos());
+		collisions.draw();
 		triggers.draw(player.getPos());
+		tilemap.debugLines();	//press C
+		mouse.draw();
 	}
 };
