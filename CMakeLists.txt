@@ -72,7 +72,7 @@ if(MSVC) # If using the VS compiler...
 
 
 	if(PRODUCTION_BUILD)
-		set_target_properties("${CMAKE_PROJECT_NAME}" PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") #no console
+		set_target_properties("${CMAKE_PROJECT_NAME}" PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 	endif()
 
 
