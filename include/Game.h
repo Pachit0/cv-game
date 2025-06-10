@@ -57,14 +57,28 @@ public:
 	}
 
 	void Draw() {
-		ClearBackground(WHITE);
-		tilemap.draw();
-		playerDrawPriorityLayer1(); // fix it - done!
-		playerDrawPriorityLayer2();
-		tilemap.drawTrees();
-		collisions.draw();
-		triggers.draw(player.getPos());
-		tilemap.debugLines();	//press C
-		mouse.draw();
+		switch (currentLevel) {
+		case village: {
+			ClearBackground(WHITE);
+			tilemap.draw();
+			playerDrawPriorityLayer1(); // fix it - done!
+			playerDrawPriorityLayer2();
+			tilemap.drawTrees();
+			collisions.draw();
+			break;
+			}
+		case insideHouse: {
+			ClearBackground(BLACK);
+			tilemap.drawInsideHouse();
+			collisions.draw();
+			triggers.draw(player.getPos());
+			player.Draw();
+			props.drawLayer1();
+			break;
+			}
+		}
+			triggers.draw(player.getPos());
+			tilemap.debugLines();	//press C
+			mouse.draw();
 	}
 };

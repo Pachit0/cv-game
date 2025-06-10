@@ -3,10 +3,9 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Tilesets/tilemap.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
-        "Tilesets",
-        "."
+        "Tilesets"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -161,8 +160,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 463.5,
-                "y": 317.5
+                "x": 943.5,
+                "y": 375.5
             }
         }
     },
@@ -174,8 +173,6 @@
     "map.tileWidth": 16,
     "map.width": 40,
     "openFiles": [
-        "Tilesets/tilemap.tmx",
-        "Tilesets/spr_fencePost.tsx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [

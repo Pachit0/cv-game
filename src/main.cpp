@@ -8,7 +8,6 @@ int main() {
 
     bool isPlaying = false;
     SetTargetFPS(60);
-
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 

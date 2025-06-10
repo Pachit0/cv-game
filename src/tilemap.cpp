@@ -42,6 +42,11 @@ Tilemap::Tilemap() {
 	trees2 = LoadTextureFromImage(image);
 	UnloadImage(image);
 
+	image = LoadImage(RESOURCES_PATH "Map/insideHouse.png");
+	ImageResize(&image, image.width * scale, image.height * scale);
+	insideHouseTexture = LoadTextureFromImage(image);
+	UnloadImage(image);
+
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
 			tileset_rect[i][j] = { tileSize * i * scale, tileSize * j * scale, tileSize * scale, tileSize * scale };
@@ -64,17 +69,25 @@ Tilemap::~Tilemap() {
 	UnloadTexture(fences);
 	UnloadTexture(trees1);
 	UnloadTexture(trees2);
+	UnloadTexture(insideHouseTexture);
 }
 
-void Tilemap::update() {}
+void Tilemap::update() {
+	if (IsKeyPressed(KEY_F)) {
+		ToggleFullscreen();
+	}
+}
 
-void Tilemap::draw() {
+void Tilemap::draw() const {
 	DrawTexture(layerGrass, 100, 0, WHITE);
 	DrawTexture(layerPath, 100, 0, WHITE);
 	DrawTexture(fences, 100, -((tileSize - 4) * scale), WHITE);
 	DrawTexture(layerProps1, 100, -(tileSize * scale), WHITE);
 	DrawTexture(layerProps2, 100, -(tileSize * scale), WHITE);
 
+}
+void Tilemap::drawInsideHouse() const {
+	DrawTexture(insideHouseTexture, 1425, 175, WHITE);
 }
 
 void Tilemap::drawTrees() const {

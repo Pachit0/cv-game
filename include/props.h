@@ -1,6 +1,12 @@
 #pragma once
 #include "Core.h"
 
+enum propsLayer {
+	first,
+	second,
+	third
+};
+
 class Props {
 private:
 	Image image;
@@ -13,9 +19,9 @@ private:
 	Texture2D treeRiver;
 	Texture2D tree3;
 	Texture2D cutTree;
+	Texture2D insideChair;
 
-	std::vector<Rectangle> propsCoordsLayer1;
-	std::vector<Rectangle> propsCoordsLayer2;
+	std::vector<std::vector<std::vector<Rectangle>>> propsCoords;
 
 public:
 	Props();

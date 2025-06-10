@@ -6,9 +6,20 @@ private:
 	bool read;
 	bool note;
 	bool noteOpened;
-	std::vector<Rectangle> triggers;
+	bool enterHouse;
+
+	bool tv;
+	bool tvOpened;
+	bool tvWatching;
+
+	bool exitHouse;
+
+	std::vector<std::vector<Rectangle>> triggersLevel;
 
 	Texture2D scroll;
+	Texture2D paper;
+
+	Image image;
 public:
 	Triggers();
 	~Triggers();

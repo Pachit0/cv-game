@@ -4,7 +4,7 @@
 class Physics {
 private:
 
-	std::vector<Rectangle> obstacles;
+	std::vector<std::vector<Rectangle>> obstaclesLevel;
 public:
 	Physics();
 	~Physics();
