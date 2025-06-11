@@ -7,11 +7,25 @@ Camera_c::Camera_c() : cameraVelocity({0,0}) {
 	camera.zoom = 1.0f;
 }
 
+Camera_c::~Camera_c() {}
+
 void Camera_c::update(const Vector2& pos) {
-	if (pos.x >= 740 && pos.y <= 2300) {
-		camera.target.x = pos.x;
-	}
-	if (pos.y >= 365 && pos.y <= 1070) {
-		camera.target.y = pos.y;
+	switch (currentLevel) {
+	case village: {
+		if (pos.x >= 740 && pos.x <= 2300) {
+			camera.target.x = pos.x;
+		}
+		if (pos.y >= 365 && pos.y <= 1070) {
+			camera.target.y = pos.y;
+		}
+		break;
+		}
+	case insideHouse: {
+		camera.target.x = 1700;
+		camera.target.y = 475;
+		break;
+		}
+	default:
+		break;
 	}
 }

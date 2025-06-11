@@ -22,14 +22,17 @@ public:
 	UIManager ui;
 
 	void Update(float deltaTime) {
-		player.handleCurrentDirection();
-		player.inputHandling();
-		player.setVelocity(collisions.collisionObjectWall(player.getPos(), player.getVelocity(), deltaTime));
-		camera_c.update(player.getPos());
-		player.Update(deltaTime);
-		mouse.update(camera_c.getCamera());
+		triggers.update(deltaTime);
+		triggers.collisionTrigger(player.getPos(), [&](Vector2 newPos) {player.setPos(newPos); });
+		if (fadeState == FADE_NONE || fadeState == FADE_OUT) {
+			camera_c.update(player.getPos());
+			player.handleCurrentDirection();
+			player.inputHandling();
+			player.setVelocity(collisions.collisionObjectWall(player.getPos(), player.getVelocity(), deltaTime));
+			player.Update(deltaTime);
+		}
 		tilemap.update();
-		triggers.update(player.getPos());
+		mouse.update(camera_c.getCamera());
 	}
 
 	void playerDrawPriorityLayer1() {
@@ -42,7 +45,6 @@ public:
 			player.Draw();
 			props.drawLayer1();
 		}
-
 	}
 
 	void playerDrawPriorityLayer2() {
@@ -50,7 +52,8 @@ public:
 		if (props.underCheck(player.getPos(), props.getCoordsLayer2())) {
 			props.drawLayer2();
 			player.Draw();
-		} else {
+		}
+		else {
 			props.drawLayer2();
 		}
 
@@ -59,26 +62,29 @@ public:
 	void Draw() {
 		switch (currentLevel) {
 		case village: {
-			ClearBackground(WHITE);
-			tilemap.draw();
-			playerDrawPriorityLayer1(); // fix it - done!
-			playerDrawPriorityLayer2();
-			tilemap.drawTrees();
-			collisions.draw();
+			if (fadeState == FADE_NONE || fadeState == FADE_OUT) {
+				ClearBackground(WHITE);
+				tilemap.draw();
+				playerDrawPriorityLayer1(); // fix it - done!
+				playerDrawPriorityLayer2();
+				tilemap.drawTrees();
+				collisions.draw();
+				}
 			break;
 			}
 		case insideHouse: {
-			ClearBackground(BLACK);
-			tilemap.drawInsideHouse();
-			collisions.draw();
-			triggers.draw(player.getPos());
-			player.Draw();
-			props.drawLayer1();
+			if (fadeState == FADE_NONE || fadeState == FADE_OUT) {
+				ClearBackground(BLACK);
+				tilemap.drawInsideHouse();
+				collisions.draw();
+				player.Draw();
+				props.drawLayer1();
+				}
 			break;
 			}
 		}
-			triggers.draw(player.getPos());
-			tilemap.debugLines();	//press C
-			mouse.draw();
+		triggers.draw(player.getPos(), camera_c.getCamera().target);
+		tilemap.debugLines();	//press C
+		mouse.draw();
 	}
 };

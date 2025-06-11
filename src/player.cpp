@@ -7,7 +7,7 @@ Player::Player() :
 	frameDelay(10),
 	frameDelayCount(0),
 	frameNum(7),
-	Pos({1447,607 }),
+	Pos({1440,670 }),
 	velocity({0,0})
 
 {
@@ -90,7 +90,6 @@ void Player::handleCurrentDirection() {
 }
 
 void Player::Update(const float& deltaTime) {
-
 
 	Pos.x += velocity.x * deltaTime;
 	Pos.y += velocity.y * deltaTime;

@@ -7,6 +7,15 @@ enum mapLevel {
 	insideHouse
 };
 
+enum FadeState { 
+	FADE_NONE,
+	FADE_IN,
+	FADE_HOLD,
+	FADE_OUT
+};
+
+extern int fadeState;
+
 extern Rectangle groundMap[60][30];
 
 const int screenHeight = 720;
@@ -22,3 +31,11 @@ const float scale = fmin(screenWidth / baseWidth, screenHeight / baseHeight);
 const float tileSize = 16.0f;
 
 extern int currentLevel;
+
+extern float fadeAlpha;
+extern float fadeSpeed;
+extern float fadeHoldTime;
+extern float fadeTimer;
+
+extern bool startFade;
+extern bool endFade;

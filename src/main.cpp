@@ -11,6 +11,7 @@ int main() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
+
         if (isPlaying) {
             game.Update(deltaTime);
         }

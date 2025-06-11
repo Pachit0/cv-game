@@ -1,5 +1,18 @@
 #include "UIManager.h"
 
+UIManager::UIManager()
+{
+    image = LoadImage(RESOURCES_PATH "Humble Gift - Paper UI System v1.1/Sprites/Book Desk/2-adventurer.png");
+    ImageResize(&image, image.width * 1.67, image.height * 1.30);
+    background = LoadTextureFromImage(image);
+    UnloadImage(image);
+}
+
+UIManager::~UIManager()
+{
+    UnloadTexture(background);
+}
+
 void UIManager::Init() {
 	rlImGuiSetup(true);
 }
@@ -15,28 +28,29 @@ void UIManager::RenderMainMenu(bool& isPlaying, int screenWidth, int screenHeigh
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse;
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBackground ;
 
     ImGui::Begin("Game Menu", nullptr, window_flags);
-
-    ImGui::SetCursorPosX((screenWidth - 385) * 0.5f);
-    ImGui::SetCursorPosY((screenHeight) * 0.5f);
+    DrawTexture(background,0,0,WHITE);
+    /*ImGui::SetCursorPosX((screenWidth - 500) * 0.5f);
+    ImGui::SetCursorPosY((screenHeight - 100) * 0.5f);
     ImGui::SetWindowFontScale(5.0f);
-    ImGui::Text("SickAssGame");
+    ImGui::Text("The adventurer");*/
     ImGui::SetWindowFontScale(1.0f);
 
 
-    ImGui::SetCursorPosY((screenHeight + 200) * 0.5f);
+    ImGui::SetCursorPosY((screenHeight + 100) * 0.5f);
 
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));   // color
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.75f, 0.51f, 0.39f, 1.00f));   // color
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.4f, 0.4f, 0.4f, 1.0f)); // Hover color
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.4f, 0.4f, 0.4f, 1.0f));  // Clicked color
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 10.0f); // rounding
 
-    ImGui::SetCursorPosX((screenWidth - 300) * 0.5f);
+    ImGui::SetCursorPosX((screenWidth - 285) * 0.5f);
     ImGui::SetWindowFontScale(3.0f);
 
-    if (ImGui::Button("Start Game", ImVec2(300, 50))) {
+    if (ImGui::Button("start", ImVec2(300, 50))) {
         isPlaying = true;
     }
 

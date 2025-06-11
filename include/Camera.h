@@ -8,6 +8,7 @@ private:
 	Vector2 cameraVelocity;
 public:
 	Camera_c();
+	~Camera_c();
 	void update(const Vector2& pos);
 	Camera2D getCamera() const { return camera; }
 };
