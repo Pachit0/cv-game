@@ -52,6 +52,14 @@ Props::Props() {
 	tree3 = LoadTextureFromImage(image);
 	UnloadImage(image);
 
+	image = LoadImage(RESOURCES_PATH "Map/5-ontable.png");
+	book = LoadTextureFromImage(image);
+	UnloadImage(image);
+
+	image = LoadImage(RESOURCES_PATH "Map/telescope.png");
+	telescope = LoadTextureFromImage(image);
+	UnloadImage(image);
+
 	image = LoadImage(RESOURCES_PATH "The Fan-tasy Tileset/Art/Props/Lamp_1.png");
 	ImageResize(&image, image.width * scale, image.height * scale);
 	for (int i = 0; i < 4; i++) {
@@ -72,6 +80,7 @@ Props::Props() {
 	propsCoords[village][first].emplace_back(Rectangle{ groundMap[37][0].x, groundMap[0][14].y, 3 * ((tileSize)*scale), 2 * ((tileSize)*scale) });
 	propsCoords[village][first].emplace_back(Rectangle{ groundMap[24][0].x, groundMap[0][4].y, 3 * ((tileSize)*scale), 2 * ((tileSize)*scale) });
 	propsCoords[village][first].emplace_back(Rectangle{ groundMap[45][0].x, groundMap[0][12].y , 3 * (tileSize) * scale, 2 * (tileSize) * scale });
+	propsCoords[village][first].emplace_back(Rectangle{ groundMap[38][0].x, groundMap[0][4].y , 3 * (tileSize) * scale, (tileSize) * scale });
 
 	propsCoords[village][second].emplace_back(Rectangle{ groundMap[25][0].x, groundMap[0][16].y, 3 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
 	propsCoords[village][second].emplace_back(Rectangle{ groundMap[34][0].x, groundMap[0][16].y, 3 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
@@ -91,6 +100,7 @@ Props::~Props() {
 	UnloadTexture(treeRiver);
 	UnloadTexture(tree3);
 	UnloadTexture(insideChair);
+	UnloadTexture(telescope);
 	for (int i = 0; i < 4; i++) {
 		UnloadTexture(lamp[i]);
 	}
@@ -106,7 +116,9 @@ void Props::drawLayer1() const {
 		DrawTexture(tree, groundMap[24][0].x, groundMap[0][10].y, WHITE);
 		DrawTexture(cutTree, groundMap[39][0].x, groundMap[0][15].y, WHITE);
 		DrawTexture(treeRiver, groundMap[25][0].x, groundMap[0][3].y, WHITE);
+		DrawTexture(telescope, groundMap[40][0].x, groundMap[0][3].y, WHITE);
 		DrawTexture(tree3, groundMap[47][0].x, groundMap[0][9].y, WHITE);
+		DrawTexture(book, groundMap[20][0].x, groundMap[0][13].y + tileSize, WHITE);
 		break;
 		}
 	case insideHouse: {

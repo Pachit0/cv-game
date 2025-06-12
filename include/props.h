@@ -20,6 +20,8 @@ private:
 	Texture2D tree3;
 	Texture2D cutTree;
 	Texture2D insideChair;
+	Texture2D book;
+	Texture2D telescope;
 
 	std::vector<std::vector<std::vector<Rectangle>>> propsCoords;
 

@@ -50,6 +50,8 @@ void Physics::objectCoords() {
 	obstaclesLevel[village].emplace_back(Rectangle{ groundMap[24][0].x, groundMap[0][11].y, 2 * (tileSize * scale),  tileSize * scale });
 	//cut tree
 	obstaclesLevel[village].emplace_back(Rectangle{ groundMap[38][0].x + 12, groundMap[0][14].y, 2 * ((tileSize - 4)*scale), (tileSize)*scale });
+	//telescope
+	obstaclesLevel[village].emplace_back(Rectangle{ groundMap[40][0].x - tileSize * 2, groundMap[0][3].y, (tileSize * scale), (tileSize)*scale });
 	
 
 	//insideHouse - edge

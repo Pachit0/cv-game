@@ -12,16 +12,35 @@ private:
 	bool tvOpened;
 	bool tvWatching;
 
+	bool book;
+	bool bookOpened;
+	bool bookWatching;
+
 	bool exitHouse;
 
+	bool telescope;
+	bool telescopeOpened;
+	bool telescopeWatching;
+
+	int frames;
+	int currentAnimFrame;
+	int frameDelay;
+	int frameCounter;
+	unsigned int nextFrameDataOffset;
 	std::vector<std::vector<Rectangle>> triggersLevel;
 
 	Texture2D scroll;
 	Texture2D paper;
 	Texture2D e_Letter;
 	Texture2D q_Letter;
+	Texture2D animOsu;
+	Texture2D texTv;
+	Texture2D texTelescope;
+
+	Texture2D bookDesk;
 
 	Image image;
+	Image animOsuImage;
 public:
 	Triggers();
 	~Triggers();
