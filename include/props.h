@@ -1,6 +1,15 @@
 #pragma once
 #include "Core.h"
 
+struct propEntry {
+	std::string level;
+	std::string layer;
+	int tileX;
+	int tileY;
+	int widthTile;
+	int heightTile;
+};
+
 enum propsLayer {
 	first,
 	second,
@@ -9,6 +18,8 @@ enum propsLayer {
 
 class Props {
 private:
+
+
 	Image image;
 	Texture2D board;
 	Texture2D house;
@@ -24,7 +35,9 @@ private:
 	Texture2D telescope;
 
 	std::vector<std::vector<std::vector<Rectangle>>> propsCoords;
-
+	nlohmann::json data;
+	std::ifstream file;
+	std::vector<propEntry> allProps;
 public:
 	Props();
 	~Props();
@@ -34,4 +47,6 @@ public:
 	bool underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCoords);
 	std::vector<Rectangle>& getCoordsLayer1();
 	std::vector<Rectangle>& getCoordsLayer2();
+	std::vector<propEntry> loadPropsFromJSON(const std::string& filename);
+	void loadPropsCoordsFromJSON(const std::string& path);
 };

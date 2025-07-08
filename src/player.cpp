@@ -7,7 +7,7 @@ Player::Player() :
 	frameDelay(10),
 	frameDelayCount(0),
 	frameNum(7),
-	Pos({1440,670 }),
+	Pos({1440,670}),
 	velocity({0,0})
 
 {

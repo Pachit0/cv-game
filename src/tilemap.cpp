@@ -2,11 +2,6 @@
 
 Tilemap::Tilemap() {
 
-	image = LoadImage(RESOURCES_PATH "The Fan-tasy Tileset/Art/Ground Tileset/Tileset_Ground.png");
-	ImageResize(&image, image.width * scale, image.height * scale);
-	tileset = LoadTextureFromImage(image);
-	UnloadImage(image);
-
 	image = LoadImage(RESOURCES_PATH "Map/layer1.png");
 	ImageResize(&image, image.width * scale, image.height * scale);
 	layerGrass = LoadTextureFromImage(image);
@@ -61,7 +56,6 @@ Tilemap::Tilemap() {
 }
 
 Tilemap::~Tilemap() {
-	UnloadTexture(tileset);
 	UnloadTexture(layerGrass);
 	UnloadTexture(layerPath);
 	UnloadTexture(layerProps1);

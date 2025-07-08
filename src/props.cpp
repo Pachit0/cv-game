@@ -11,13 +11,12 @@ Props::Props() {
 	propsCoords[insideHouse][first].reserve(1);
 	propsCoords[insideHouse][second].reserve(1);
 
-
-	image = LoadImage(RESOURCES_PATH "The Fan-tasy Tileset/Art/Props/Bulletin_Board.png");
+	image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Bulletin_Board.png");
 	ImageResize(&image, (image.width + 4) * scale, image.height * scale);
 	board = LoadTextureFromImage(image);
 	UnloadImage(image);
 	
-	image = LoadImage(RESOURCES_PATH "The Fan-tasy Tileset/Art/Buildings/House_Hay_Stone_1.png");
+	image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Buildings/House_Hay_Stone_1.png");
 	ImageResize(&image, (image.width-6) * scale, image.height * scale);
 	house = LoadTextureFromImage(image);
 	UnloadImage(image);
@@ -60,7 +59,7 @@ Props::Props() {
 	telescope = LoadTextureFromImage(image);
 	UnloadImage(image);
 
-	image = LoadImage(RESOURCES_PATH "The Fan-tasy Tileset/Art/Props/Lamp_1.png");
+	image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Lamp_1.png");
 	ImageResize(&image, image.width * scale, image.height * scale);
 	for (int i = 0; i < 4; i++) {
 		lamp[i] = LoadTextureFromImage(image);
@@ -72,22 +71,6 @@ Props::Props() {
 	ImageResize(&image, image.width * scale, image.height * scale);
 	insideChair = LoadTextureFromImage(image);
 	UnloadImage(image);
-
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[33][0].x, groundMap[0][12].y,(tileSize * scale) * 4,(tileSize * scale) * 2 });
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[27][0].x, groundMap[0][12].y, 6 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[40][0].x, groundMap[0][11].y, 3 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[17][0].x, groundMap[0][12].y, 4 * ((tileSize)*scale), 2 * ((tileSize)*scale) });
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[37][0].x, groundMap[0][14].y, 3 * ((tileSize)*scale), 2 * ((tileSize)*scale) });
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[24][0].x, groundMap[0][4].y, 3 * ((tileSize)*scale), 2 * ((tileSize)*scale) });
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[45][0].x, groundMap[0][12].y , 3 * (tileSize) * scale, 2 * (tileSize) * scale });
-	propsCoords[village][first].emplace_back(Rectangle{ groundMap[38][0].x, groundMap[0][4].y , 3 * (tileSize) * scale, (tileSize) * scale });
-
-	propsCoords[village][second].emplace_back(Rectangle{ groundMap[25][0].x, groundMap[0][16].y, 3 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
-	propsCoords[village][second].emplace_back(Rectangle{ groundMap[34][0].x, groundMap[0][16].y, 3 * ((tileSize) * scale), 2 * ((tileSize) * scale) });
-	propsCoords[village][second].emplace_back(Rectangle{ groundMap[12][0].x, groundMap[0][11].y, 3 * ((tileSize)*scale), 2 * ((tileSize)*scale) });
-	propsCoords[village][second].emplace_back(Rectangle{ groundMap[46][0].x, groundMap[0][14].y, 3 * ((tileSize)*scale), 2 * ((tileSize)*scale) });
-
-	propsCoords[insideHouse][first].emplace_back(Rectangle{ groundMap[26][0].x, groundMap[0][10].y, 2 * ((tileSize)*scale), 1 * ((tileSize)*scale) });
 }
 
 Props::~Props() {
@@ -152,11 +135,52 @@ bool Props::underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCo
 	}
 	return 0;
 }
-// Make it better, just make it better
+
 std::vector<Rectangle>& Props::getCoordsLayer1() {
 	return propsCoords[currentLevel][first];
 }
 
 std::vector<Rectangle>& Props::getCoordsLayer2() {
 	return propsCoords[currentLevel][second];
+}
+
+std::vector<propEntry> Props::loadPropsFromJSON(const std::string& filename)
+{
+	file.open(filename);
+	if (!file.is_open()) {
+		std::cerr << "file couldn't open" << std::endl;
+	}
+
+	file >> data;
+
+	for (const auto& item : data) {
+		allProps.push_back({
+			item["level"],
+			item["layer"],
+			item["tileX"],
+			item["tileY"],
+			item["widthInTiles"],
+			item["heightInTiles"] });
+	}
+
+	return allProps;
+}
+
+void Props::loadPropsCoordsFromJSON(const std::string& path)
+{
+	auto propEntries = loadPropsFromJSON(path);
+	int levelIndex = 0;
+	int layerIndex = 0;
+	for (const auto& entry : propEntries) {
+		levelIndex = (entry.level == "village") ? village : insideHouse;
+		layerIndex = (entry.layer == "first") ? first : second;
+
+		float x = groundMap[entry.tileX][0].x;
+		float y = groundMap[0][entry.tileY].y;
+		float width = entry.widthTile * tileSize * scale;
+		float height = entry.heightTile * tileSize * scale;
+
+		Rectangle rect = { x, y, width, height };
+		propsCoords[levelIndex][layerIndex].push_back(rect);
+	}
 }

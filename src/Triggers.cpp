@@ -25,20 +25,20 @@ Triggers::Triggers() :
 	scroll = LoadTextureFromImage(image);
 	UnloadImage(image);
 
-	image = LoadImage(RESOURCES_PATH "Humble Gift - Paper UI System v1.1/Sprites/Paper UI Pack/Folding & Cutout/5 Mini Map/1.png");
+	image = LoadImage(RESOURCES_PATH "pop-ups/1.png");
 	ImageResize(&image, image.width * scale, image.height * scale);
 	paper = LoadTextureFromImage(image);
 	UnloadImage(image);
 
-	image = LoadImage(RESOURCES_PATH "letter_e_press.png");
+	image = LoadImage(RESOURCES_PATH "letters/letter_e_press.png");
 	e_Letter = LoadTextureFromImage(image);
 	UnloadImage(image);
 
-	image = LoadImage(RESOURCES_PATH "letter_q_press.png");
+	image = LoadImage(RESOURCES_PATH "letters/letter_q_press.png");
 	q_Letter = LoadTextureFromImage(image);
 	UnloadImage(image);
 
-	image = LoadImage(RESOURCES_PATH "Humble Gift - Paper UI System v1.1/Sprites/Book Desk/5-manga+comment.png");
+	image = LoadImage(RESOURCES_PATH "pop-ups/5-manga+comment.png");
 	bookDesk = LoadTextureFromImage(image);
 	UnloadImage(image);
 

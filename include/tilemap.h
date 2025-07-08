@@ -5,7 +5,6 @@ class Tilemap {
 private:
 	Rectangle tileset_rect[12][12];
 
-	Texture2D tileset;
 	Texture2D layerGrass;
 	Texture2D layerPath;
 	Texture2D layerProps1;

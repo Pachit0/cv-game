@@ -2,7 +2,7 @@
 
 UIManager::UIManager()
 {
-    image = LoadImage(RESOURCES_PATH "Humble Gift - Paper UI System v1.1/Sprites/Book Desk/2-adventurer.png");
+    image = LoadImage(RESOURCES_PATH "pop-ups/2-adventurer.png");
     ImageResize(&image, image.width * 1.67, image.height * 1.30);
     background = LoadTextureFromImage(image);
     UnloadImage(image);

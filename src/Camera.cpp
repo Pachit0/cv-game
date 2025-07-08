@@ -29,3 +29,7 @@ void Camera_c::update(const Vector2& pos) {
 		break;
 	}
 }
+
+Camera2D Camera_c::getCamera() const { 
+	return camera; 
+}

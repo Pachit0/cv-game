@@ -1,0 +1,106 @@
+[
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 33,
+    "tileY": 12,
+    "widthInTiles": 4,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 27,
+    "tileY": 12,
+    "widthInTiles": 6,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 40,
+    "tileY": 11,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 17,
+    "tileY": 12,
+    "widthInTiles": 4,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 37,
+    "tileY": 14,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 24,
+    "tileY": 4,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 45,
+    "tileY": 12,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 38,
+    "tileY": 4,
+    "widthInTiles": 3,
+    "heightInTiles": 1
+  },
+  {
+    "level": "village",
+    "layer": "second",
+    "tileX": 25,
+    "tileY": 16,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "second",
+    "tileX": 34,
+    "tileY": 16,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "second",
+    "tileX": 12,
+    "tileY": 11,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "village",
+    "layer": "second",
+    "tileX": 46,
+    "tileY": 14,
+    "widthInTiles": 3,
+    "heightInTiles": 2
+  },
+  {
+    "level": "insideHouse",
+    "layer": "first",
+    "tileX": 26,
+    "tileY": 10,
+    "widthInTiles": 2,
+    "heightInTiles": 1
+  }
+]

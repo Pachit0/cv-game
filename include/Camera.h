@@ -10,5 +10,5 @@ public:
 	Camera_c();
 	~Camera_c();
 	void update(const Vector2& pos);
-	Camera2D getCamera() const { return camera; }
+	Camera2D getCamera() const;
 };
