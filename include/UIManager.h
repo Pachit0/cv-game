@@ -6,8 +6,8 @@
 
 class UIManager {
 private:
-    Image image;
-    Texture2D background;
+    Image m_Image;
+    Texture2D m_Background;
 public:
     UIManager();
     ~UIManager();

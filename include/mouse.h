@@ -1,13 +1,13 @@
 #pragma once
 #include "Core.h"
 
-class handleMouse {
+class HandleMouse {
 private:
-	Vector2 mousePos;
+	Vector2 m_MousePos;
 public:
 
-	handleMouse();
-	~handleMouse();
+	HandleMouse();
+	~HandleMouse();
 
 	void update(Camera2D camera);
 	void draw();

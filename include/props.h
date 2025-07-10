@@ -2,12 +2,12 @@
 #include "Core.h"
 
 struct propEntry {
-	std::string level;
-	std::string layer;
-	int tileX;
-	int tileY;
-	int widthTile;
-	int heightTile;
+	std::string Level;
+	std::string Layer;
+	int TileX;
+	int TileY;
+	int WidthTile;
+	int HeightTile;
 };
 
 enum propsLayer {
@@ -18,26 +18,25 @@ enum propsLayer {
 
 class Props {
 private:
+	Image m_Image;
+	Texture2D m_Board;
+	Texture2D m_House;
+	Texture2D m_Campfire;
+	Texture2D m_Lamp[4];
+	Texture2D m_Table;
+	Texture2D m_Tree;
+	Texture2D m_TreeRiver;
+	Texture2D m_Tree3;
+	Texture2D m_CutTree;
+	Texture2D m_InsideChair;
+	Texture2D m_Book;
+	Texture2D m_Telescope;
 
+	std::vector<std::vector<std::vector<Rectangle>>> m_PropsCoords;
+	nlohmann::json m_Data;
+	std::ifstream m_File;
+	std::vector<propEntry> m_AllProps;
 
-	Image image;
-	Texture2D board;
-	Texture2D house;
-	Texture2D campfire;
-	Texture2D lamp[4];
-	Texture2D table;
-	Texture2D tree;
-	Texture2D treeRiver;
-	Texture2D tree3;
-	Texture2D cutTree;
-	Texture2D insideChair;
-	Texture2D book;
-	Texture2D telescope;
-
-	std::vector<std::vector<std::vector<Rectangle>>> propsCoords;
-	nlohmann::json data;
-	std::ifstream file;
-	std::vector<propEntry> allProps;
 public:
 	Props();
 	~Props();

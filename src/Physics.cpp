@@ -1,62 +1,64 @@
 #include "physics.h"
 
-Physics::Physics(const std::string& filename) : levelIndex(0) {
+Physics::Physics(const std::string& filename) : m_LevelIndex(0),
+												m_X(0),
+												m_Y(0),
+												m_Width(0),
+												m_Height(0) {
 
-	file.open(filename);
+	m_File.open(filename);
 
-	if (!file.is_open()) {
+	if (!m_File.is_open()) {
 		std::cerr << "failed to open file!" << std::endl;
-		return;
 	}
 
-	file >> data;
+	m_File >> m_Data;
 
-	levelMap = { {"village", village},
-				 {"insideHouse", insideHouse}
+	m_LevelMap = {
+		{"village", village},
+		{"insideHouse", insideHouse}
 	};
 
-	obstaclesLevel.resize(3);
-	obstaclesLevel[village].reserve(50);
-	obstaclesLevel[insideHouse].reserve(10);
+	m_ObstaclesPerLevel.resize(3);
+	m_ObstaclesPerLevel[village].reserve(50);
+	m_ObstaclesPerLevel[insideHouse].reserve(10);
 
-	for (const auto& [levelName, items] : data.items()) {
-		auto it = levelMap.find(levelName); 
-		if (it == levelMap.end()) continue; // skipping unknown maps if any (so far none)
+	for (const auto& [levelName, items] : m_Data.items()) {
+		auto it = m_LevelMap.find(levelName);
+		if (it == m_LevelMap.end()) continue;
 
-		levelIndex = it->second; // passing the second value of levelMap
+		m_LevelIndex = it->second;
 
 		for (const auto& item : items) {
-			float x = groundMap[item["x"]][0].x;
-			float y = groundMap[0][item["y"]].y;
+			m_X = groundMap[item["x"]][0].x;
+			m_Y = groundMap[0][item["y"]].y;
 
-			if (item.contains("offsetX")) x += item["offsetX"];
-			if (item.contains("offsetY")) y += item["offsetY"];
+			if (item.contains("offsetX")) m_X += item["offsetX"];
+			if (item.contains("offsetY")) m_Y += item["offsetY"];
 
-			float w = item["w"] * (tileSize * scale);
-			float h = item["h"] * (tileSize * scale);
+			m_Width = item["w"] * (tileSize * scale);
+			m_Height = item["h"] * (tileSize * scale);
 
 			if (item.contains("shrink")) {
-				w = item["w"] * ((tileSize - item["shrink"]) * scale);
-				h = item["h"] * ((tileSize - item["shrink"]) * scale);
+				m_Width = item["w"] * ((tileSize - item["shrink"]) * scale);
+				m_Height = item["h"] * ((tileSize - item["shrink"]) * scale);
 			}
 			else {
-				if (item.contains("shrinkX")) w = item["w"] * ((tileSize - item["shrinkX"]) * scale);
-				if (item.contains("shrinkY")) h = item["h"] * ((tileSize - item["shrinkY"]) * scale);
+				if (item.contains("shrinkX")) m_Width = item["w"] * ((tileSize - item["shrinkX"]) * scale);
+				if (item.contains("shrinkY")) m_Height = item["h"] * ((tileSize - item["shrinkY"]) * scale);
 			}
 
-			obstaclesLevel[levelIndex].emplace_back(Rectangle{ x, y, w, h });
+			m_ObstaclesPerLevel[m_LevelIndex].emplace_back(Rectangle{ m_X, m_Y, m_Width, m_Height });
 		}
 	}
 }
 
 Physics::~Physics() {}
 
-Vector2 Physics::collisionObjectWall(const Vector2& Pos,Vector2 velocity,const float& deltaTime) {
-	
+Vector2 Physics::collisionObjectWall(const Vector2& Pos, Vector2 velocity, const float& deltaTime) {
 	Rectangle nextPos = { Pos.x + velocity.x * deltaTime, Pos.y + velocity.y * deltaTime, tileSize * scale, tileSize * scale };
 
-	for (const Rectangle& obstacle : obstaclesLevel[currentLevel])
-	{
+	for (const Rectangle& obstacle : m_ObstaclesPerLevel[currentLevel]) {
 		if (CheckCollisionRecs(nextPos, obstacle)) {
 			if (velocity.x != 0) {
 				Rectangle testX = { Pos.x + velocity.x * deltaTime, Pos.y, tileSize * scale, tileSize * scale };
@@ -79,8 +81,14 @@ Vector2 Physics::collisionObjectWall(const Vector2& Pos,Vector2 velocity,const f
 
 void Physics::draw() {
 	if (IsKeyDown(KEY_O)) {
-		for (const Rectangle& obstacle : obstaclesLevel[currentLevel]) {
-			DrawRectangleLines(obstacle.x + tileSize * scale, obstacle.y + (tileSize * 2) * scale, obstacle.width, obstacle.height, WHITE);
+		for (const Rectangle& it_Obstacle : m_ObstaclesPerLevel[currentLevel]) {
+			DrawRectangleLines(
+				it_Obstacle.x + tileSize * scale,
+				it_Obstacle.y + (tileSize * 2) * scale,
+				it_Obstacle.width,
+				it_Obstacle.height,
+				WHITE
+			);
 		}
 	}
 }

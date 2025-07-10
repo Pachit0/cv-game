@@ -1,28 +1,28 @@
 #include "Camera.h"
 
-Camera_c::Camera_c() : cameraVelocity({0,0}) {
-	camera.target = { 0 , 0 };
-	camera.offset = { (float)screenWidth / 2, (float)screenHeight / 2 };
-	camera.rotation = 0.0f;
-	camera.zoom = 1.0f;
+MainCamera::MainCamera() : m_CameraVelocity({0,0}) {
+	m_Camera.target = { 0 , 0 };
+	m_Camera.offset = { (float)screenWidth / 2, (float)screenHeight / 2 };
+	m_Camera.rotation = 0.0f;
+	m_Camera.zoom = 1.0f;
 }
 
-Camera_c::~Camera_c() {}
+MainCamera::~MainCamera() {}
 
-void Camera_c::update(const Vector2& pos) {
+void MainCamera::update(const Vector2& pos) {
 	switch (currentLevel) {
 	case village: {
 		if (pos.x >= 740 && pos.x <= 2300) {
-			camera.target.x = pos.x;
+			m_Camera.target.x = pos.x;
 		}
 		if (pos.y >= 365 && pos.y <= 1070) {
-			camera.target.y = pos.y;
+			m_Camera.target.y = pos.y;
 		}
 		break;
 		}
 	case insideHouse: {
-		camera.target.x = 1700;
-		camera.target.y = 475;
+		m_Camera.target.x = 1700;
+		m_Camera.target.y = 475;
 		break;
 		}
 	default:
@@ -30,6 +30,6 @@ void Camera_c::update(const Vector2& pos) {
 	}
 }
 
-Camera2D Camera_c::getCamera() const { 
-	return camera; 
+Camera2D MainCamera::getCamera() const {
+	return m_Camera;
 }

@@ -2,13 +2,13 @@
 #include "Core.h"
 #include "Player.h"
 
-class Camera_c {
+class MainCamera {
 private:
-	Camera2D camera;
-	Vector2 cameraVelocity;
+	Camera2D m_Camera;
+	Vector2 m_CameraVelocity;
 public:
-	Camera_c();
-	~Camera_c();
+	MainCamera();
+	~MainCamera();
 	void update(const Vector2& pos);
 	Camera2D getCamera() const;
 };

@@ -11,27 +11,28 @@
 class Game
 {
 private:
-	void update();
-	void draw();
-	void init();
-	void unload();
+    void update();
+    void draw();
+    void init();
+    void unload();
 
-	Player* player;
-	Tilemap* tilemap;
-	Camera_c camera_c;
-	Physics* collisions;
-	Triggers* triggers;
-	handleMouse mouse;
-	Props* props;
-	UIManager* ui;
+    Player* m_Player;
+    Tilemap* m_Tilemap;
+    MainCamera m_MainCamera;
+    Physics* m_Physics;
+    Triggers* m_Triggers;
+    HandleMouse m_Mouse;
+    Props* m_Props;
+    UIManager* m_UI;
 
-	float deltaTime;
-	bool isPlaying;
+    float m_DeltaTime;
+    bool m_IsPlaying;
+
 public:
-	Game();
-	~Game();
+    Game();
+    ~Game();
 
-	void run();
-	void playerDrawPriorityLayer1();
-	void playerDrawPriorityLayer2();
+    void run();
+    void playerDrawPriorityLayer1();
+    void playerDrawPriorityLayer2();
 };

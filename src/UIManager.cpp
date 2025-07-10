@@ -2,15 +2,15 @@
 
 UIManager::UIManager()
 {
-    image = LoadImage(RESOURCES_PATH "pop-ups/2-adventurer.png");
-    ImageResize(&image, image.width * 1.67, image.height * 1.30);
-    background = LoadTextureFromImage(image);
-    UnloadImage(image);
+    m_Image = LoadImage(RESOURCES_PATH "pop-ups/2-adventurer.png");
+    ImageResize(&m_Image, m_Image.width * 1.67, m_Image.height * 1.30);
+    m_Background = LoadTextureFromImage(m_Image);
+    UnloadImage(m_Image);
 }
 
 UIManager::~UIManager()
 {
-    UnloadTexture(background);
+    UnloadTexture(m_Background);
 }
 
 void UIManager::Init() {
@@ -32,7 +32,7 @@ void UIManager::RenderMainMenu(bool& isPlaying, int screenWidth, int screenHeigh
         ImGuiWindowFlags_NoBackground ;
 
     ImGui::Begin("Game Menu", nullptr, window_flags);
-    DrawTexture(background,0,0,WHITE);
+    DrawTexture(m_Background,0,0,WHITE);
     /*ImGui::SetCursorPosX((screenWidth - 500) * 0.5f);
     ImGui::SetCursorPosY((screenHeight - 100) * 0.5f);
     ImGui::SetWindowFontScale(5.0f);

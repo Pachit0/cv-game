@@ -3,18 +3,19 @@
 
 class Tilemap {
 private:
-	Rectangle tileset_rect[12][12];
+	Rectangle m_TilesetRect[12][12];
 
-	Texture2D layerGrass;
-	Texture2D layerPath;
-	Texture2D layerProps1;
-	Texture2D layerProps2;
-	Texture2D fences;
-	Texture2D trees1;
-	Texture2D trees2;
-	Texture2D insideHouseTexture;
+	Texture2D m_LayerGrass;
+	Texture2D m_LayerPath;
+	Texture2D m_LayerProps1;
+	Texture2D m_LayerProps2;
+	Texture2D m_Fences;
+	Texture2D m_Trees1;
+	Texture2D m_Trees2;
+	Texture2D m_InsideHouseTexture;
 
-	Image image;
+	Image m_Image;
+
 public:
 
 	Tilemap();

@@ -12,23 +12,23 @@ enum direction {
 
 class Player {
 private:
-	unsigned frameNum; // character frames
-	unsigned frameDelay; // animation speed
-	unsigned frameDelayCount;
-	unsigned frameIndex;
+	unsigned m_FrameNum; // character frames
+	unsigned m_FrameDelay; // animation speed
+	unsigned m_FrameDelayCount;
+	unsigned m_FrameIndex;
 
-	Vector2 Pos;
+	Vector2 m_Pos;
+	Vector2 m_Velocity;
 
-	Rectangle movement_Rect[6][8];
-	Vector2 velocity;
+	Rectangle m_Movement_Rect[6][8];
 
-	float speed;
-	int directions;
+	float m_Speed;
+	int m_Directions;
 
+	Texture2D m_Idle;
+	Texture2D m_Walk;
+	Image m_Image;
 public:
-	Texture2D idle;
-	Texture2D walk;
-	Image image;
 
 	Player();
 	~Player();
@@ -38,8 +38,8 @@ public:
 	void Update(const float& deltaTime);
 	void Draw();
 
-	Vector2 getPos() const { return Pos; }
-	void setPos(const Vector2& newPos) { Pos = newPos; }
-	Vector2 getVelocity() const { return velocity; }
-	void setVelocity(const Vector2& newVelocity) { velocity = newVelocity; }
+	Vector2 getPos() const { return m_Pos; }
+	void setPos(const Vector2& newPos) { m_Pos = newPos; }
+	Vector2 getVelocity() const { return m_Velocity; }
+	void setVelocity(const Vector2& newVelocity) { m_Velocity = newVelocity; }
 };

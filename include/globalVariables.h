@@ -14,9 +14,6 @@ enum FadeState {
 	FADE_OUT
 };
 
-extern int fadeState;
-
-extern Rectangle groundMap[60][30];
 
 const int screenHeight = 720;
 const int screenWidth = 1280;
@@ -39,3 +36,7 @@ extern float fadeTimer;
 
 extern bool startFade;
 extern bool endFade;
+
+extern int fadeState;
+
+extern Rectangle groundMap[60][30];

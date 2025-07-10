@@ -1,12 +1,12 @@
 #include "Game.h"
 
 
-Game::Game() : deltaTime(0.0f),
-			   isPlaying(false)
+Game::Game() : m_DeltaTime(0.0f),
+			   m_IsPlaying(false)
 {
 	init();
-	ui->Init();
-	props->loadPropsCoordsFromJSON(RESOURCES_PATH "props.json");
+	m_UI->Init();
+	m_Props->loadPropsCoordsFromJSON(RESOURCES_PATH "props.json");
 }
 
 Game::~Game()
@@ -14,53 +14,67 @@ Game::~Game()
 	unload();
 }
 
+void Game::run() {
+	while (!WindowShouldClose()) {
+		update();
+		BeginDrawing();
+		m_UI->Begin();
+		if (!m_IsPlaying) {
+			m_UI->RenderMainMenu(m_IsPlaying, screenWidth, screenHeight);
+		}
+		m_UI->End();
+		draw();
+		EndDrawing();
+	}
+}
+
 void Game::update()
 {
-	deltaTime = GetFrameTime();
+	m_DeltaTime = GetFrameTime();
 
-	triggers->update(deltaTime);
-	triggers->collisionTrigger(player->getPos(), [&](Vector2 newPos) {player->setPos(newPos); });
+	m_Triggers->update(m_DeltaTime);
+	m_Triggers->collisionTrigger(m_Player->getPos(), [&](Vector2 newPos) {m_Player->setPos(newPos); });
 	if (fadeState == FADE_NONE || fadeState == FADE_OUT) {
-		camera_c.update(player->getPos());
-		player->handleCurrentDirection();
-		player->inputHandling();
-		player->setVelocity(collisions->collisionObjectWall(player->getPos(), player->getVelocity(), deltaTime));
-		player->Update(deltaTime);
+		m_MainCamera.update(m_Player->getPos());
+		m_Player->handleCurrentDirection();
+		m_Player->inputHandling();
+		m_Player->setVelocity(m_Physics->collisionObjectWall(m_Player->getPos(), m_Player->getVelocity(), m_DeltaTime));
+		m_Player->Update(m_DeltaTime);
 	}
-	tilemap->update();
-	mouse.update(camera_c.getCamera());
+	m_Tilemap->update();
+	m_Mouse.update(m_MainCamera.getCamera());
 }
 
 void Game::draw()
 {
-	if (isPlaying) {
-		BeginMode2D(camera_c.getCamera());
+	if (m_IsPlaying) {
+		BeginMode2D(m_MainCamera.getCamera());
 		switch (currentLevel) {
 		case village: {
 			if (fadeState == FADE_NONE || fadeState == FADE_OUT) {
 				ClearBackground(WHITE);
-				tilemap->draw();
+				m_Tilemap->draw();
 				playerDrawPriorityLayer1();
 				playerDrawPriorityLayer2();
-				tilemap->drawTrees();
-				collisions->draw();
+				m_Tilemap->drawTrees();
+				m_Physics->draw();
 			}
 			break;
 		}
 		case insideHouse: {
 			if (fadeState == FADE_NONE || fadeState == FADE_OUT) {
 				ClearBackground(BLACK);
-				tilemap->drawInsideHouse();
-				collisions->draw();
-				player->Draw();
-				props->drawLayer1();
+				m_Tilemap->drawInsideHouse();
+				m_Physics->draw();
+				m_Player->Draw();
+				m_Props->drawLayer1();
 				}
 			break;
 			}
 		}
-		triggers->draw(player->getPos(), camera_c.getCamera().target);
-		tilemap->debugLines();	//press C
-		mouse.draw();
+		m_Triggers->draw(m_Player->getPos(), m_MainCamera.getCamera().target);
+		m_Tilemap->debugLines();	//press C
+		m_Mouse.draw();
 		EndMode2D();
 	}
 }
@@ -69,74 +83,66 @@ void Game::init()
 {
 	InitWindow(screenWidth, screenHeight, "CV game");
 	SetTargetFPS(60);
-	player = new Player();
-	if (!player) {
-		std::cerr << "player couldn't load!" << std::endl;
+	m_Player = new Player();
+	if (!m_Player) {
+		std::cerr << "m_Player couldn't load!" << std::endl;
 	}
-	tilemap = new Tilemap();
-	if (!tilemap) {
-		std::cerr << "tilemap couldn't load!" << std::endl;
+	m_Tilemap = new Tilemap();
+	if (!m_Tilemap) {
+		std::cerr << "m_Tilemap couldn't load!" << std::endl;
 	}
-	camera_c = Camera_c();
-	collisions = new Physics(RESOURCES_PATH "obstacles.json");
-	if (!collisions) {
-		std::cerr << "collisions couldn't load!" << std::endl;
+	m_MainCamera = MainCamera();
+	m_Physics = new Physics(RESOURCES_PATH "obstacles.json");
+	if (!m_Physics) {
+		std::cerr << "m_Physics couldn't load!" << std::endl;
 	}
-	triggers = new Triggers();
-	if (!triggers) {
+	m_Triggers = new Triggers();
+	if (!m_Triggers) {
 		std::cerr << "triggers couldn't load!" << std::endl;
 	}
-	mouse = handleMouse();
-	props = new Props();
-	if (!props) {
+	m_Mouse = HandleMouse();
+	m_Props = new Props();
+	if (!m_Props) {
 		std::cerr << "props couldn't load!" << std::endl;
 	}
-	ui = new UIManager();
-	if (!ui) {
+	m_UI = new UIManager();
+	if (!m_UI) {
 		std::cerr << "ui couldn't load!" << std::endl;
 	}
 }
 
 void Game::unload()
 {
-	ui->Shutdown();
+	free(m_Player);
+	free(m_Tilemap);
+	free(m_Physics);
+	free(m_Triggers);
+	free(m_Props);
+	free(m_UI);
+	m_UI->Shutdown();
 	CloseWindow();
-}
-
-void Game::run() {
-	while (!WindowShouldClose()) {
-		update();
-		BeginDrawing();
-		ui->Begin();
-		if (!isPlaying) {
-			ui->RenderMainMenu(isPlaying, screenWidth, screenHeight);
-		}
-		ui->End();
-		draw();
-		EndDrawing();
-	}
 }
 
 void Game::playerDrawPriorityLayer1() {
 
-	if (props->underCheck(player->getPos(), props->getCoordsLayer1())) {
-		props->drawLayer1();
-		player->Draw();
+	if (m_Props->underCheck(m_Player->getPos(), m_Props->getCoordsLayer1())) {
+		m_Props->drawLayer1();
+		m_Player->Draw();
 	}
 	else {
-		player->Draw();
-		props->drawLayer1();
+		m_Player->Draw();
+		m_Props->drawLayer1();
 	}
 }
 
 void Game::playerDrawPriorityLayer2() {
 
-	if (props->underCheck(player->getPos(), props->getCoordsLayer2())) {
-		props->drawLayer2();
-		player->Draw();
+	if (m_Props->underCheck(m_Player->getPos(), m_Props->getCoordsLayer2())) {
+		m_Props->drawLayer2();
+		m_Player->Draw();
 	}
 	else {
-		props->drawLayer2();
+		m_Props->drawLayer2();
 	}
 
 }

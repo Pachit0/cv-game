@@ -3,47 +3,49 @@
 
 class Triggers {
 private:
-	bool read;
-	bool note;
-	bool noteOpened;
-	bool enterHouse;
+	bool m_Read;
+	bool m_Note;
+	bool m_NoteOpened;
+	bool m_EnterHouse;
 
-	bool tv;
-	bool tvOpened;
-	bool tvWatching;
+	bool m_Tv;
+	bool m_TvOpened;
+	bool m_TvWatching;
 
-	bool book;
-	bool bookOpened;
-	bool bookWatching;
+	bool m_Book;
+	bool m_BookOpened;
+	bool m_BookWatching;
 
-	bool exitHouse;
+	bool m_ExitHouse;
 
-	bool telescope;
-	bool telescopeOpened;
-	bool telescopeWatching;
+	bool m_Telescope;
+	bool m_TelescopeOpened;
+	bool m_TelescopeWatching;
 
-	int frames;
-	int currentAnimFrame;
-	int frameDelay;
-	int frameCounter;
-	unsigned int nextFrameDataOffset;
-	std::vector<std::vector<Rectangle>> triggersLevel;
+	int m_Frames;
+	int m_CurrentAnimFrame;
+	int m_FrameDelay;
+	int m_FrameCounter;
+	unsigned int m_NextFrameDataOffset;
+	std::vector<std::vector<Rectangle>> m_TriggersLevel;
 
-	Texture2D scroll;
-	Texture2D paper;
-	Texture2D e_Letter;
-	Texture2D q_Letter;
-	Texture2D animOsu;
-	Texture2D texTv;
-	Texture2D texTelescope;
+	Texture2D m_Scroll;
+	Texture2D m_Paper;
+	Texture2D m_E_Letter;
+	Texture2D m_Q_Letter;
+	Texture2D m_AnimOsu;
+	Texture2D m_TexTv;
+	Texture2D m_TexTelescope;
 
-	Texture2D bookDesk;
+	Texture2D m_BookDesk;
 
-	Image image;
-	Image animOsuImage;
+	Image m_Image;
+	Image m_AnimOsuImage;
+
 public:
 	Triggers();
 	~Triggers();
+
 	void triggerCoords();
 	void collisionTrigger(const Vector2& Pos, std::function<void(Vector2)> changePos);
 	void update(const float& deltaTime);

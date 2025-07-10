@@ -1,18 +1,18 @@
 #include "mouse.h"
 
-handleMouse::handleMouse() : mousePos({ 0,0 }) {
+HandleMouse::HandleMouse() : m_MousePos({ 0,0 }) {
 
 }
 
-handleMouse::~handleMouse() {}
+HandleMouse::~HandleMouse() {}
 
-void handleMouse::update(Camera2D camera) {
-	mousePos = GetScreenToWorld2D(GetMousePosition(), camera);
+void HandleMouse::update(Camera2D camera) {
+	m_MousePos = GetScreenToWorld2D(GetMousePosition(), camera);
 }
 
-void handleMouse::draw() {
+void HandleMouse::draw() {
 	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 		//std::cout << "Mouse X: " << mousePos.x << "  " << "Mouse Y: " << mousePos.y << std::endl;
-		DrawRectangle(mousePos.x, mousePos.y, tileSize * scale, tileSize * scale, PURPLE);
+		DrawRectangle(m_MousePos.x, m_MousePos.y, tileSize * scale, tileSize * scale, PURPLE);
 	}
 }

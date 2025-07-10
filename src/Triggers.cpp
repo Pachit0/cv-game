@@ -1,139 +1,139 @@
 #include "Triggers.h"
 
 Triggers::Triggers() :
-	read(false),
-	note(false),
-	noteOpened(false),
-	enterHouse(false),
-	tv(false),
-	tvOpened(false),
-	tvWatching(false),
-	exitHouse(false),
-	bookOpened(false),
-	bookWatching(false),
-	book(false),
-	telescopeOpened(false),
-	telescopeWatching(false),
-	telescope(false),
-	frames(0),
-	currentAnimFrame(0),
-	frameDelay(3),
-	frameCounter(0),
-	nextFrameDataOffset(0)
-	{
-	image = LoadImage(RESOURCES_PATH "Map/description of me.png");
-	scroll = LoadTextureFromImage(image);
-	UnloadImage(image);
+	m_Read(false),
+	m_Note(false),
+	m_NoteOpened(false),
+	m_EnterHouse(false),
+	m_Tv(false),
+	m_TvOpened(false),
+	m_TvWatching(false),
+	m_ExitHouse(false),
+	m_BookOpened(false),
+	m_BookWatching(false),
+	m_Book(false),
+	m_TelescopeOpened(false),
+	m_TelescopeWatching(false),
+	m_Telescope(false),
+	m_Frames(0),
+	m_CurrentAnimFrame(0),
+	m_FrameDelay(3),
+	m_FrameCounter(0),
+	m_NextFrameDataOffset(0)
+{
+	m_Image = LoadImage(RESOURCES_PATH "Map/description of me.png");
+	m_Scroll = LoadTextureFromImage(m_Image);
+	UnloadImage(m_Image);
 
-	image = LoadImage(RESOURCES_PATH "pop-ups/1.png");
-	ImageResize(&image, image.width * scale, image.height * scale);
-	paper = LoadTextureFromImage(image);
-	UnloadImage(image);
+	m_Image = LoadImage(RESOURCES_PATH "pop-ups/1.png");
+	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	m_Paper = LoadTextureFromImage(m_Image);
+	UnloadImage(m_Image);
 
-	image = LoadImage(RESOURCES_PATH "letters/letter_e_press.png");
-	e_Letter = LoadTextureFromImage(image);
-	UnloadImage(image);
+	m_Image = LoadImage(RESOURCES_PATH "letters/letter_e_press.png");
+	m_E_Letter = LoadTextureFromImage(m_Image);
+	UnloadImage(m_Image);
 
-	image = LoadImage(RESOURCES_PATH "letters/letter_q_press.png");
-	q_Letter = LoadTextureFromImage(image);
-	UnloadImage(image);
+	m_Image = LoadImage(RESOURCES_PATH "letters/letter_q_press.png");
+	m_Q_Letter = LoadTextureFromImage(m_Image);
+	UnloadImage(m_Image);
 
-	image = LoadImage(RESOURCES_PATH "pop-ups/5-manga+comment.png");
-	bookDesk = LoadTextureFromImage(image);
-	UnloadImage(image);
+	m_Image = LoadImage(RESOURCES_PATH "pop-ups/5-manga+comment.png");
+	m_BookDesk = LoadTextureFromImage(m_Image);
+	UnloadImage(m_Image);
 
-	image = LoadImage(RESOURCES_PATH "Map/tv.png");
-	texTv = LoadTextureFromImage(image);
-	UnloadImage(image);
+	m_Image = LoadImage(RESOURCES_PATH "Map/tv.png");
+	m_TexTv = LoadTextureFromImage(m_Image);
+	UnloadImage(m_Image);
 
-	image = LoadImage(RESOURCES_PATH "Map/telescopeView.png");
-	texTelescope = LoadTextureFromImage(image);
-	UnloadImage(image);
+	m_Image = LoadImage(RESOURCES_PATH "Map/telescopeView.png");
+	m_TexTelescope = LoadTextureFromImage(m_Image);
+	UnloadImage(m_Image);
 
-	animOsuImage = LoadImageAnim(RESOURCES_PATH "Map/osu.gif", &frames);
-	animOsu = LoadTextureFromImage(animOsuImage);
+	m_AnimOsuImage = LoadImageAnim(RESOURCES_PATH "Map/osu.gif", &m_Frames);
+	m_AnimOsu = LoadTextureFromImage(m_AnimOsuImage);
 
-	triggersLevel.resize(3);
-	triggersLevel[village].reserve(5);
-	triggersLevel[insideHouse].reserve(3);
-
+	m_TriggersLevel.resize(3);
+	m_TriggersLevel[village].reserve(5);
+	m_TriggersLevel[insideHouse].reserve(3);
 }
 
 Triggers::~Triggers() {
-	UnloadTexture(scroll);
-	UnloadTexture(paper);
-	UnloadTexture(e_Letter);
-	UnloadTexture(q_Letter);
-	UnloadTexture(bookDesk);
-	UnloadTexture(animOsu);
-	UnloadTexture(texTv);
-	UnloadImage(animOsuImage);
+	UnloadTexture(m_Scroll);
+	UnloadTexture(m_Paper);
+	UnloadTexture(m_E_Letter);
+	UnloadTexture(m_Q_Letter);
+	UnloadTexture(m_BookDesk);
+	UnloadTexture(m_AnimOsu);
+	UnloadTexture(m_TexTv);
+	UnloadImage(m_AnimOsuImage);
 }
 
 void Triggers::triggerCoords() {
-	triggersLevel[village].emplace_back(Rectangle{groundMap[34][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale});
-	triggersLevel[village].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][12].y, tileSize * scale, tileSize * scale });
-	triggersLevel[village].emplace_back(Rectangle{ groundMap[18][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
-	triggersLevel[village].emplace_back(Rectangle{ groundMap[38][0].x, groundMap[0][3].y, tileSize * scale, tileSize * scale });
-	triggersLevel[insideHouse].emplace_back(Rectangle{ groundMap[38][0].x - tileSize, groundMap[0][4].y + 12, ((tileSize)*scale), (tileSize)*scale });
-	triggersLevel[insideHouse].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][13].y, tileSize*scale, tileSize*scale });
+	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[34][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
+	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][12].y, tileSize * scale, tileSize * scale });
+	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[18][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
+	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[38][0].x, groundMap[0][3].y, tileSize * scale, tileSize * scale });
+	m_TriggersLevel[insideHouse].emplace_back(Rectangle{ groundMap[38][0].x - tileSize, groundMap[0][4].y + 12, ((tileSize)*scale), (tileSize)*scale });
+	m_TriggersLevel[insideHouse].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][13].y, tileSize * scale, tileSize * scale });
 }
+
 void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)> changePos) {
 	triggerCoords();
 	Rectangle correctCollision = { Pos.x, Pos.y, tileSize * scale, tileSize * scale };
-	if (CheckCollisionRecs(correctCollision, triggersLevel[village][0]) && currentLevel == village) {
-		if (!noteOpened) {
-			read = true;
+	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][0]) && currentLevel == village) {
+		if (!m_NoteOpened) {
+			m_Read = true;
 		}
 		if (IsKeyPressed(KEY_E)) {
-			note = true;
-			read = false;
-			noteOpened = true;
+			m_Note = true;
+			m_Read = false;
+			m_NoteOpened = true;
 		}
 		else if (IsKeyPressed(KEY_Q)) {
-			note = false;
-			noteOpened = false;
+			m_Note = false;
+			m_NoteOpened = false;
 		}
 	}
 	else {
-		read = false;
-		note = false;
-		noteOpened = false;
+		m_Read = false;
+		m_Note = false;
+		m_NoteOpened = false;
 	}
 
-	if (CheckCollisionRecs(correctCollision, triggersLevel[village][3]) && currentLevel == village) {
+	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][3]) && currentLevel == village) {
 
-		if (!tvOpened) {
-			telescopeWatching = true;
+		if (!m_TvOpened) {
+			m_TelescopeWatching = true;
 		}
 		if (IsKeyPressed(KEY_E)) {
-			telescope = true;
-			telescopeWatching = false;
-			telescopeOpened = true;
+			m_Telescope = true;
+			m_TelescopeWatching = false;
+			m_TelescopeOpened = true;
 		}
 		else if (IsKeyPressed(KEY_Q)) {
-			telescope = false;
-			telescopeOpened = false;
+			m_Telescope = false;
+			m_TelescopeOpened = false;
 		}
 	}
 	else {
-		telescope = false;
-		telescopeOpened = false;
-		telescopeWatching = false;
+		m_Telescope = false;
+		m_TelescopeOpened = false;
+		m_TelescopeWatching = false;
 	}
 
-	if (CheckCollisionRecs(correctCollision, triggersLevel[village][1]) && currentLevel == village) {
-		enterHouse = true;
+	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][1]) && currentLevel == village) {
+		m_EnterHouse = true;
 		if (IsKeyPressed(KEY_E)) {
 			fadeState = FADE_IN;
 			fadeAlpha = 0.0f;
 			fadeTimer = 0.0f;
 			currentLevel = insideHouse;
 			changePos({ 1440, 570 });
-		}	
+		}
 	}
-	else if (CheckCollisionRecs(correctCollision, triggersLevel[insideHouse][1]) && currentLevel == insideHouse) {
-		exitHouse = true;
+	else if (CheckCollisionRecs(correctCollision, m_TriggersLevel[insideHouse][1]) && currentLevel == insideHouse) {
+		m_ExitHouse = true;
 		if (IsKeyPressed(KEY_E)) {
 			fadeState = FADE_IN;
 			fadeAlpha = 0.0f;
@@ -143,49 +143,49 @@ void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)>
 		}
 	}
 	else {
-		enterHouse = false;
-		exitHouse = false;
+		m_EnterHouse = false;
+		m_ExitHouse = false;
 	}
-	if (CheckCollisionRecs(correctCollision, triggersLevel[village][2]) && currentLevel == village) {
+	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][2]) && currentLevel == village) {
 
-		if (!tvOpened) {
-			bookWatching = true;
+		if (!m_TvOpened) {
+			m_BookWatching = true;
 		}
 		if (IsKeyPressed(KEY_E)) {
-			book = true;
-			bookWatching = false;
-			bookOpened = true;
+			m_Book = true;
+			m_BookWatching = false;
+			m_BookOpened = true;
 		}
 		else if (IsKeyPressed(KEY_Q)) {
-			book = false;
-			bookOpened = false;
+			m_Book = false;
+			m_BookOpened = false;
 		}
 	}
 	else {
-		book = false;
-		bookOpened = false;
-		bookWatching = false;
+		m_Book = false;
+		m_BookOpened = false;
+		m_BookWatching = false;
 	}
 
-	if (CheckCollisionRecs(correctCollision, triggersLevel[insideHouse][0]) && currentLevel == insideHouse) {
+	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[insideHouse][0]) && currentLevel == insideHouse) {
 
-		if (!tvOpened) {
-			tvWatching = true;
+		if (!m_TvOpened) {
+			m_TvWatching = true;
 		}
 		if (IsKeyPressed(KEY_E)) {
-			tv = true;
-			tvWatching = false;
-			tvOpened = true;
+			m_Tv = true;
+			m_TvWatching = false;
+			m_TvOpened = true;
 		}
 		else if (IsKeyPressed(KEY_Q)) {
-			tv = false;
-			tvOpened = false;
+			m_Tv = false;
+			m_TvOpened = false;
 		}
 	}
 	else {
-		tv = false;
-		tvOpened = false;
-		tvWatching = false;
+		m_Tv = false;
+		m_TvOpened = false;
+		m_TvWatching = false;
 	}
 
 }
@@ -201,7 +201,7 @@ void Triggers::update(const float& deltaTime) {
 			fadeTimer = 0.0f;
 		}
 		break;
-		}
+	}
 
 	case FADE_HOLD: {
 		fadeTimer += deltaTime;
@@ -209,7 +209,7 @@ void Triggers::update(const float& deltaTime) {
 			fadeState = FADE_OUT;
 		}
 		break;
-		}
+	}
 
 	case FADE_OUT: {
 		fadeAlpha -= fadeSpeed * deltaTime;
@@ -218,13 +218,12 @@ void Triggers::update(const float& deltaTime) {
 			fadeState = FADE_NONE;
 		}
 		break;
-		}
+	}
 
 	default:
 		break;
 	}
 }
-
 
 void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos) {
 
@@ -233,71 +232,69 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos) {
 	}
 
 	if (IsKeyDown(KEY_Y)) {
-		for (Rectangle& trigger : triggersLevel[currentLevel]) {
+		for (Rectangle& trigger : m_TriggersLevel[currentLevel]) {
 			DrawRectangleLines(trigger.x + tileSize * scale, trigger.y + (tileSize * 2) * scale, trigger.width, trigger.height, BLUE);
 		}
 	}
 
-	if (read) {
-		DrawTexture(e_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	if (m_Read) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
-	if (note) {
+	if (m_Note) {
 		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
-		DrawTexture(scroll, cameraPos.x - 400, cameraPos.y - 300, WHITE);
-		DrawTexture(q_Letter, cameraPos.x - 100, cameraPos.y + 300, WHITE);
+		DrawTexture(m_Scroll, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+		DrawTexture(m_Q_Letter, cameraPos.x - 100, cameraPos.y + 300, WHITE);
 	}
 
-	if (enterHouse && fadeState != FADE_IN) {
-		//DrawText("Press E to enter", 1340, 675, 50, BLACK);
-		DrawTexture(e_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	if (m_EnterHouse && fadeState != FADE_IN) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (tvWatching) {
-		DrawTexture(e_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	if (m_TvWatching) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (tv) {
-		frameCounter++;
+	if (m_Tv) {
+		m_FrameCounter++;
 
-		if (frameCounter >= frameDelay)
+		if (m_FrameCounter >= m_FrameDelay)
 		{
+			m_CurrentAnimFrame++;
+			if (m_CurrentAnimFrame >= m_Frames) m_CurrentAnimFrame = 0;
 
-			currentAnimFrame++;
-			if (currentAnimFrame >= frames) currentAnimFrame = 0;
+			m_NextFrameDataOffset = m_AnimOsu.width * m_AnimOsu.height * 4 * m_CurrentAnimFrame;
 
-			nextFrameDataOffset = animOsu.width * animOsu.height * 4 * currentAnimFrame;
+			UpdateTexture(m_AnimOsu, ((unsigned char*)m_AnimOsuImage.data) + m_NextFrameDataOffset);
 
-			UpdateTexture(animOsu, ((unsigned char*)animOsuImage.data) + nextFrameDataOffset);
-
-			frameCounter = 0;
+			m_FrameCounter = 0;
 		}
 		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
-		DrawTexture(texTv, groundMap[28][0].x, groundMap[0][3].y, WHITE);
-		DrawTexture(animOsu, groundMap[32][0].x - tileSize, groundMap[0][7].y + tileSize, WHITE);
-		DrawTexture(q_Letter, groundMap[34][0].x + (tileSize * 2), groundMap[0][14].y, WHITE);
+		DrawTexture(m_TexTv, groundMap[28][0].x, groundMap[0][3].y, WHITE);
+		DrawTexture(m_AnimOsu, groundMap[32][0].x - tileSize, groundMap[0][7].y + tileSize, WHITE);
+		DrawTexture(m_Q_Letter, groundMap[34][0].x + (tileSize * 2), groundMap[0][14].y, WHITE);
 	}
 
-	if (exitHouse && fadeState != FADE_IN) {
-		DrawTexture(e_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	if (m_ExitHouse && fadeState != FADE_IN) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (bookWatching) {
-		DrawTexture(e_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	if (m_BookWatching) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (book) {
-		DrawRectangle(0,0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
-		DrawTexture(bookDesk, Pos.x - 400, Pos.y - 300, WHITE);
-		DrawTexture(q_Letter, Pos.x - 75, Pos.y + 300, WHITE);
+	if (m_Book) {
+		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
+		DrawTexture(m_BookDesk, Pos.x - 400, Pos.y - 300, WHITE);
+		DrawTexture(m_Q_Letter, Pos.x - 75, Pos.y + 300, WHITE);
 	}
 
-	if (telescopeWatching) {
-		DrawTexture(e_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	if (m_TelescopeWatching) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (telescope) {
+	if (m_Telescope) {
 		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, BLACK);
-		DrawTexture(texTelescope, cameraPos.x - 475, cameraPos.y - 300, WHITE);
-		DrawTexture(q_Letter, cameraPos.x - 75, cameraPos.y + 225, WHITE);
+		DrawTexture(m_TexTelescope, cameraPos.x - 475, cameraPos.y - 300, WHITE);
+		DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 225, WHITE);
 	}
 }
