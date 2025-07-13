@@ -5,6 +5,8 @@
 #include <functional>
 #include <fstream>
 #include <unordered_map>
+#include <new>
+#include <cstdlib>
 
 #include "raylib.h"
 

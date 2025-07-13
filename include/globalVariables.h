@@ -2,19 +2,6 @@
 #include "raylib.h"
 #include "cmath"
 
-enum mapLevel {
-	village,
-	insideHouse
-};
-
-enum FadeState { 
-	FADE_NONE,
-	FADE_IN,
-	FADE_HOLD,
-	FADE_OUT
-};
-
-
 const int screenHeight = 720;
 const int screenWidth = 1280;
 
@@ -26,17 +13,5 @@ const int mapHeight_Width = 2520;
 const float scale = fmin(screenWidth / baseWidth, screenHeight / baseHeight);
 
 const float tileSize = 16.0f;
-
-extern int currentLevel;
-
-extern float fadeAlpha;
-extern float fadeSpeed;
-extern float fadeHoldTime;
-extern float fadeTimer;
-
-extern bool startFade;
-extern bool endFade;
-
-extern int fadeState;
 
 extern Rectangle groundMap[60][30];

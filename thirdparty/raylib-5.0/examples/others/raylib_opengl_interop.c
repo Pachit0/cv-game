@@ -2,6 +2,8 @@
 *
 *   raylib [shaders] example - OpenGL point particle system
 *
+*   Example complexity rating: [★★★★] 4/4
+*
 *   Example originally created with raylib 3.8, last time updated with raylib 2.5
 *
 *   Example contributed by Stephan Soller (@arkanis) and reviewed by Ramon Santamaria (@raysan5)
@@ -9,7 +11,7 @@
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2021-2023 Stephan Soller (@arkanis) and Ramon Santamaria (@raysan5)
+*   Copyright (c) 2021-2025 Stephan Soller (@arkanis) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************
 *
@@ -26,7 +28,7 @@
 
 #include "raylib.h"
 
-#if defined(PLATFORM_DESKTOP)
+#if defined(PLATFORM_DESKTOP) || defined(PLATFORM_DESKTOP_SDL)
     #if defined(GRAPHICS_API_OPENGL_ES2)
         #include "glad_gles2.h"       // Required for: OpenGL functionality 
         #define glGenVertexArrays glGenVertexArraysOES
@@ -35,6 +37,7 @@
         #define GLSL_VERSION            100
     #else
         #if defined(__APPLE__)
+            #define GL_SILENCE_DEPRECATION // Silence Opengl API deprecation warnings 
             #include <OpenGL/gl3.h>     // OpenGL 3 library for OSX
             #include <OpenGL/gl3ext.h>  // OpenGL 3 extensions library for OSX
         #else

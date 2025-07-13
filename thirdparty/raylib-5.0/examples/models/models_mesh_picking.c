@@ -2,6 +2,8 @@
 *
 *   raylib [models] example - Mesh picking in 3d mode, ground plane, triangle, mesh
 *
+*   Example complexity rating: [★★★☆] 3/4
+*
 *   Example originally created with raylib 1.7, last time updated with raylib 4.0
 *
 *   Example contributed by Joel Davis (@joeld42) and reviewed by Ramon Santamaria (@raysan5)
@@ -9,7 +11,7 @@
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2017-2023 Joel Davis (@joeld42) and Ramon Santamaria (@raysan5)
+*   Copyright (c) 2017-2025 Joel Davis (@joeld42) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
@@ -88,7 +90,7 @@ int main(void)
         Color cursorColor = WHITE;
 
         // Get ray and test against objects
-        ray = GetMouseRay(GetMousePosition(), camera);
+        ray = GetScreenToWorldRay(GetMousePosition(), camera);
 
         // Check ray collision against ground quad
         RayCollision groundHitInfo = GetRayCollisionQuad(ray, g0, g1, g2, g3);

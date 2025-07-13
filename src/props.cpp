@@ -2,13 +2,13 @@
 
 Props::Props() {
 	m_PropsCoords.resize(3);
-	m_PropsCoords[village].resize(2);
-	m_PropsCoords[village][first].reserve(10);
-	m_PropsCoords[village][second].reserve(10);
+	m_PropsCoords[Scene::Level::village].resize(2);
+	m_PropsCoords[Scene::Level::village][first].reserve(10);
+	m_PropsCoords[Scene::Level::village][second].reserve(10);
 
-	m_PropsCoords[insideHouse].resize(2);
-	m_PropsCoords[insideHouse][first].reserve(1);
-	m_PropsCoords[insideHouse][second].reserve(1);
+	m_PropsCoords[Scene::Level::insideHouse].resize(2);
+	m_PropsCoords[Scene::Level::insideHouse][first].reserve(1);
+	m_PropsCoords[Scene::Level::insideHouse][second].reserve(1);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Bulletin_Board.png");
 	ImageResize(&m_Image, (m_Image.width + 4) * scale, m_Image.height * scale);
@@ -70,6 +70,7 @@ Props::Props() {
 	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
 	m_InsideChair = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
+
 }
 
 Props::~Props() {
@@ -88,9 +89,9 @@ Props::~Props() {
 	}
 }
 
-void Props::drawLayer1() const {
+void Props::drawLayer1(Scene::Level currentLevel) const {
 	switch (currentLevel) {
-	case village: {
+	case Scene::Level::village: {
 		DrawTexture(m_Board, groundMap[35][0].x, groundMap[0][12].y, WHITE);
 		DrawTexture(m_House, groundMap[29][0].x + 4, groundMap[0][9].y, WHITE);
 		DrawTexture(m_Campfire, groundMap[42][0].x + 4, groundMap[0][12].y + 12, WHITE);
@@ -103,7 +104,7 @@ void Props::drawLayer1() const {
 		DrawTexture(m_Book, groundMap[20][0].x, groundMap[0][13].y + tileSize, WHITE);
 		break;
 	}
-	case insideHouse: {
+	case Scene::Level::insideHouse: {
 		DrawTexture(m_InsideChair, groundMap[37][0].x - tileSize, groundMap[0][12].y - 20, WHITE);
 		break;
 	}
@@ -119,7 +120,7 @@ void Props::drawLayer1() const {
 	}
 }
 
-void Props::drawLayer2() const {
+void Props::drawLayer2(Scene::Level currentLevel) const {
 	DrawTexture(m_Lamp[0], groundMap[27][0].x + 4, groundMap[0][15].y, WHITE);
 	DrawTexture(m_Lamp[1], groundMap[35][0].x + 4, groundMap[0][15].y, WHITE);
 	DrawTexture(m_Lamp[2], groundMap[48][0].x + 4, groundMap[0][13].y, WHITE);
@@ -135,15 +136,15 @@ bool Props::underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCo
 	return false;
 }
 
-std::vector<Rectangle>& Props::getCoordsLayer1() {
+std::vector<Rectangle>& Props::getCoordsLayer1(Scene::Level currentLevel) {
 	return m_PropsCoords[currentLevel][first];
 }
 
-std::vector<Rectangle>& Props::getCoordsLayer2() {
+std::vector<Rectangle>& Props::getCoordsLayer2(Scene::Level currentLevel) {
 	return m_PropsCoords[currentLevel][second];
 }
 
-std::vector<propEntry> Props::loadPropsFromJSON(const std::string& filename)
+std::vector<Props::propEntry> Props::loadPropsFromJSON(const std::string& filename)
 {
 	m_File.open(filename);
 	if (!m_File.is_open()) {
@@ -171,7 +172,7 @@ void Props::loadPropsCoordsFromJSON(const std::string& path)
 	int levelIndex = 0;
 	int layerIndex = 0;
 	for (const auto& entry : propEntries) {
-		levelIndex = (entry.Level == "village") ? village : insideHouse;
+		levelIndex = (entry.Level == "village") ? Scene::Level::village : Scene::Level::insideHouse;
 		layerIndex = (entry.Layer == "first") ? first : second;
 
 		float x = groundMap[entry.TileX][0].x;

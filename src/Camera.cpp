@@ -9,9 +9,9 @@ MainCamera::MainCamera() : m_CameraVelocity({0,0}) {
 
 MainCamera::~MainCamera() {}
 
-void MainCamera::update(const Vector2& pos) {
+void MainCamera::update(const Vector2& pos, Scene::Level currentLevel) {
 	switch (currentLevel) {
-	case village: {
+	case Scene::Level::village: {
 		if (pos.x >= 740 && pos.x <= 2300) {
 			m_Camera.target.x = pos.x;
 		}
@@ -20,7 +20,7 @@ void MainCamera::update(const Vector2& pos) {
 		}
 		break;
 		}
-	case insideHouse: {
+	case Scene::Level::insideHouse: {
 		m_Camera.target.x = 1700;
 		m_Camera.target.y = 475;
 		break;

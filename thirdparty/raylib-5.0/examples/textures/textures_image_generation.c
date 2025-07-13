@@ -2,18 +2,22 @@
 *
 *   raylib [textures] example - Procedural images generation
 *
+*   Example complexity rating: [★★☆☆] 2/4
+*
 *   Example originally created with raylib 1.8, last time updated with raylib 1.8
+*
+*   Example contributed by Wilhem Barbier (@nounoursheureux) and reviewed by Ramon Santamaria (@raysan5)
 *
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
 *
-*   Copyright (c) 2O17-2023 Wilhem Barbier (@nounoursheureux) and Ramon Santamaria (@raysan5)
+*   Copyright (c) 2017-2025 Wilhem Barbier (@nounoursheureux) and Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
 
 #include "raylib.h"
 
-#define NUM_TEXTURES  9      // Currently we have 8 generation algorithms but some are have multiple purposes (Linear and Square Gradients)
+#define NUM_TEXTURES  9      // Currently we have 8 generation algorithms but some have multiple purposes (Linear and Square Gradients)
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -88,7 +92,7 @@ int main(void)
             DrawRectangleLines(30, 400, 325, 30, Fade(WHITE, 0.5f));
             DrawText("MOUSE LEFT BUTTON to CYCLE PROCEDURAL TEXTURES", 40, 410, 10, WHITE);
 
-            switch(currentTexture)
+            switch (currentTexture)
             {
                 case 0: DrawText("VERTICAL GRADIENT", 560, 10, 20, RAYWHITE); break;
                 case 1: DrawText("HORIZONTAL GRADIENT", 540, 10, 20, RAYWHITE); break;

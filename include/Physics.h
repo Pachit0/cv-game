@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "gameEnums.h"
 
 class Physics {
 private:
@@ -15,8 +16,8 @@ public:
     Physics(const std::string& filename);
     ~Physics();
 
-    void draw();
-	Vector2 collisionObjectWall(const Vector2& Pos, Vector2 velocity, const float& deltaTime);
+    void draw(Scene::Level currentLevel);
+	Vector2 collisionObjectWall(const Vector2& Pos, Vector2 velocity, const float& deltaTime, Scene::Level currentLevel);
 
 private:
 

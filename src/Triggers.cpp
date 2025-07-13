@@ -1,25 +1,13 @@
 #include "Triggers.h"
 
 Triggers::Triggers() :
-	m_Read(false),
-	m_Note(false),
-	m_NoteOpened(false),
-	m_EnterHouse(false),
-	m_Tv(false),
-	m_TvOpened(false),
-	m_TvWatching(false),
-	m_ExitHouse(false),
-	m_BookOpened(false),
-	m_BookWatching(false),
-	m_Book(false),
-	m_TelescopeOpened(false),
-	m_TelescopeWatching(false),
-	m_Telescope(false),
 	m_Frames(0),
 	m_CurrentAnimFrame(0),
 	m_FrameDelay(3),
 	m_FrameCounter(0),
-	m_NextFrameDataOffset(0)
+	m_NextFrameDataOffset(0),
+	m_EnterHousePrompt(false),
+	m_ExitHousePrompt(false)
 {
 	m_Image = LoadImage(RESOURCES_PATH "Map/description of me.png");
 	m_Scroll = LoadTextureFromImage(m_Image);
@@ -54,8 +42,8 @@ Triggers::Triggers() :
 	m_AnimOsu = LoadTextureFromImage(m_AnimOsuImage);
 
 	m_TriggersLevel.resize(3);
-	m_TriggersLevel[village].reserve(5);
-	m_TriggersLevel[insideHouse].reserve(3);
+	m_TriggersLevel[Scene::Level::village].reserve(5);
+	m_TriggersLevel[Scene::Level::insideHouse].reserve(3);
 }
 
 Triggers::~Triggers() {
@@ -70,166 +58,55 @@ Triggers::~Triggers() {
 }
 
 void Triggers::triggerCoords() {
-	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[34][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
-	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][12].y, tileSize * scale, tileSize * scale });
-	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[18][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
-	m_TriggersLevel[village].emplace_back(Rectangle{ groundMap[38][0].x, groundMap[0][3].y, tileSize * scale, tileSize * scale });
-	m_TriggersLevel[insideHouse].emplace_back(Rectangle{ groundMap[38][0].x - tileSize, groundMap[0][4].y + 12, ((tileSize)*scale), (tileSize)*scale });
-	m_TriggersLevel[insideHouse].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][13].y, tileSize * scale, tileSize * scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[34][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][12].y, tileSize * scale, tileSize * scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[18][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[38][0].x, groundMap[0][3].y, tileSize * scale, tileSize * scale });
+	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ groundMap[38][0].x - tileSize, groundMap[0][4].y + 12, ((tileSize)*scale), (tileSize)*scale });
+	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][13].y, tileSize * scale, tileSize * scale });
 }
 
-void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)> changePos) {
+void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)> changePos, 
+	Scene::Level currentLevel, 
+	std::function<void(Scene::Level)> changeLevel, 
+	std::function<void(Scene::FadeState)> changeFade)
+{
+
 	triggerCoords();
 	Rectangle correctCollision = { Pos.x, Pos.y, tileSize * scale, tileSize * scale };
-	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][0]) && currentLevel == village) {
-		if (!m_NoteOpened) {
-			m_Read = true;
-		}
-		if (IsKeyPressed(KEY_E)) {
-			m_Note = true;
-			m_Read = false;
-			m_NoteOpened = true;
-		}
-		else if (IsKeyPressed(KEY_Q)) {
-			m_Note = false;
-			m_NoteOpened = false;
-		}
-	}
-	else {
-		m_Read = false;
-		m_Note = false;
-		m_NoteOpened = false;
-	}
 
-	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][3]) && currentLevel == village) {
+	m_TvTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::insideHouse][0]);
+	m_NoteTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][0]);
+	m_TelescopeTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][3]);
+	m_BookTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][2]);
 
-		if (!m_TvOpened) {
-			m_TelescopeWatching = true;
-		}
+	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[Scene::Level::village][1]) && currentLevel == Scene::Level::village) {
+		m_EnterHousePrompt = true;
 		if (IsKeyPressed(KEY_E)) {
-			m_Telescope = true;
-			m_TelescopeWatching = false;
-			m_TelescopeOpened = true;
-		}
-		else if (IsKeyPressed(KEY_Q)) {
-			m_Telescope = false;
-			m_TelescopeOpened = false;
-		}
-	}
-	else {
-		m_Telescope = false;
-		m_TelescopeOpened = false;
-		m_TelescopeWatching = false;
-	}
-
-	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][1]) && currentLevel == village) {
-		m_EnterHouse = true;
-		if (IsKeyPressed(KEY_E)) {
-			fadeState = FADE_IN;
-			fadeAlpha = 0.0f;
-			fadeTimer = 0.0f;
-			currentLevel = insideHouse;
+			changeFade(Scene::FadeState::FADE_IN);
+			changeLevel(Scene::Level::insideHouse);
 			changePos({ 1440, 570 });
 		}
 	}
-	else if (CheckCollisionRecs(correctCollision, m_TriggersLevel[insideHouse][1]) && currentLevel == insideHouse) {
-		m_ExitHouse = true;
+	else if (CheckCollisionRecs(correctCollision, m_TriggersLevel[Scene::Level::insideHouse][1]) && currentLevel == Scene::Level::insideHouse) {
+		m_ExitHousePrompt = true;
 		if (IsKeyPressed(KEY_E)) {
-			fadeState = FADE_IN;
-			fadeAlpha = 0.0f;
-			fadeTimer = 0.0f;
-			currentLevel = village;
+			changeFade(Scene::FadeState::FADE_IN);
+			changeLevel(Scene::Level::village);
 			changePos({ 1440, 670 });
 		}
 	}
 	else {
-		m_EnterHouse = false;
-		m_ExitHouse = false;
-	}
-	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[village][2]) && currentLevel == village) {
-
-		if (!m_TvOpened) {
-			m_BookWatching = true;
-		}
-		if (IsKeyPressed(KEY_E)) {
-			m_Book = true;
-			m_BookWatching = false;
-			m_BookOpened = true;
-		}
-		else if (IsKeyPressed(KEY_Q)) {
-			m_Book = false;
-			m_BookOpened = false;
-		}
-	}
-	else {
-		m_Book = false;
-		m_BookOpened = false;
-		m_BookWatching = false;
-	}
-
-	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[insideHouse][0]) && currentLevel == insideHouse) {
-
-		if (!m_TvOpened) {
-			m_TvWatching = true;
-		}
-		if (IsKeyPressed(KEY_E)) {
-			m_Tv = true;
-			m_TvWatching = false;
-			m_TvOpened = true;
-		}
-		else if (IsKeyPressed(KEY_Q)) {
-			m_Tv = false;
-			m_TvOpened = false;
-		}
-	}
-	else {
-		m_Tv = false;
-		m_TvOpened = false;
-		m_TvWatching = false;
+		m_EnterHousePrompt = false;
+		m_ExitHousePrompt = false;
 	}
 
 }
 
-void Triggers::update(const float& deltaTime) {
-
-	switch (fadeState) {
-	case FADE_IN: {
-		fadeAlpha += fadeSpeed * deltaTime;
-		if (fadeAlpha >= 1.0f) {
-			fadeAlpha = 1.0f;
-			fadeState = FADE_HOLD;
-			fadeTimer = 0.0f;
-		}
-		break;
-	}
-
-	case FADE_HOLD: {
-		fadeTimer += deltaTime;
-		if (fadeTimer >= fadeHoldTime) {
-			fadeState = FADE_OUT;
-		}
-		break;
-	}
-
-	case FADE_OUT: {
-		fadeAlpha -= fadeSpeed * deltaTime;
-		if (fadeAlpha <= 0.0f) {
-			fadeAlpha = 0.0f;
-			fadeState = FADE_NONE;
-		}
-		break;
-	}
-
-	default:
-		break;
-	}
+void Triggers::update(const float& deltaTime, Scene::FadeState fadeState) {
 }
 
-void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos) {
-
-	if (fadeState != FADE_NONE) {
-		DrawRectangle(0, 0, GetScreenWidth() * 3, GetScreenHeight() * 2, Fade(BLACK, fadeAlpha));
-	}
+void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level currentLevel, Scene::FadeState fadeState) {
 
 	if (IsKeyDown(KEY_Y)) {
 		for (Rectangle& trigger : m_TriggersLevel[currentLevel]) {
@@ -237,24 +114,29 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos) {
 		}
 	}
 
-	if (m_Read) {
+	if (m_NoteTrigger.isPrompting()) {
 		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
-	if (m_Note) {
+	if (m_NoteTrigger.isActive()) {
 		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
 		DrawTexture(m_Scroll, cameraPos.x - 400, cameraPos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, cameraPos.x - 100, cameraPos.y + 300, WHITE);
 	}
 
-	if (m_EnterHouse && fadeState != FADE_IN) {
+	if (m_EnterHousePrompt && fadeState != Scene::FadeState::FADE_IN) {
 		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (m_TvWatching) {
+	if (m_ExitHousePrompt && fadeState != Scene::FadeState::FADE_IN) {
 		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (m_Tv) {
+	if (m_TvTrigger.isPrompting()) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	}
+
+
+	if (m_TvTrigger.isActive()) {
 		m_FrameCounter++;
 
 		if (m_FrameCounter >= m_FrameDelay)
@@ -274,25 +156,21 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos) {
 		DrawTexture(m_Q_Letter, groundMap[34][0].x + (tileSize * 2), groundMap[0][14].y, WHITE);
 	}
 
-	if (m_ExitHouse && fadeState != FADE_IN) {
+	if (m_BookTrigger.isPrompting()) {
 		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (m_BookWatching) {
-		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
-	}
-
-	if (m_Book) {
+	if (m_BookTrigger.isActive()) {
 		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
 		DrawTexture(m_BookDesk, Pos.x - 400, Pos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, Pos.x - 75, Pos.y + 300, WHITE);
 	}
 
-	if (m_TelescopeWatching) {
+	if (m_TelescopeTrigger.isPrompting()) {
 		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-	if (m_Telescope) {
+	if (m_TelescopeTrigger.isActive()) {
 		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, BLACK);
 		DrawTexture(m_TexTelescope, cameraPos.x - 475, cameraPos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 225, WHITE);

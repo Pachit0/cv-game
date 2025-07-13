@@ -15,13 +15,13 @@ Physics::Physics(const std::string& filename) : m_LevelIndex(0),
 	m_File >> m_Data;
 
 	m_LevelMap = {
-		{"village", village},
-		{"insideHouse", insideHouse}
+		{"village", Scene::Level::village},
+		{"insideHouse", Scene::Level::insideHouse}
 	};
 
 	m_ObstaclesPerLevel.resize(3);
-	m_ObstaclesPerLevel[village].reserve(50);
-	m_ObstaclesPerLevel[insideHouse].reserve(10);
+	m_ObstaclesPerLevel[Scene::Level::village].reserve(50);
+	m_ObstaclesPerLevel[Scene::Level::insideHouse].reserve(10);
 
 	for (const auto& [levelName, items] : m_Data.items()) {
 		auto it = m_LevelMap.find(levelName);
@@ -55,7 +55,7 @@ Physics::Physics(const std::string& filename) : m_LevelIndex(0),
 
 Physics::~Physics() {}
 
-Vector2 Physics::collisionObjectWall(const Vector2& Pos, Vector2 velocity, const float& deltaTime) {
+Vector2 Physics::collisionObjectWall(const Vector2& Pos, Vector2 velocity, const float& deltaTime, Scene::Level currentLevel) {
 	Rectangle nextPos = { Pos.x + velocity.x * deltaTime, Pos.y + velocity.y * deltaTime, tileSize * scale, tileSize * scale };
 
 	for (const Rectangle& obstacle : m_ObstaclesPerLevel[currentLevel]) {
@@ -79,7 +79,7 @@ Vector2 Physics::collisionObjectWall(const Vector2& Pos, Vector2 velocity, const
 	return velocity;
 }
 
-void Physics::draw() {
+void Physics::draw(Scene::Level currentLevel) {
 	if (IsKeyDown(KEY_O)) {
 		for (const Rectangle& it_Obstacle : m_ObstaclesPerLevel[currentLevel]) {
 			DrawRectangleLines(

@@ -1,6 +1,6 @@
 #pragma once
 #include "Core.h"
-#include "Player.h"
+#include "gameEnums.h"
 
 class MainCamera {
 private:
@@ -9,6 +9,6 @@ private:
 public:
 	MainCamera();
 	~MainCamera();
-	void update(const Vector2& pos);
+	void update(const Vector2& pos, Scene::Level currentLevel);
 	Camera2D getCamera() const;
 };

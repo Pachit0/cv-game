@@ -38,8 +38,8 @@ public:
 	void Update(const float& deltaTime);
 	void Draw();
 
-	Vector2 getPos() const { return m_Pos; }
-	void setPos(const Vector2& newPos) { m_Pos = newPos; }
-	Vector2 getVelocity() const { return m_Velocity; }
-	void setVelocity(const Vector2& newVelocity) { m_Velocity = newVelocity; }
+	Vector2 getPos() const;
+	void setPos(const Vector2& newPos);
+	Vector2 getVelocity() const;
+	void setVelocity(const Vector2& newVelocity);
 };

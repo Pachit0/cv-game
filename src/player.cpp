@@ -86,6 +86,7 @@ void Player::handleCurrentDirection() {
 }
 
 void Player::Update(const float& deltaTime) {
+
     m_Pos.x += m_Velocity.x * deltaTime;
     m_Pos.y += m_Velocity.y * deltaTime;
 
@@ -151,4 +152,20 @@ void Player::Draw() {
             break;
         }
     }
+}
+
+void Player::setVelocity(const Vector2& newVelocity) { 
+    m_Velocity = newVelocity; 
+}
+
+Vector2 Player::getVelocity() const { 
+    return m_Velocity; 
+}
+
+void Player::setPos(const Vector2& newPos) { 
+    m_Pos = newPos; 
+}
+
+Vector2 Player::getPos() const { 
+    return m_Pos; 
 }
