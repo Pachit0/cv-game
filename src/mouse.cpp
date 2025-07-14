@@ -1,6 +1,7 @@
 #include "mouse.h"
 
-HandleMouse::HandleMouse() : m_MousePos({ 0,0 }) {
+HandleMouse::HandleMouse(const float& TileSize, const float& Scale)
+	: m_MousePos({ 0,0 }), m_TileSize(TileSize), m_Scale(Scale) {
 
 }
 
@@ -13,6 +14,6 @@ void HandleMouse::update(Camera2D camera) {
 void HandleMouse::draw() {
 	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 		//std::cout << "Mouse X: " << mousePos.x << "  " << "Mouse Y: " << mousePos.y << std::endl;
-		DrawRectangle(m_MousePos.x, m_MousePos.y, tileSize * scale, tileSize * scale, PURPLE);
+		DrawRectangle(m_MousePos.x, m_MousePos.y, m_TileSize * m_Scale, m_TileSize * m_Scale, PURPLE);
 	}
 }

@@ -7,11 +7,21 @@ enum direction {
 	LEFT_UP,
 	UP,
 	RIGHT_UP,
-	RIGHT_DOWN
+	RIGHT_DOWN,
+	DIR_COUNT
 };
 
 class Player {
 private:
+	
+	const float m_Scale;
+	
+	const float m_SpawnPosX;
+	const float m_SpawnPosY;
+
+	const float m_RectWidthPlayer;
+	const float m_RectHeightPlayer;
+
 	unsigned m_FrameNum; // character frames
 	unsigned m_FrameDelay; // animation speed
 	unsigned m_FrameDelayCount;
@@ -30,7 +40,7 @@ private:
 	Image m_Image;
 public:
 
-	Player();
+	Player(const float& Scale);
 	~Player();
 
 	void inputHandling();

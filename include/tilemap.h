@@ -3,6 +3,11 @@
 
 class Tilemap {
 private:
+	const float m_TileSize;
+	const float m_Scale;
+	const int m_BaseWidth;
+	const int m_BaseHeight;
+
 	Rectangle m_TilesetRect[12][12];
 
 	Texture2D m_LayerGrass;
@@ -16,9 +21,10 @@ private:
 
 	Image m_Image;
 
+	std::array<std::array<Rectangle, 30>, 60> m_GroundMap;
 public:
 
-	Tilemap();
+	Tilemap(const float& TileSize, const float& Scale, const int& BaseWidth, const int& BaseHeight);
 	~Tilemap();
 
 	void update();
@@ -26,4 +32,5 @@ public:
 	void drawInsideHouse() const;
 	void drawTrees() const;
 	void debugLines() const;
+	const std::array<std::array<Rectangle, 30>, 60>& getTileMap() const;
 };

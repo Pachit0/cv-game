@@ -9,6 +9,7 @@
 #include "mouse.h"
 #include "scenemanager.h"
 #include "gameEnums.h"
+#include "UIManager.h"
 
 class Game
 {
@@ -21,23 +22,29 @@ private:
     void playerDrawPriorityLayer1();
     void playerDrawPriorityLayer2();
 
-    Player* m_Player;
-    Tilemap* m_Tilemap;
-    MainCamera m_MainCamera;
-    Physics* m_Physics;
-    Triggers* m_Triggers;
-    HandleMouse m_Mouse;
-    Props* m_Props;
-    UIManager* m_UI;
+    std::unique_ptr<Player> m_Player;
+    std::unique_ptr<Tilemap> m_Tilemap;
+    std::unique_ptr<Physics> m_Physics;
+    std::unique_ptr<Triggers> m_Triggers;
+    std::unique_ptr<Props> m_Props;
+    std::unique_ptr<UIManager> m_UI;
+    std::unique_ptr<MainCamera> m_MainCamera;
+    std::unique_ptr<HandleMouse> m_Mouse;
     SceneManager m_SceneManager;
 
     float m_DeltaTime;
     bool m_IsPlaying;
 
+    const int m_ScreenHeight;
+    const int m_ScreenWidth;
+
+    const int m_BaseHeight;
+    const int m_BaseWidth;
+    const float m_Scale;
+    const float m_TileSize;
 public:
     Game();
     ~Game();
 
     void run();
-
 };

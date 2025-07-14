@@ -5,6 +5,17 @@
 class Triggers {
 private:
 
+	enum InteractionObjectsVillage {
+		TRIGGER_NOTE,
+		TRIGGER_ENTER_EXIT_HOUSE,
+		TRIGGER_BOOK,
+		TRIGGER_TELESCOPE
+	};
+
+	enum InteractionObjectsInsideHouse {
+		TRIGGER_TV
+	};
+
 	enum InteractionState {
 		STATE_INACTIVE,
 		STATE_PROMPT,
@@ -35,6 +46,10 @@ private:
 		bool isActive() const { return state == InteractionState::STATE_ACTIVE; }
 	};
 
+	const float m_TileSize;
+	const float m_Scale;
+	const std::array<std::array<Rectangle, 30>, 60>& m_GroundMap;
+
 	TriggerInteraction m_TvTrigger;
 	TriggerInteraction m_BookTrigger;
 	TriggerInteraction m_TelescopeTrigger;
@@ -48,6 +63,8 @@ private:
 	int m_FrameDelay;
 	int m_FrameCounter;
 	unsigned int m_NextFrameDataOffset;
+	Vector2 m_OpacityBoxPosition;
+	Vector2 m_OpacityBoxSize;
 
 	std::vector<std::vector<Rectangle>> m_TriggersLevel;
 
@@ -65,7 +82,7 @@ private:
 	Image m_AnimOsuImage;
 
 public:
-	Triggers();
+	Triggers(const float& TileSize, const float& Scale, const int& ScreenWidth, const int& ScreenHeight, const std::array<std::array<Rectangle, 30>, 60>& groundMap);
 	~Triggers();
 
 	void triggerCoords();

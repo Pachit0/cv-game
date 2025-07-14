@@ -5,8 +5,8 @@
 #include <functional>
 #include <fstream>
 #include <unordered_map>
-#include <new>
-#include <cstdlib>
+#include <memory>
+#include <cmath>
 
 #include "raylib.h"
 
@@ -14,6 +14,3 @@
 #include "rlImGui.h"
 #include "imguiThemes.h"
 #include "nlohmann/json.hpp"
-
-#include "UIManager.h"
-#include "globalVariables.h"

@@ -1,20 +1,25 @@
 #include "Triggers.h"
 
-Triggers::Triggers() :
+Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenWidth, const int& ScreenHeight, const std::array<std::array<Rectangle, 30>, 60>& groundMap) :
 	m_Frames(0),
 	m_CurrentAnimFrame(0),
 	m_FrameDelay(3),
 	m_FrameCounter(0),
 	m_NextFrameDataOffset(0),
 	m_EnterHousePrompt(false),
-	m_ExitHousePrompt(false)
+	m_ExitHousePrompt(false),
+	m_TileSize(TileSize),
+	m_Scale(Scale),
+	m_OpacityBoxPosition({ 0,0 }),
+	m_OpacityBoxSize({ (float)ScreenWidth * 2, (float)ScreenHeight * 2 }),
+	m_GroundMap(groundMap)
 {
 	m_Image = LoadImage(RESOURCES_PATH "Map/description of me.png");
 	m_Scroll = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "pop-ups/1.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_Paper = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
@@ -58,12 +63,12 @@ Triggers::~Triggers() {
 }
 
 void Triggers::triggerCoords() {
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[34][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][12].y, tileSize * scale, tileSize * scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[18][0].x, groundMap[0][13].y, 3 * (tileSize * scale), tileSize * scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ groundMap[38][0].x, groundMap[0][3].y, tileSize * scale, tileSize * scale });
-	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ groundMap[38][0].x - tileSize, groundMap[0][4].y + 12, ((tileSize)*scale), (tileSize)*scale });
-	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ groundMap[30][0].x, groundMap[0][13].y, tileSize * scale, tileSize * scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[34][0].x, m_GroundMap[0][13].y, 3 * (m_TileSize * m_Scale), m_TileSize * m_Scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[30][0].x, m_GroundMap[0][12].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[18][0].x, m_GroundMap[0][13].y, 3 * (m_TileSize * m_Scale), m_TileSize * m_Scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[38][0].x, m_GroundMap[0][3].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
+	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[38][0].x - m_TileSize, m_GroundMap[0][4].y + 12, ((m_TileSize)*m_Scale), (m_TileSize)*m_Scale });
+	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[30][0].x, m_GroundMap[0][13].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
 }
 
 void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)> changePos, 
@@ -73,14 +78,24 @@ void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)>
 {
 
 	triggerCoords();
-	Rectangle correctCollision = { Pos.x, Pos.y, tileSize * scale, tileSize * scale };
+	Rectangle correctCollision = { Pos.x, Pos.y, m_TileSize * m_Scale, m_TileSize * m_Scale };
 
-	m_TvTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::insideHouse][0]);
-	m_NoteTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][0]);
-	m_TelescopeTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][3]);
-	m_BookTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][2]);
+	switch (currentLevel) {
+	case Scene::Level::village: {
+		m_NoteTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_NOTE]);
+		m_TelescopeTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_TELESCOPE]);
+		m_BookTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_BOOK]);
+		break;
+	}
+	case Scene::Level::insideHouse: {
+		m_TvTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::insideHouse][TRIGGER_TV]);
+		break;
+		}
+	default:
+		break;
+	}
 
-	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[Scene::Level::village][1]) && currentLevel == Scene::Level::village) {
+	if (CheckCollisionRecs(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_ENTER_EXIT_HOUSE]) && currentLevel == Scene::Level::village) {
 		m_EnterHousePrompt = true;
 		if (IsKeyPressed(KEY_E)) {
 			changeFade(Scene::FadeState::FADE_IN);
@@ -88,7 +103,7 @@ void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)>
 			changePos({ 1440, 570 });
 		}
 	}
-	else if (CheckCollisionRecs(correctCollision, m_TriggersLevel[Scene::Level::insideHouse][1]) && currentLevel == Scene::Level::insideHouse) {
+	else if (CheckCollisionRecs(correctCollision, m_TriggersLevel[Scene::Level::insideHouse][TRIGGER_ENTER_EXIT_HOUSE]) && currentLevel == Scene::Level::insideHouse) {
 		m_ExitHousePrompt = true;
 		if (IsKeyPressed(KEY_E)) {
 			changeFade(Scene::FadeState::FADE_IN);
@@ -110,7 +125,7 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 
 	if (IsKeyDown(KEY_Y)) {
 		for (Rectangle& trigger : m_TriggersLevel[currentLevel]) {
-			DrawRectangleLines(trigger.x + tileSize * scale, trigger.y + (tileSize * 2) * scale, trigger.width, trigger.height, BLUE);
+			DrawRectangleLines(trigger.x + m_TileSize * m_Scale, trigger.y + (m_TileSize * 2) * m_Scale, trigger.width, trigger.height, BLUE);
 		}
 	}
 
@@ -118,7 +133,7 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 	if (m_NoteTrigger.isActive()) {
-		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
+		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
 		DrawTexture(m_Scroll, cameraPos.x - 400, cameraPos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, cameraPos.x - 100, cameraPos.y + 300, WHITE);
 	}
@@ -150,10 +165,10 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 
 			m_FrameCounter = 0;
 		}
-		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
-		DrawTexture(m_TexTv, groundMap[28][0].x, groundMap[0][3].y, WHITE);
-		DrawTexture(m_AnimOsu, groundMap[32][0].x - tileSize, groundMap[0][7].y + tileSize, WHITE);
-		DrawTexture(m_Q_Letter, groundMap[34][0].x + (tileSize * 2), groundMap[0][14].y, WHITE);
+		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
+		DrawTexture(m_TexTv, m_GroundMap[28][0].x, m_GroundMap[0][3].y, WHITE);
+		DrawTexture(m_AnimOsu, m_GroundMap[32][0].x - m_TileSize, m_GroundMap[0][7].y + m_TileSize, WHITE);
+		DrawTexture(m_Q_Letter, m_GroundMap[34][0].x + (m_TileSize * 2), m_GroundMap[0][14].y, WHITE);
 	}
 
 	if (m_BookTrigger.isPrompting()) {
@@ -161,7 +176,7 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 	}
 
 	if (m_BookTrigger.isActive()) {
-		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, Fade(BLACK, 0.75));
+		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
 		DrawTexture(m_BookDesk, Pos.x - 400, Pos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, Pos.x - 75, Pos.y + 300, WHITE);
 	}
@@ -171,7 +186,7 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 	}
 
 	if (m_TelescopeTrigger.isActive()) {
-		DrawRectangle(0, 0, screenWidth * 2, screenHeight * 2, BLACK);
+		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, BLACK);
 		DrawTexture(m_TexTelescope, cameraPos.x - 475, cameraPos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 225, WHITE);
 	}

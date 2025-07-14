@@ -1,14 +1,19 @@
 #include "player.h"
 
-Player::Player() :
+Player::Player(const float& Scale) :
     m_Speed(200.0f),
     m_Directions(DOWN),
     m_FrameIndex(0),
     m_FrameDelay(10),
     m_FrameDelayCount(0),
     m_FrameNum(7),
-    m_Pos({ 1440, 670 }),
-    m_Velocity({ 0, 0 })
+    m_SpawnPosX(1440),
+    m_SpawnPosY(670),
+    m_RectWidthPlayer(48.0f),
+    m_RectHeightPlayer(64.0f),
+    m_Pos({ m_SpawnPosX, m_SpawnPosY }),
+    m_Velocity({ 0, 0 }),
+    m_Scale(Scale)
 {
     m_Image = LoadImage(RESOURCES_PATH "TheAdventurer/Idle/idle.png");
     ImageResize(&m_Image, 384 * 3, 384 * 3);
@@ -22,7 +27,7 @@ Player::Player() :
 
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 8; j++) {
-            m_Movement_Rect[i][j] = { j * 48.0f * scale, i * 64.0f * scale, 48.0f * scale, 64.0f * scale };
+            m_Movement_Rect[i][j] = { j * m_RectWidthPlayer * m_Scale, i * m_RectHeightPlayer * m_Scale, m_RectWidthPlayer * m_Scale, m_RectHeightPlayer * m_Scale };
         }
     }
 }
@@ -104,8 +109,8 @@ void Player::Draw() {
     }
 
     if (!m_Velocity.x && !m_Velocity.y) {
-        if (IsKeyDown(KEY_T) && m_FrameIndex <= 5) {
-            DrawTextureRec(m_Idle, m_Movement_Rect[m_FrameIndex][0], m_Pos, WHITE);
+        if (IsKeyDown(KEY_T) && m_FrameIndex < DIR_COUNT) {
+            DrawTextureRec(m_Idle, m_Movement_Rect[m_FrameIndex][DOWN], m_Pos, WHITE);
         }
         else {
             switch (m_Directions) {

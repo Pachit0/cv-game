@@ -1,8 +1,8 @@
 #include "Camera.h"
 
-MainCamera::MainCamera() : m_CameraVelocity({0,0}) {
+MainCamera::MainCamera(const int& ScreenWidth, const int& ScreenHeight) : m_CameraVelocity({0,0}) {
 	m_Camera.target = { 0 , 0 };
-	m_Camera.offset = { (float)screenWidth / 2, (float)screenHeight / 2 };
+	m_Camera.offset = { (float)ScreenWidth / 2, (float)ScreenHeight / 2 };
 	m_Camera.rotation = 0.0f;
 	m_Camera.zoom = 1.0f;
 }

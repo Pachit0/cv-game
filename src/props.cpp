@@ -1,6 +1,7 @@
 #include "Props.h"
 
-Props::Props() {
+Props::Props(const float& TileSize, const float& Scale, const std::array<std::array<Rectangle, 30>, 60>& groundMap)
+	: m_TileSize(TileSize), m_Scale(Scale), m_GroundMap(groundMap)	{
 	m_PropsCoords.resize(3);
 	m_PropsCoords[Scene::Level::village].resize(2);
 	m_PropsCoords[Scene::Level::village][first].reserve(10);
@@ -11,42 +12,42 @@ Props::Props() {
 	m_PropsCoords[Scene::Level::insideHouse][second].reserve(1);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Bulletin_Board.png");
-	ImageResize(&m_Image, (m_Image.width + 4) * scale, m_Image.height * scale);
+	ImageResize(&m_Image, (m_Image.width + 4) * m_Scale, m_Image.height * m_Scale);
 	m_Board = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Buildings/House_Hay_Stone_1.png");
-	ImageResize(&m_Image, (m_Image.width - 6) * scale, m_Image.height * scale);
+	ImageResize(&m_Image, (m_Image.width - 6) * m_Scale, m_Image.height * m_Scale);
 	m_House = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Fireplace_1.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_Campfire = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Table_2.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_Table = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_1.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_Tree = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Chopped_Tree_1.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_CutTree = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_2.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_TreeRiver = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_3.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_Tree3 = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
@@ -59,7 +60,7 @@ Props::Props() {
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Lamp_1.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	for (int i = 0; i < 4; i++) {
 		m_Lamp[i] = LoadTextureFromImage(m_Image);
 		ImageFlipHorizontal(&m_Image);
@@ -67,7 +68,7 @@ Props::Props() {
 	UnloadImage(m_Image);
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/chair.png");
-	ImageResize(&m_Image, m_Image.width * scale, m_Image.height * scale);
+	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	m_InsideChair = LoadTextureFromImage(m_Image);
 	UnloadImage(m_Image);
 
@@ -92,39 +93,39 @@ Props::~Props() {
 void Props::drawLayer1(Scene::Level currentLevel) const {
 	switch (currentLevel) {
 	case Scene::Level::village: {
-		DrawTexture(m_Board, groundMap[35][0].x, groundMap[0][12].y, WHITE);
-		DrawTexture(m_House, groundMap[29][0].x + 4, groundMap[0][9].y, WHITE);
-		DrawTexture(m_Campfire, groundMap[42][0].x + 4, groundMap[0][12].y + 12, WHITE);
-		DrawTexture(m_Table, groundMap[19][0].x + 12, groundMap[0][13].y - 12, WHITE);
-		DrawTexture(m_Tree, groundMap[24][0].x, groundMap[0][10].y, WHITE);
-		DrawTexture(m_CutTree, groundMap[39][0].x, groundMap[0][15].y, WHITE);
-		DrawTexture(m_TreeRiver, groundMap[25][0].x, groundMap[0][3].y, WHITE);
-		DrawTexture(m_Telescope, groundMap[40][0].x, groundMap[0][3].y, WHITE);
-		DrawTexture(m_Tree3, groundMap[47][0].x, groundMap[0][9].y, WHITE);
-		DrawTexture(m_Book, groundMap[20][0].x, groundMap[0][13].y + tileSize, WHITE);
+		DrawTexture(m_Board, m_GroundMap[35][0].x, m_GroundMap[0][12].y, WHITE);
+		DrawTexture(m_House, m_GroundMap[29][0].x + 4, m_GroundMap[0][9].y, WHITE);
+		DrawTexture(m_Campfire, m_GroundMap[42][0].x + 4, m_GroundMap[0][12].y + 12, WHITE);
+		DrawTexture(m_Table, m_GroundMap[19][0].x + 12, m_GroundMap[0][13].y - 12, WHITE);
+		DrawTexture(m_Tree, m_GroundMap[24][0].x, m_GroundMap[0][10].y, WHITE);
+		DrawTexture(m_CutTree, m_GroundMap[39][0].x, m_GroundMap[0][15].y, WHITE);
+		DrawTexture(m_TreeRiver, m_GroundMap[25][0].x, m_GroundMap[0][3].y, WHITE);
+		DrawTexture(m_Telescope, m_GroundMap[40][0].x, m_GroundMap[0][3].y, WHITE);
+		DrawTexture(m_Tree3, m_GroundMap[47][0].x, m_GroundMap[0][9].y, WHITE);
+		DrawTexture(m_Book, m_GroundMap[20][0].x, m_GroundMap[0][13].y + m_TileSize, WHITE);
 		break;
 	}
 	case Scene::Level::insideHouse: {
-		DrawTexture(m_InsideChair, groundMap[37][0].x - tileSize, groundMap[0][12].y - 20, WHITE);
+		DrawTexture(m_InsideChair, m_GroundMap[37][0].x - m_TileSize, m_GroundMap[0][12].y - 20, WHITE);
 		break;
 	}
 	}
 
 	if (IsKeyDown(KEY_G)) {
 		for (const Rectangle& info : m_PropsCoords[currentLevel][first]) {
-			DrawRectangleLines(info.x + tileSize * scale, info.y + (2 * tileSize) * scale, info.width, info.height, RED);
+			DrawRectangleLines(info.x + m_TileSize * m_Scale, info.y + (2 * m_TileSize) * m_Scale, info.width, info.height, RED);
 		}
 		for (const Rectangle& info : m_PropsCoords[currentLevel][second]) {
-			DrawRectangleLines(info.x + tileSize * scale, info.y + (2 * tileSize) * scale, info.width, info.height, GREEN);
+			DrawRectangleLines(info.x + m_TileSize * m_Scale, info.y + (2 * m_TileSize) * m_Scale, info.width, info.height, GREEN);
 		}
 	}
 }
 
 void Props::drawLayer2(Scene::Level currentLevel) const {
-	DrawTexture(m_Lamp[0], groundMap[27][0].x + 4, groundMap[0][15].y, WHITE);
-	DrawTexture(m_Lamp[1], groundMap[35][0].x + 4, groundMap[0][15].y, WHITE);
-	DrawTexture(m_Lamp[2], groundMap[48][0].x + 4, groundMap[0][13].y, WHITE);
-	DrawTexture(m_Lamp[3], groundMap[13][0].x, groundMap[0][10].y, WHITE);
+	DrawTexture(m_Lamp[0], m_GroundMap[27][0].x + 4, m_GroundMap[0][15].y, WHITE);
+	DrawTexture(m_Lamp[1], m_GroundMap[35][0].x + 4, m_GroundMap[0][15].y, WHITE);
+	DrawTexture(m_Lamp[2], m_GroundMap[48][0].x + 4, m_GroundMap[0][13].y, WHITE);
+	DrawTexture(m_Lamp[3], m_GroundMap[13][0].x, m_GroundMap[0][10].y, WHITE);
 }
 
 bool Props::underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCoords) {
@@ -175,10 +176,10 @@ void Props::loadPropsCoordsFromJSON(const std::string& path)
 		levelIndex = (entry.Level == "village") ? Scene::Level::village : Scene::Level::insideHouse;
 		layerIndex = (entry.Layer == "first") ? first : second;
 
-		float x = groundMap[entry.TileX][0].x;
-		float y = groundMap[0][entry.TileY].y;
-		float width = entry.WidthTile * tileSize * scale;
-		float height = entry.HeightTile * tileSize * scale;
+		float x = m_GroundMap[entry.TileX][0].x;
+		float y = m_GroundMap[0][entry.TileY].y;
+		float width = entry.WidthTile * m_TileSize * m_Scale;
+		float height = entry.HeightTile * m_TileSize * m_Scale;
 
 		Rectangle rect = { x, y, width, height };
 		m_PropsCoords[levelIndex][layerIndex].push_back(rect);

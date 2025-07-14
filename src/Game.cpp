@@ -2,7 +2,13 @@
 
 
 Game::Game() : m_DeltaTime(0.0f),
-			   m_IsPlaying(false)
+			   m_IsPlaying(false),
+			   m_ScreenHeight(720),
+			   m_ScreenWidth(1280),
+			   m_BaseHeight(225),
+			   m_BaseWidth(400),
+			   m_Scale(fmin(m_ScreenWidth / m_BaseWidth, m_ScreenHeight / m_BaseHeight)),
+			   m_TileSize(16.0f)		   
 {
 	init();
 	m_UI->Init();
@@ -20,7 +26,7 @@ void Game::run() {
 		BeginDrawing();
 		m_UI->Begin();
 		if (!m_IsPlaying) {
-			m_UI->RenderMainMenu(m_IsPlaying, screenWidth, screenHeight);
+			m_UI->RenderMainMenu(m_IsPlaying, m_ScreenWidth, m_ScreenHeight);
 		}
 		m_UI->End();
 		draw();
@@ -43,20 +49,20 @@ void Game::update()
 	if (m_SceneManager.getCurrentFadeState() == Scene::FadeState::FADE_NONE || 
 		m_SceneManager.getCurrentFadeState() == Scene::FadeState::FADE_OUT) 
 	{
-		m_MainCamera.update(m_Player->getPos(), m_SceneManager.getCurrentLevel());
+		m_MainCamera->update(m_Player->getPos(), m_SceneManager.getCurrentLevel());
 		m_Player->handleCurrentDirection();
 		m_Player->inputHandling();
 		m_Player->setVelocity(m_Physics->collisionObjectWall(m_Player->getPos(), m_Player->getVelocity(), m_DeltaTime, m_SceneManager.getCurrentLevel()));
 		m_Player->Update(m_DeltaTime);
 	}
 	m_Tilemap->update();
-	m_Mouse.update(m_MainCamera.getCamera());
+	m_Mouse->update(m_MainCamera->getCamera());
 }
 
 void Game::draw()
 {
 	if (m_IsPlaying) {
-		BeginMode2D(m_MainCamera.getCamera());
+		BeginMode2D(m_MainCamera->getCamera());
 		switch (m_SceneManager.getCurrentLevel()) {
 		case Scene::Level::village: {
 			if (m_SceneManager.getCurrentFadeState() == Scene::FadeState::FADE_NONE ||
@@ -82,69 +88,31 @@ void Game::draw()
 			break;
 			}
 		}
-		m_Triggers->draw(m_Player->getPos(), m_MainCamera.getCamera().target, m_SceneManager.getCurrentLevel(),m_SceneManager.getCurrentFadeState());
+		m_Triggers->draw(m_Player->getPos(), m_MainCamera->getCamera().target, m_SceneManager.getCurrentLevel(),m_SceneManager.getCurrentFadeState());
 		m_SceneManager.draw();
-		m_Tilemap->debugLines();	//press C
-		m_Mouse.draw();
+		m_Tilemap->debugLines();
+		m_Mouse->draw();
 		EndMode2D();
 	}
 }
 
 void Game::init()
 {
-	InitWindow(screenWidth, screenHeight, "CV game");
+	InitWindow(m_ScreenWidth, m_ScreenHeight, "CV game");
 	SetTargetFPS(60);
 
-	m_Player = new (std::nothrow) Player();
-	if (!m_Player) {
-		std::cerr << "m_Player couldn't load!" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	m_Tilemap = new (std::nothrow) Tilemap();
-	if (!m_Tilemap) {
-		std::cerr << "m_Tilemap couldn't load!" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	m_MainCamera = MainCamera();
-
-	m_Physics = new (std::nothrow) Physics(RESOURCES_PATH "obstacles.json");
-	if (!m_Physics) {
-		std::cerr << "m_Physics couldn't load!" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	m_Triggers = new (std::nothrow) Triggers();
-	if (!m_Triggers) {
-		std::cerr << "triggers couldn't load!" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	m_Mouse = HandleMouse();
-
-	m_Props = new (std::nothrow) Props();
-	if (!m_Props) {
-		std::cerr << "props couldn't load!" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
-	m_UI = new (std::nothrow) UIManager();
-	if (!m_UI) {
-		std::cerr << "ui couldn't load!" << std::endl;
-		std::exit(EXIT_FAILURE);
-	}
-
+	m_Player = std::make_unique<Player>(m_Scale);
+	m_Tilemap = std::make_unique<Tilemap>(m_TileSize, m_Scale, m_BaseWidth, m_BaseHeight);
+	m_Physics = std::make_unique<Physics>(RESOURCES_PATH "obstacles.json", m_TileSize, m_Scale, m_Tilemap->getTileMap());
+	m_Triggers = std::make_unique<Triggers>(m_TileSize,m_Scale,m_ScreenWidth,m_ScreenHeight, m_Tilemap->getTileMap());
+	m_Props = std::make_unique<Props>(m_TileSize, m_Scale, m_Tilemap->getTileMap());
+	m_UI = std::make_unique<UIManager>();
+	m_MainCamera = std::make_unique<MainCamera>(m_ScreenWidth, m_ScreenHeight);
+	m_Mouse = std::make_unique<HandleMouse>(m_TileSize, m_Scale);
 	m_SceneManager = SceneManager();
 }
 void Game::unload()
 {
-	delete(m_Player);
-	delete(m_Tilemap);
-	delete(m_Physics);
-	delete(m_Triggers);
-	delete(m_Props);
-	delete(m_UI);
 	m_UI->Shutdown();
 	CloseWindow();
 }
