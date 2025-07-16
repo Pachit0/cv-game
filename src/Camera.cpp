@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "camera.h"
 
 MainCamera::MainCamera(const int& ScreenWidth, const int& ScreenHeight) : m_CameraVelocity({0,0}) {
 	m_Camera.target = { 0 , 0 };

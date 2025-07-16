@@ -1,17 +1,9 @@
 #pragma once
-#include "Core.h"
+#include "core.h"
+#include "entity_manager.h"
+#include "scene_manager.h"
 
-enum direction {
-	DOWN,
-	LEFT_DOWN,
-	LEFT_UP,
-	UP,
-	RIGHT_UP,
-	RIGHT_DOWN,
-	DIR_COUNT
-};
-
-class Player {
+class Player : public Entity {
 private:
 	
 	const float m_Scale;
@@ -22,17 +14,13 @@ private:
 	const float m_RectWidthPlayer;
 	const float m_RectHeightPlayer;
 
-	unsigned m_FrameNum; // character frames
-	unsigned m_FrameDelay; // animation speed
+	unsigned m_FrameNum;
+	unsigned m_FrameDelay;
 	unsigned m_FrameDelayCount;
 	unsigned m_FrameIndex;
 
-	Vector2 m_Pos;
-	Vector2 m_Velocity;
-
 	Rectangle m_Movement_Rect[6][8];
 
-	float m_Speed;
 	int m_Directions;
 
 	Texture2D m_Idle;
@@ -40,16 +28,23 @@ private:
 	Image m_Image;
 public:
 
-	Player(const float& Scale);
+	enum PlayerDirection {
+		DOWN,
+		LEFT_DOWN,
+		LEFT_UP,
+		UP,
+		RIGHT_UP,
+		RIGHT_DOWN,
+		DIR_COUNT
+	};
+
+	Player(const float& Scale, const float& TileSize);
 	~Player();
 
 	void inputHandling();
 	void handleCurrentDirection();
-	void Update(const float& deltaTime);
-	void Draw();
+	//void checkScenePouse(Scene::FadeState currentFadeState);
+	void update(const float& deltaTime) override ;
+	void draw() override;
 
-	Vector2 getPos() const;
-	void setPos(const Vector2& newPos);
-	Vector2 getVelocity() const;
-	void setVelocity(const Vector2& newVelocity);
 };

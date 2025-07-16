@@ -1,6 +1,6 @@
 #pragma once
-#include "Core.h"
-#include "gameEnums.h"
+#include "core.h"
+#include "game_enums.h"
 
 class Triggers {
 private:
@@ -87,7 +87,7 @@ public:
 
 	void triggerCoords();
 
-	void collisionTrigger(const Vector2& Pos, 
+	void update(const Vector2& Pos,
 		std::function<void(Vector2)> changePos, 
 		Scene::Level currentLevel,
 		std::function<void(Scene::Level)> changeLevel, 

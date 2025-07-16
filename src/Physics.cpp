@@ -14,7 +14,9 @@ Physics::Physics(const std::string& filename, const float& TileSize, const float
 	m_File.open(filename);
 
 	if (!m_File.is_open()) {
-		std::cerr << "failed to open file!" << std::endl;
+		std::cerr << "failed to open the file!" << std::endl;
+		std::cerr << "Working dir: " << std::filesystem::current_path() << std::endl;
+		return;
 	}
 
 	m_File >> m_Data;
@@ -56,6 +58,8 @@ Physics::Physics(const std::string& filename, const float& TileSize, const float
 			m_ObstaclesPerLevel[m_LevelIndex].emplace_back(Rectangle{ m_X, m_Y, m_Width, m_Height });
 		}
 	}
+
+	m_File.close();
 }
 
 Physics::~Physics() {}

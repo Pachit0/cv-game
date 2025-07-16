@@ -1,7 +1,6 @@
 #include "player.h"
 
-Player::Player(const float& Scale) :
-    m_Speed(200.0f),
+Player::Player(const float& Scale, const float& TileSize) :
     m_Directions(DOWN),
     m_FrameIndex(0),
     m_FrameDelay(10),
@@ -11,10 +10,14 @@ Player::Player(const float& Scale) :
     m_SpawnPosY(670),
     m_RectWidthPlayer(48.0f),
     m_RectHeightPlayer(64.0f),
-    m_Pos({ m_SpawnPosX, m_SpawnPosY }),
-    m_Velocity({ 0, 0 }),
-    m_Scale(Scale)
+    m_Scale(Scale),
+    Entity(TileSize)
 {
+
+    setEntityPosition({ m_SpawnPosX, m_SpawnPosY });
+    setEntityVelocity({ 0, 0 });
+    setEntitySpeed(200.0f);
+
     m_Image = LoadImage(RESOURCES_PATH "TheAdventurer/Idle/idle.png");
     ImageResize(&m_Image, 384 * 3, 384 * 3);
     m_Idle = LoadTextureFromImage(m_Image);
@@ -38,34 +41,34 @@ Player::~Player() {
 }
 
 void Player::inputHandling() {
-    m_Velocity = { 0, 0 };
+    setEntityVelocity({ 0, 0 });
 
     if (IsKeyDown(KEY_A)) {
-        m_Velocity.x = -m_Speed;
+        getEntityVelocity().x = -getEntitySpeed();
     }
     else if (IsKeyDown(KEY_D)) {
-        m_Velocity.x = m_Speed;
+        getEntityVelocity().x = getEntitySpeed();
     }
 
     if (IsKeyDown(KEY_S)) {
-        m_Velocity.y = m_Speed;
+        getEntityVelocity().y = getEntitySpeed();
     }
     if (IsKeyDown(KEY_W)) {
-        m_Velocity.y = -m_Speed;
+        getEntityVelocity().y = -getEntitySpeed();
     }
 
     // Diagonal movement correction
     if (IsKeyDown(KEY_D) && IsKeyDown(KEY_W)) {
-        m_Velocity.y = -m_Speed + 30;
+        getEntityVelocity().y = -getEntitySpeed() + 30;
     }
     if (IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
-        m_Velocity.y = m_Speed - 30;
+        getEntityVelocity().y = getEntitySpeed() - 30;
     }
     if (IsKeyDown(KEY_A) && IsKeyDown(KEY_W)) {
-        m_Velocity.y = -m_Speed + 30;
+        getEntityVelocity().y = -getEntitySpeed() + 30;
     }
     if (IsKeyDown(KEY_A) && IsKeyDown(KEY_S)) {
-        m_Velocity.y = m_Speed - 30;
+        getEntityVelocity().y = getEntitySpeed() - 30;
     }
 }
 
@@ -90,17 +93,24 @@ void Player::handleCurrentDirection() {
     }
 }
 
-void Player::Update(const float& deltaTime) {
+void Player::update(const float& deltaTime) {
 
-    m_Pos.x += m_Velocity.x * deltaTime;
-    m_Pos.y += m_Velocity.y * deltaTime;
+    Entity::update(deltaTime);
 
     if (IsKeyPressed(KEY_B)) {
-        std::cout << "Pos x: " << m_Pos.x << "  " << "Pos y: " << m_Pos.y << std::endl;
+        std::cout << "Pos x: " << getEntityPosition().x << "  " << "Pos y: " << getEntityPosition().y << std::endl;
     }
+
 }
 
-void Player::Draw() {
+/* tried some stuff to fix the bug when entering a new area | will do later
+void Player::checkScenePouse(Scene::FadeState currentFadeState) {
+    if (currentFadeState == Scene::FadeState::FADE_HOLD || currentFadeState == Scene::FadeState::FADE_IN) {
+        setEntityVelocity({ 0,0 });
+    }
+}*/
+
+void Player::draw() {
     ++m_FrameDelayCount;
     if (m_FrameDelayCount > m_FrameDelay) {
         m_FrameDelayCount = 0;
@@ -108,29 +118,29 @@ void Player::Draw() {
         m_FrameIndex %= m_FrameNum;
     }
 
-    if (!m_Velocity.x && !m_Velocity.y) {
+    if (!getEntityVelocity().x && !getEntityVelocity().y) {
         if (IsKeyDown(KEY_T) && m_FrameIndex < DIR_COUNT) {
-            DrawTextureRec(m_Idle, m_Movement_Rect[m_FrameIndex][DOWN], m_Pos, WHITE);
+            DrawTextureRec(m_Idle, m_Movement_Rect[m_FrameIndex][DOWN], getEntityPosition(), WHITE);
         }
         else {
             switch (m_Directions) {
             case DOWN:
-                DrawTextureRec(m_Idle, m_Movement_Rect[DOWN][m_FrameIndex], m_Pos, WHITE);
+                DrawTextureRec(m_Idle, m_Movement_Rect[DOWN][m_FrameIndex], getEntityPosition(), WHITE);
                 break;
             case UP:
-                DrawTextureRec(m_Idle, m_Movement_Rect[UP][m_FrameIndex], m_Pos, WHITE);
+                DrawTextureRec(m_Idle, m_Movement_Rect[UP][m_FrameIndex], getEntityPosition(), WHITE);
                 break;
             case LEFT_DOWN:
-                DrawTextureRec(m_Idle, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], m_Pos, WHITE);
+                DrawTextureRec(m_Idle, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
                 break;
             case LEFT_UP:
-                DrawTextureRec(m_Idle, m_Movement_Rect[LEFT_UP][m_FrameIndex], m_Pos, WHITE);
+                DrawTextureRec(m_Idle, m_Movement_Rect[LEFT_UP][m_FrameIndex], getEntityPosition(), WHITE);
                 break;
             case RIGHT_UP:
-                DrawTextureRec(m_Idle, m_Movement_Rect[RIGHT_UP][m_FrameIndex], m_Pos, WHITE);
+                DrawTextureRec(m_Idle, m_Movement_Rect[RIGHT_UP][m_FrameIndex], getEntityPosition(), WHITE);
                 break;
             case RIGHT_DOWN:
-                DrawTextureRec(m_Idle, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], m_Pos, WHITE);
+                DrawTextureRec(m_Idle, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
                 break;
             }
         }
@@ -138,39 +148,25 @@ void Player::Draw() {
     else {
         switch (m_Directions) {
         case DOWN:
-            DrawTextureRec(m_Walk, m_Movement_Rect[DOWN][m_FrameIndex], m_Pos, WHITE);
+            DrawTextureRec(m_Walk, m_Movement_Rect[DOWN][m_FrameIndex], getEntityPosition(), WHITE);
             break;
         case UP:
-            DrawTextureRec(m_Walk, m_Movement_Rect[UP][m_FrameIndex], m_Pos, WHITE);
+            DrawTextureRec(m_Walk, m_Movement_Rect[UP][m_FrameIndex], getEntityPosition(), WHITE);
             break;
         case LEFT_DOWN:
-            DrawTextureRec(m_Walk, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], m_Pos, WHITE);
+            DrawTextureRec(m_Walk, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
             break;
         case LEFT_UP:
-            DrawTextureRec(m_Walk, m_Movement_Rect[LEFT_UP][m_FrameIndex], m_Pos, WHITE);
+            DrawTextureRec(m_Walk, m_Movement_Rect[LEFT_UP][m_FrameIndex], getEntityPosition(), WHITE);
             break;
         case RIGHT_UP:
-            DrawTextureRec(m_Walk, m_Movement_Rect[RIGHT_UP][m_FrameIndex], m_Pos, WHITE);
+            DrawTextureRec(m_Walk, m_Movement_Rect[RIGHT_UP][m_FrameIndex], getEntityPosition(), WHITE);
             break;
         case RIGHT_DOWN:
-            DrawTextureRec(m_Walk, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], m_Pos, WHITE);
+            DrawTextureRec(m_Walk, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
             break;
         }
     }
-}
 
-void Player::setVelocity(const Vector2& newVelocity) { 
-    m_Velocity = newVelocity; 
-}
-
-Vector2 Player::getVelocity() const { 
-    return m_Velocity; 
-}
-
-void Player::setPos(const Vector2& newPos) { 
-    m_Pos = newPos; 
-}
-
-Vector2 Player::getPos() const { 
-    return m_Pos; 
+    Entity::draw();
 }

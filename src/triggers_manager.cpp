@@ -1,4 +1,4 @@
-#include "Triggers.h"
+#include "triggers_manager.h"
 
 Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenWidth, const int& ScreenHeight, const std::array<std::array<Rectangle, 30>, 60>& groundMap) :
 	m_Frames(0),
@@ -49,6 +49,8 @@ Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenW
 	m_TriggersLevel.resize(3);
 	m_TriggersLevel[Scene::Level::village].reserve(5);
 	m_TriggersLevel[Scene::Level::insideHouse].reserve(3);
+
+	triggerCoords(); // todo: move the coords to json!
 }
 
 Triggers::~Triggers() {
@@ -71,13 +73,12 @@ void Triggers::triggerCoords() {
 	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[30][0].x, m_GroundMap[0][13].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
 }
 
-void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)> changePos, 
+void Triggers::update(const Vector2& Pos, std::function<void(Vector2)> changePos,
 	Scene::Level currentLevel, 
 	std::function<void(Scene::Level)> changeLevel, 
 	std::function<void(Scene::FadeState)> changeFade)
 {
 
-	triggerCoords();
 	Rectangle correctCollision = { Pos.x, Pos.y, m_TileSize * m_Scale, m_TileSize * m_Scale };
 
 	switch (currentLevel) {
@@ -116,9 +117,6 @@ void Triggers::collisionTrigger(const Vector2& Pos, std::function<void(Vector2)>
 		m_ExitHousePrompt = false;
 	}
 
-}
-
-void Triggers::update(const float& deltaTime, Scene::FadeState fadeState) {
 }
 
 void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level currentLevel, Scene::FadeState fadeState) {

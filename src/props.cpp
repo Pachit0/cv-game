@@ -1,4 +1,4 @@
-#include "Props.h"
+#include "props.h"
 
 Props::Props(const float& TileSize, const float& Scale, const std::array<std::array<Rectangle, 30>, 60>& groundMap)
 	: m_TileSize(TileSize), m_Scale(Scale), m_GroundMap(groundMap)	{

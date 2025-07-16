@@ -1,5 +1,5 @@
 #pragma once
-#include "Core.h"
+#include "core.h"
 
 class Tilemap {
 private:
@@ -27,7 +27,6 @@ public:
 	Tilemap(const float& TileSize, const float& Scale, const int& BaseWidth, const int& BaseHeight);
 	~Tilemap();
 
-	void update();
 	void draw() const;
 	void drawInsideHouse() const;
 	void drawTrees() const;

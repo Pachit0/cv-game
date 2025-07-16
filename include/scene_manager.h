@@ -1,6 +1,6 @@
 #pragma once
-#include "Core.h"
-#include "gameEnums.h"
+#include "core.h"
+#include "game_enums.h"
 
 class SceneManager {
 

@@ -1,4 +1,4 @@
-#include "tilemap.h"
+#include "tile_map.h"
 
 Tilemap::Tilemap(const float& TileSize, const float& Scale, const int& BaseWidth, const int& BaseHeight)
 		: m_TileSize(TileSize), m_Scale(Scale), m_BaseHeight(BaseHeight), m_BaseWidth(BaseWidth)	{
@@ -65,12 +65,6 @@ Tilemap::~Tilemap() {
 	UnloadTexture(m_Trees1);
 	UnloadTexture(m_Trees2);
 	UnloadTexture(m_InsideHouseTexture);
-}
-
-void Tilemap::update() {
-	if (IsKeyPressed(KEY_F)) {
-		ToggleFullscreen();
-	}
 }
 
 void Tilemap::draw() const {

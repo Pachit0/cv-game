@@ -1,6 +1,5 @@
 #include "Game.h"
 
-
 Game::Game() : m_DeltaTime(0.0f),
 			   m_IsPlaying(false),
 			   m_ScreenHeight(720),
@@ -38,24 +37,21 @@ void Game::update()
 {
 	m_DeltaTime = GetFrameTime();
 
-	m_Triggers->update(m_DeltaTime, m_SceneManager.getCurrentFadeState());
-	m_Triggers->collisionTrigger(m_Player->getPos(),
-								[&](Vector2 newPos) {m_Player->setPos(newPos); },
+	m_Triggers->update(m_Player->getEntityPosition(),
+								[&](Vector2 newPos) {m_Player->setEntityPosition(newPos); },
 								m_SceneManager.getCurrentLevel(),
 								[&](Scene::Level changeLevel) {m_SceneManager.setCurrentLevel(changeLevel); },
 								[&](Scene::FadeState changeFade) {m_SceneManager.setCurrentFadeState(changeFade); });
-
 	m_SceneManager.update(m_DeltaTime);
 	if (m_SceneManager.getCurrentFadeState() == Scene::FadeState::FADE_NONE || 
 		m_SceneManager.getCurrentFadeState() == Scene::FadeState::FADE_OUT) 
 	{
-		m_MainCamera->update(m_Player->getPos(), m_SceneManager.getCurrentLevel());
+		m_MainCamera->update(m_Player->getEntityPosition(), m_SceneManager.getCurrentLevel());
 		m_Player->handleCurrentDirection();
 		m_Player->inputHandling();
-		m_Player->setVelocity(m_Physics->collisionObjectWall(m_Player->getPos(), m_Player->getVelocity(), m_DeltaTime, m_SceneManager.getCurrentLevel()));
-		m_Player->Update(m_DeltaTime);
+		m_Player->setEntityVelocity(m_Physics->collisionObjectWall(m_Player->getEntityPosition(), m_Player->getEntityVelocity(), m_DeltaTime, m_SceneManager.getCurrentLevel()));
+		m_Player->update(m_DeltaTime);
 	}
-	m_Tilemap->update();
 	m_Mouse->update(m_MainCamera->getCamera());
 }
 
@@ -82,13 +78,13 @@ void Game::draw()
 				ClearBackground(BLACK);
 				m_Tilemap->drawInsideHouse();
 				m_Physics->draw(m_SceneManager.getCurrentLevel());
-				m_Player->Draw();
+				m_Player->draw();
 				m_Props->drawLayer1(m_SceneManager.getCurrentLevel());
 				}
 			break;
 			}
 		}
-		m_Triggers->draw(m_Player->getPos(), m_MainCamera->getCamera().target, m_SceneManager.getCurrentLevel(),m_SceneManager.getCurrentFadeState());
+		m_Triggers->draw(m_Player->getEntityPosition(), m_MainCamera->getCamera().target, m_SceneManager.getCurrentLevel(),m_SceneManager.getCurrentFadeState());
 		m_SceneManager.draw();
 		m_Tilemap->debugLines();
 		m_Mouse->draw();
@@ -101,7 +97,7 @@ void Game::init()
 	InitWindow(m_ScreenWidth, m_ScreenHeight, "CV game");
 	SetTargetFPS(60);
 
-	m_Player = std::make_unique<Player>(m_Scale);
+	m_Player = std::make_unique<Player>(m_Scale, m_TileSize);
 	m_Tilemap = std::make_unique<Tilemap>(m_TileSize, m_Scale, m_BaseWidth, m_BaseHeight);
 	m_Physics = std::make_unique<Physics>(RESOURCES_PATH "obstacles.json", m_TileSize, m_Scale, m_Tilemap->getTileMap());
 	m_Triggers = std::make_unique<Triggers>(m_TileSize,m_Scale,m_ScreenWidth,m_ScreenHeight, m_Tilemap->getTileMap());
@@ -119,21 +115,21 @@ void Game::unload()
 
 void Game::playerDrawPriorityLayer1() {
 
-	if (m_Props->underCheck(m_Player->getPos(), m_Props->getCoordsLayer1(m_SceneManager.getCurrentLevel()))) {
+	if (m_Props->underCheck(m_Player->getEntityPosition(), m_Props->getCoordsLayer1(m_SceneManager.getCurrentLevel()))) {
 		m_Props->drawLayer1(m_SceneManager.getCurrentLevel());
-		m_Player->Draw();
+		m_Player->draw();
 	}
 	else {
-		m_Player->Draw();
+		m_Player->draw();
 		m_Props->drawLayer1(m_SceneManager.getCurrentLevel());
 	}
 }
 
 void Game::playerDrawPriorityLayer2() {
 
-	if (m_Props->underCheck(m_Player->getPos(), m_Props->getCoordsLayer2(m_SceneManager.getCurrentLevel()))) {
+	if (m_Props->underCheck(m_Player->getEntityPosition(), m_Props->getCoordsLayer2(m_SceneManager.getCurrentLevel()))) {
 		m_Props->drawLayer2(m_SceneManager.getCurrentLevel());
-		m_Player->Draw();
+		m_Player->draw();
 	}
 	else {
 		m_Props->drawLayer2(m_SceneManager.getCurrentLevel());

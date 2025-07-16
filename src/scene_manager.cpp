@@ -1,4 +1,4 @@
-#include "scenemanager.h"
+#include "scene_manager.h"
 
 SceneManager::SceneManager() : m_CurrentLevel(Scene::Level::village),
 							   m_FadeState(Scene::FadeState::FADE_NONE),
@@ -63,5 +63,9 @@ void SceneManager::update(const float& deltaTime) {
 
 	default:
 		break;
+	}
+
+	if (IsKeyPressed(KEY_F)) {
+		ToggleFullscreen();
 	}
 }

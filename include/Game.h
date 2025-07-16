@@ -1,15 +1,15 @@
 #pragma once
 
 #include "player.h"
-#include "tilemap.h"
+#include "tile_map.h"
 #include "props.h"
 #include "physics.h"
-#include "Triggers.h"
-#include "Camera.h"
+#include "triggers_manager.h"
+#include "camera.h"
 #include "mouse.h"
-#include "scenemanager.h"
-#include "gameEnums.h"
-#include "UIManager.h"
+#include "scene_manager.h"
+#include "game_enums.h"
+#include "ui_manager.h"
 
 class Game
 {

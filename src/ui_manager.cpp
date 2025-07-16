@@ -1,4 +1,4 @@
-#include "UIManager.h"
+#include "ui_manager.h"
 
 UIManager::UIManager()
 {
