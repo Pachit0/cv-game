@@ -23,7 +23,6 @@ public:
 	Vector2 getEntityPosition() const;
 	void setEntityPosition(const Vector2& newPosition);
 
-
 	Vector2 getEntityVelocity() const;
 	Vector2& getEntityVelocity();
 	void setEntityVelocity(const Vector2& newVelocity);

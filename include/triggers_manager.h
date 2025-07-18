@@ -1,5 +1,6 @@
 #pragma once
 #include "core.h"
+#include "texture_utils.h"
 #include "game_enums.h"
 
 class Triggers {

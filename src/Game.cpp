@@ -6,7 +6,7 @@ Game::Game() : m_DeltaTime(0.0f),
 			   m_ScreenWidth(1280),
 			   m_BaseHeight(225),
 			   m_BaseWidth(400),
-			   m_Scale(fmin(m_ScreenWidth / m_BaseWidth, m_ScreenHeight / m_BaseHeight)),
+			   m_Scale(3),
 			   m_TileSize(16.0f)		   
 {
 	init();
@@ -107,6 +107,7 @@ void Game::init()
 	m_Mouse = std::make_unique<HandleMouse>(m_TileSize, m_Scale);
 	m_SceneManager = SceneManager();
 }
+
 void Game::unload()
 {
 	m_UI->Shutdown();

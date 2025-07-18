@@ -11,67 +11,26 @@ Props::Props(const float& TileSize, const float& Scale, const std::array<std::ar
 	m_PropsCoords[Scene::Level::insideHouse][first].reserve(1);
 	m_PropsCoords[Scene::Level::insideHouse][second].reserve(1);
 
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Bulletin_Board.png");
-	ImageResize(&m_Image, (m_Image.width + 4) * m_Scale, m_Image.height * m_Scale);
-	m_Board = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Buildings/House_Hay_Stone_1.png");
-	ImageResize(&m_Image, (m_Image.width - 6) * m_Scale, m_Image.height * m_Scale);
-	m_House = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Fireplace_1.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Campfire = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Table_2.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Table = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_1.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Tree = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Chopped_Tree_1.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_CutTree = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_2.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_TreeRiver = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_3.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Tree3 = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/5-ontable.png");
-	m_Book = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/telescope.png");
-	m_Telescope = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
+	m_Board = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Bulletin_Board.png");
+	m_House = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Buildings/House_Hay_Stone_1.png");
+	m_Campfire = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Fireplace_1.png");
+	m_Table = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Table_2.png");
+	m_Tree = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_1.png");
+	m_CutTree = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Chopped_Tree_1.png");
+	m_TreeRiver = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_2.png");
+	m_Tree3 = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_3.png");
+	m_Book = LoadFilteredTexture(RESOURCES_PATH "Map/5-ontable.png");
+	m_Telescope = LoadFilteredTexture(RESOURCES_PATH "Map/telescope.png");
 
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Lamp_1.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
 	for (int i = 0; i < 4; i++) {
 		m_Lamp[i] = LoadTextureFromImage(m_Image);
+		SetTextureFilter(m_Lamp[i], TEXTURE_FILTER_POINT);
 		ImageFlipHorizontal(&m_Image);
 	}
 	UnloadImage(m_Image);
 
-	m_Image = LoadImage(RESOURCES_PATH "Map/chair.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_InsideChair = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
+	m_InsideChair = LoadFilteredTexture(RESOURCES_PATH "Map/chair.png");
 }
 
 Props::~Props() {
@@ -93,20 +52,20 @@ Props::~Props() {
 void Props::drawLayer1(Scene::Level currentLevel) const {
 	switch (currentLevel) {
 	case Scene::Level::village: {
-		DrawTexture(m_Board, m_GroundMap[35][0].x, m_GroundMap[0][12].y, WHITE);
-		DrawTexture(m_House, m_GroundMap[29][0].x + 4, m_GroundMap[0][9].y, WHITE);
-		DrawTexture(m_Campfire, m_GroundMap[42][0].x + 4, m_GroundMap[0][12].y + 12, WHITE);
-		DrawTexture(m_Table, m_GroundMap[19][0].x + 12, m_GroundMap[0][13].y - 12, WHITE);
-		DrawTexture(m_Tree, m_GroundMap[24][0].x, m_GroundMap[0][10].y, WHITE);
-		DrawTexture(m_CutTree, m_GroundMap[39][0].x, m_GroundMap[0][15].y, WHITE);
-		DrawTexture(m_TreeRiver, m_GroundMap[25][0].x, m_GroundMap[0][3].y, WHITE);
-		DrawTexture(m_Telescope, m_GroundMap[40][0].x, m_GroundMap[0][3].y, WHITE);
-		DrawTexture(m_Tree3, m_GroundMap[47][0].x, m_GroundMap[0][9].y, WHITE);
-		DrawTexture(m_Book, m_GroundMap[20][0].x, m_GroundMap[0][13].y + m_TileSize, WHITE);
+		DrawTextureEx(m_Board, { m_GroundMap[35][0].x, m_GroundMap[0][12].y }, 0.0f, m_Scale, WHITE);
+		DrawTextureEx(m_House, { m_GroundMap[29][0].x - 4, m_GroundMap[0][9].y }, 0.0f, m_Scale, WHITE);
+		DrawTextureEx(m_Campfire, { m_GroundMap[42][0].x + 4, m_GroundMap[0][13].y + 12 }, 0.0f, m_Scale, WHITE);
+		DrawTextureEx(m_Table, {m_GroundMap[19][0].x + 12, m_GroundMap[0][14].y - 12}, 0.0f, m_Scale, WHITE);
+		DrawTextureEx(m_Tree, { m_GroundMap[24][0].x, m_GroundMap[0][11].y }, 0.0f, m_Scale, WHITE);
+		DrawTextureEx(m_CutTree, { m_GroundMap[39][0].x, m_GroundMap[0][16].y }, 0.0f, m_Scale, WHITE);
+		DrawTextureEx(m_TreeRiver, { m_GroundMap[25][0].x, m_GroundMap[0][3].y }, 0.0f, m_Scale, WHITE);
+		DrawTextureEx(m_Tree3, { m_GroundMap[47][0].x, m_GroundMap[0][9].y }, 0.0f, m_Scale, WHITE);
+		DrawTexture(m_Book, m_GroundMap[20][0].x, m_GroundMap[0][14].y + m_TileSize, WHITE);
+		DrawTexture(m_Telescope, m_GroundMap[40][0].x, m_GroundMap[0][4].y, WHITE);
 		break;
 	}
 	case Scene::Level::insideHouse: {
-		DrawTexture(m_InsideChair, m_GroundMap[37][0].x - m_TileSize, m_GroundMap[0][12].y - 20, WHITE);
+		DrawTextureEx(m_InsideChair, { m_GroundMap[37][0].x - m_TileSize, m_GroundMap[0][12].y - 20 },0.0f,m_Scale, WHITE);
 		break;
 	}
 	}
@@ -122,10 +81,10 @@ void Props::drawLayer1(Scene::Level currentLevel) const {
 }
 
 void Props::drawLayer2(Scene::Level currentLevel) const {
-	DrawTexture(m_Lamp[0], m_GroundMap[27][0].x + 4, m_GroundMap[0][15].y, WHITE);
-	DrawTexture(m_Lamp[1], m_GroundMap[35][0].x + 4, m_GroundMap[0][15].y, WHITE);
-	DrawTexture(m_Lamp[2], m_GroundMap[48][0].x + 4, m_GroundMap[0][13].y, WHITE);
-	DrawTexture(m_Lamp[3], m_GroundMap[13][0].x, m_GroundMap[0][10].y, WHITE);
+	DrawTextureEx(m_Lamp[0], { m_GroundMap[27][0].x + 4, m_GroundMap[0][15].y }, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_Lamp[1], { m_GroundMap[35][0].x + 4, m_GroundMap[0][15].y }, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_Lamp[2], { m_GroundMap[48][0].x + 4, m_GroundMap[0][13].y }, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_Lamp[3], { m_GroundMap[13][0].x, m_GroundMap[0][10].y }, 0.0f, m_Scale, WHITE);
 }
 
 bool Props::underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCoords) {

@@ -2,46 +2,16 @@
 
 Tilemap::Tilemap(const float& TileSize, const float& Scale, const int& BaseWidth, const int& BaseHeight)
 		: m_TileSize(TileSize), m_Scale(Scale), m_BaseHeight(BaseHeight), m_BaseWidth(BaseWidth)	{
+	
+	m_LayerGrass = LoadFilteredTexture(RESOURCES_PATH "Map/layer1.png");
+	m_LayerPath = LoadFilteredTexture(RESOURCES_PATH "Map/layer2.png");
+	m_LayerProps1 = LoadFilteredTexture(RESOURCES_PATH "Map/layer3-up.png");
+	m_LayerProps2 = LoadFilteredTexture(RESOURCES_PATH "Map/layer4.png");
+	m_Fences = LoadFilteredTexture(RESOURCES_PATH "Map/fences.png");
+	m_Trees1 = LoadFilteredTexture(RESOURCES_PATH "Map/trees1.png");
+	m_Trees2 = LoadFilteredTexture(RESOURCES_PATH "Map/trees2.png");
+	m_InsideHouseTexture = LoadFilteredTexture(RESOURCES_PATH "Map/insideHouse.png");
 
-	m_Image = LoadImage(RESOURCES_PATH "Map/layer1.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_LayerGrass = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/layer2.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_LayerPath = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/layer3-up.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_LayerProps1 = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/layer4.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_LayerProps2 = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/fences.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Fences = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/trees1.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Trees1 = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/trees2.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Trees2 = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/insideHouse.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_InsideHouseTexture = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
 
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
@@ -68,20 +38,20 @@ Tilemap::~Tilemap() {
 }
 
 void Tilemap::draw() const {
-	DrawTexture(m_LayerGrass, 100, 0, WHITE);
-	DrawTexture(m_LayerPath, 100, 0, WHITE);
-	DrawTexture(m_Fences, 100, -((m_TileSize - 4) * m_Scale), WHITE);
-	DrawTexture(m_LayerProps1, 100, -(m_TileSize * m_Scale), WHITE);
-	DrawTexture(m_LayerProps2, 100, -(m_TileSize * m_Scale), WHITE);
+	DrawTextureEx(m_LayerGrass, { m_GroundMap[2][0].x, m_GroundMap[0][0].y }, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_LayerPath, { m_GroundMap[2][0].x, m_GroundMap[0][0].y }, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_LayerProps1, { m_GroundMap[2][0].x, m_GroundMap[0][0].y }, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_LayerProps2, { m_GroundMap[2][0].x, m_GroundMap[0][0].y },0.0f,m_Scale, WHITE);
 }
 
 void Tilemap::drawInsideHouse() const {
-	DrawTexture(m_InsideHouseTexture, 1425, 175, WHITE);
+	DrawTextureEx(m_InsideHouseTexture, { m_GroundMap[30][0].x - 15, m_GroundMap[0][4].y - 17 }, 0.0f, m_Scale, WHITE);
 }
 
 void Tilemap::drawTrees() const {
-	DrawTexture(m_Trees1, 100, -(m_TileSize * m_Scale), WHITE);
-	DrawTexture(m_Trees2, 100, -(m_TileSize * m_Scale), WHITE);
+	DrawTextureEx(m_Fences, { m_GroundMap[2][0].x, m_GroundMap[0][0].y }, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_Trees1, { m_GroundMap[2][0].x, m_GroundMap[0][0].y}, 0.0f, m_Scale, WHITE);
+	DrawTextureEx(m_Trees2, { m_GroundMap[2][0].x, m_GroundMap[0][0].y }, 0.0f, m_Scale, WHITE);
 }
 
 void Tilemap::debugLines() const {

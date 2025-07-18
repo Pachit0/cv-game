@@ -1,4 +1,5 @@
 #include "player.h"
+#include "texture_utils.h"
 
 Player::Player(const float& Scale, const float& TileSize) :
     m_Directions(DOWN),
@@ -7,7 +8,7 @@ Player::Player(const float& Scale, const float& TileSize) :
     m_FrameDelayCount(0),
     m_FrameNum(7),
     m_SpawnPosX(1440),
-    m_SpawnPosY(670),
+    m_SpawnPosY(770),
     m_RectWidthPlayer(48.0f),
     m_RectHeightPlayer(64.0f),
     m_Scale(Scale),
@@ -18,19 +19,12 @@ Player::Player(const float& Scale, const float& TileSize) :
     setEntityVelocity({ 0, 0 });
     setEntitySpeed(200.0f);
 
-    m_Image = LoadImage(RESOURCES_PATH "TheAdventurer/Idle/idle.png");
-    ImageResize(&m_Image, 384 * 3, 384 * 3);
-    m_Idle = LoadTextureFromImage(m_Image);
-    UnloadImage(m_Image);
-
-    m_Image = LoadImage(RESOURCES_PATH "TheAdventurer/Walk/walk.png");
-    ImageResize(&m_Image, 384 * 3, 384 * 3);
-    m_Walk = LoadTextureFromImage(m_Image);
-    UnloadImage(m_Image);
+    m_Idle = LoadFilteredTexture(RESOURCES_PATH "TheAdventurer/Idle/idle.png");
+    m_Walk = LoadFilteredTexture(RESOURCES_PATH "TheAdventurer/Walk/walk.png");
 
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 8; j++) {
-            m_Movement_Rect[i][j] = { j * m_RectWidthPlayer * m_Scale, i * m_RectHeightPlayer * m_Scale, m_RectWidthPlayer * m_Scale, m_RectHeightPlayer * m_Scale };
+            m_Movement_Rect[i][j] = { j * m_RectWidthPlayer, i * m_RectHeightPlayer , m_RectWidthPlayer , m_RectHeightPlayer };
         }
     }
 }
@@ -120,27 +114,27 @@ void Player::draw() {
 
     if (!getEntityVelocity().x && !getEntityVelocity().y) {
         if (IsKeyDown(KEY_T) && m_FrameIndex < DIR_COUNT) {
-            DrawTextureRec(m_Idle, m_Movement_Rect[m_FrameIndex][DOWN], getEntityPosition(), WHITE);
+            DrawTextureRecEx(m_Idle, m_Movement_Rect[m_FrameIndex][DOWN], getEntityPosition(), m_Scale);
         }
         else {
             switch (m_Directions) {
             case DOWN:
-                DrawTextureRec(m_Idle, m_Movement_Rect[DOWN][m_FrameIndex], getEntityPosition(), WHITE);
+                DrawTextureRecEx(m_Idle, m_Movement_Rect[DOWN][m_FrameIndex], getEntityPosition(), m_Scale);
                 break;
             case UP:
-                DrawTextureRec(m_Idle, m_Movement_Rect[UP][m_FrameIndex], getEntityPosition(), WHITE);
+                DrawTextureRecEx(m_Idle, m_Movement_Rect[UP][m_FrameIndex], getEntityPosition(), m_Scale);
                 break;
             case LEFT_DOWN:
-                DrawTextureRec(m_Idle, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
+                DrawTextureRecEx(m_Idle, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], getEntityPosition(), m_Scale);
                 break;
             case LEFT_UP:
-                DrawTextureRec(m_Idle, m_Movement_Rect[LEFT_UP][m_FrameIndex], getEntityPosition(), WHITE);
+                DrawTextureRecEx(m_Idle, m_Movement_Rect[LEFT_UP][m_FrameIndex], getEntityPosition(), m_Scale);
                 break;
             case RIGHT_UP:
-                DrawTextureRec(m_Idle, m_Movement_Rect[RIGHT_UP][m_FrameIndex], getEntityPosition(), WHITE);
+                DrawTextureRecEx(m_Idle, m_Movement_Rect[RIGHT_UP][m_FrameIndex], getEntityPosition(), m_Scale);
                 break;
             case RIGHT_DOWN:
-                DrawTextureRec(m_Idle, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
+                DrawTextureRecEx(m_Idle, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], getEntityPosition(), m_Scale);
                 break;
             }
         }
@@ -148,22 +142,22 @@ void Player::draw() {
     else {
         switch (m_Directions) {
         case DOWN:
-            DrawTextureRec(m_Walk, m_Movement_Rect[DOWN][m_FrameIndex], getEntityPosition(), WHITE);
+            DrawTextureRecEx(m_Walk, m_Movement_Rect[DOWN][m_FrameIndex], getEntityPosition(), m_Scale);
             break;
         case UP:
-            DrawTextureRec(m_Walk, m_Movement_Rect[UP][m_FrameIndex], getEntityPosition(), WHITE);
+            DrawTextureRecEx(m_Walk, m_Movement_Rect[UP][m_FrameIndex], getEntityPosition(), m_Scale);
             break;
         case LEFT_DOWN:
-            DrawTextureRec(m_Walk, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
+            DrawTextureRecEx(m_Walk, m_Movement_Rect[LEFT_DOWN][m_FrameIndex], getEntityPosition(), m_Scale);
             break;
         case LEFT_UP:
-            DrawTextureRec(m_Walk, m_Movement_Rect[LEFT_UP][m_FrameIndex], getEntityPosition(), WHITE);
+            DrawTextureRecEx(m_Walk, m_Movement_Rect[LEFT_UP][m_FrameIndex], getEntityPosition(), m_Scale);
             break;
         case RIGHT_UP:
-            DrawTextureRec(m_Walk, m_Movement_Rect[RIGHT_UP][m_FrameIndex], getEntityPosition(), WHITE);
+            DrawTextureRecEx(m_Walk, m_Movement_Rect[RIGHT_UP][m_FrameIndex], getEntityPosition(), m_Scale);
             break;
         case RIGHT_DOWN:
-            DrawTextureRec(m_Walk, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], getEntityPosition(), WHITE);
+            DrawTextureRecEx(m_Walk, m_Movement_Rect[RIGHT_DOWN][m_FrameIndex], getEntityPosition(), m_Scale);
             break;
         }
     }

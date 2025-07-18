@@ -2,6 +2,7 @@
 #include "core.h"
 #include "entity_manager.h"
 #include "scene_manager.h"
+#include "texture_utils.h"
 
 class Player : public Entity {
 private:
@@ -25,7 +26,6 @@ private:
 
 	Texture2D m_Idle;
 	Texture2D m_Walk;
-	Image m_Image;
 public:
 
 	enum PlayerDirection {

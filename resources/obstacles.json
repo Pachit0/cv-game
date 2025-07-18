@@ -16,7 +16,7 @@
         },
         {
             "x": 0,
-            "y": 2,
+            "y": 3,
             "w": 60,
             "h": 1,
             "_note": "Edge of scene - top horizontal edge"
@@ -30,35 +30,39 @@
         },
         {
             "x": 0,
-            "y": 17,
+            "y": 18,
+            "offsetX": 8,
             "w": 10,
             "h": 1,
             "_note": "Fence - left horizontal"
         },
         {
             "x": 9,
-            "y": 18,
+            "y": 19,
+            "offsetX": 8,
             "w": 1,
             "h": 1,
             "_note": "Fence - left vertical segment"
         },
         {
             "x": 10,
-            "y": 19,
+            "y": 20,
             "w": 42,
             "h": 1,
             "_note": "Fence - middle horizontal"
         },
         {
             "x": 52,
-            "y": 18,
+            "y": 19,
+            "offsetX": -8,
             "w": 1,
             "h": 1,
             "_note": "Fence - right vertical segment"
         },
         {
             "x": 52,
-            "y": 17,
+            "y": 18,
+            "offsetX": -8,
             "w": 10,
             "h": 1,
             "_note": "Fence - right horizontal"
@@ -74,7 +78,7 @@
         },
         {
             "x": 27,
-            "y": 3,
+            "y": 4,
             "offsetX": 16,
             "offsetY": -16,
             "w": 2,
@@ -84,7 +88,7 @@
         },
         {
             "x": 30,
-            "y": 3,
+            "y": 4,
             "offsetX": 16,
             "offsetY": -16,
             "w": 1,
@@ -112,14 +116,16 @@
         },
         {
             "x": 39,
-            "y": 10,
+            "y": 11,
+            "offsetX": 12,
             "w": 1,
             "h": 2,
+            "shrink": 4,
             "_note": "Bench left"
         },
         {
             "x": 44,
-            "y": 10,
+            "y": 11,
             "offsetX": 12,
             "w": 1,
             "h": 2,
@@ -128,7 +134,7 @@
         },
         {
             "x": 41,
-            "y": 11,
+            "y": 12,
             "offsetX": 4,
             "w": 2,
             "h": 1,
@@ -138,8 +144,8 @@
         {
             "x": 26,
             "y": 16,
-            "offsetX": 12,
-            "offsetY": 10,
+            "offsetX": 20,
+            "offsetY": 20,
             "w": 1,
             "h": 1,
             "shrink": 10,
@@ -148,8 +154,8 @@
         {
             "x": 35,
             "y": 16,
-            "offsetX": 6,
-            "offsetY": 10,
+            "offsetX": 14,
+            "offsetY": 20,
             "w": 1,
             "h": 1,
             "shrink": 10,
@@ -187,7 +193,7 @@
         },
         {
             "x": 23,
-            "y": 12,
+            "y": 13,
             "offsetX": 10,
             "w": 4,
             "h": 2,
@@ -196,7 +202,7 @@
         },
         {
             "x": 17,
-            "y": 11,
+            "y": 12,
             "offsetX": 12,
             "w": 5,
             "h": 2,
@@ -205,14 +211,14 @@
         },
         {
             "x": 24,
-            "y": 11,
+            "y": 12,
             "w": 2,
             "h": 1,
             "_note": "Tree near house"
         },
         {
             "x": 38,
-            "y": 14,
+            "y": 15,
             "offsetX": 12,
             "w": 2,
             "h": 1,
@@ -221,7 +227,7 @@
         },
         {
             "x": 40,
-            "y": 3,
+            "y": 4,
             "offsetX": -32,
             "w": 1,
             "h": 1,

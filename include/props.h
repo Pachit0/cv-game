@@ -1,6 +1,7 @@
 #pragma once
 #include "core.h"
 #include "game_enums.h"
+#include "texture_utils.h"
 
 class Props {
 private:

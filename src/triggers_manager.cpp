@@ -1,5 +1,6 @@
 #include "triggers_manager.h"
 
+
 Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenWidth, const int& ScreenHeight, const std::array<std::array<Rectangle, 30>, 60>& groundMap) :
 	m_Frames(0),
 	m_CurrentAnimFrame(0),
@@ -14,34 +15,12 @@ Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenW
 	m_OpacityBoxSize({ (float)ScreenWidth * 2, (float)ScreenHeight * 2 }),
 	m_GroundMap(groundMap)
 {
-	m_Image = LoadImage(RESOURCES_PATH "Map/description of me.png");
-	m_Scroll = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "pop-ups/1.png");
-	ImageResize(&m_Image, m_Image.width * m_Scale, m_Image.height * m_Scale);
-	m_Paper = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "letters/letter_e_press.png");
-	m_E_Letter = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "letters/letter_q_press.png");
-	m_Q_Letter = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "pop-ups/5-manga+comment.png");
-	m_BookDesk = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/tv.png");
-	m_TexTv = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
-
-	m_Image = LoadImage(RESOURCES_PATH "Map/telescopeView.png");
-	m_TexTelescope = LoadTextureFromImage(m_Image);
-	UnloadImage(m_Image);
+	m_Scroll = LoadFilteredTexture(RESOURCES_PATH "Map/description of me.png");
+	m_E_Letter = LoadFilteredTexture(RESOURCES_PATH "letters/letter_e_press.png");
+	m_Q_Letter = LoadFilteredTexture(RESOURCES_PATH "letters/letter_q_press.png");
+	m_BookDesk = LoadFilteredTexture(RESOURCES_PATH "pop-ups/5-manga+comment.png");
+	m_TexTv = LoadFilteredTexture(RESOURCES_PATH "Map/tv.png");
+	m_TexTelescope = LoadFilteredTexture(RESOURCES_PATH "Map/telescopeView.png");
 
 	m_AnimOsuImage = LoadImageAnim(RESOURCES_PATH "Map/osu.gif", &m_Frames);
 	m_AnimOsu = LoadTextureFromImage(m_AnimOsuImage);
@@ -55,7 +34,6 @@ Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenW
 
 Triggers::~Triggers() {
 	UnloadTexture(m_Scroll);
-	UnloadTexture(m_Paper);
 	UnloadTexture(m_E_Letter);
 	UnloadTexture(m_Q_Letter);
 	UnloadTexture(m_BookDesk);
@@ -67,9 +45,9 @@ Triggers::~Triggers() {
 void Triggers::triggerCoords() {
 	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[34][0].x, m_GroundMap[0][13].y, 3 * (m_TileSize * m_Scale), m_TileSize * m_Scale });
 	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[30][0].x, m_GroundMap[0][12].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[18][0].x, m_GroundMap[0][13].y, 3 * (m_TileSize * m_Scale), m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[38][0].x, m_GroundMap[0][3].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[38][0].x - m_TileSize, m_GroundMap[0][4].y + 12, ((m_TileSize)*m_Scale), (m_TileSize)*m_Scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[18][0].x, m_GroundMap[0][14].y, 3 * (m_TileSize * m_Scale), m_TileSize * m_Scale });
+	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[38][0].x, m_GroundMap[0][4].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
+	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[38][0].x - m_TileSize, m_GroundMap[0][4].y + 12, m_TileSize * m_Scale, m_TileSize * m_Scale });
 	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[30][0].x, m_GroundMap[0][13].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
 }
 
