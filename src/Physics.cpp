@@ -1,15 +1,8 @@
 #include "physics.h"
 
-Physics::Physics(const std::string& filename, const float& TileSize, const float& Scale, const std::array<std::array<Rectangle, 30>, 60>& groundMap) : m_LevelIndex(0),
-												m_X(0),
-												m_Y(0),
-												m_Width(0),
-												m_Height(0),
-												m_TileSize(TileSize),
-												m_Scale(Scale),
-												m_ObstaclesLevelCount(3),
-												m_ObstaclesCountVillage(50),
-												m_ObstaclesCountHouse(10){
+Physics::Physics(const std::string& filename, const float& TileSize, const float& Scale, const std::array<std::array<Rectangle, 30>, 60>& groundMap) : 
+	m_LevelIndex(0),m_TileSize(TileSize),m_Scale(Scale),m_ObstaclesLevelCount(3),m_ObstaclesCountVillage(50),m_ObstaclesCountHouse(10)
+{
 
 	m_File.open(filename);
 
@@ -37,25 +30,25 @@ Physics::Physics(const std::string& filename, const float& TileSize, const float
 		m_LevelIndex = it->second;
 
 		for (const auto& item : items) {
-			m_X = groundMap[item["x"]][0].x;
-			m_Y = groundMap[0][item["y"]].y;
+			float x = groundMap[item["x"]][0].x;
+			float y = groundMap[0][item["y"]].y;
 
-			if (item.contains("offsetX")) m_X += item["offsetX"];
-			if (item.contains("offsetY")) m_Y += item["offsetY"];
+			if (item.contains("offsetX")) x += item["offsetX"];
+			if (item.contains("offsetY")) y += item["offsetY"];
 
-			m_Width = item["w"] * (TileSize * Scale);
-			m_Height = item["h"] * (TileSize * Scale);
+			float width = item["w"] * (TileSize * Scale);
+			float height = item["h"] * (TileSize * Scale);
 
 			if (item.contains("shrink")) {
-				m_Width = item["w"] * ((TileSize - item["shrink"]) * Scale);
-				m_Height = item["h"] * ((TileSize - item["shrink"]) * Scale);
+				width = item["w"] * ((TileSize - item["shrink"]) * Scale);
+				height = item["h"] * ((TileSize - item["shrink"]) * Scale);
 			}
 			else {
-				if (item.contains("shrinkX")) m_Width = item["w"] * ((TileSize - item["shrinkX"]) * Scale);
-				if (item.contains("shrinkY")) m_Height = item["h"] * ((TileSize - item["shrinkY"]) * Scale);
+				if (item.contains("shrinkX")) width = item["w"] * ((TileSize - item["shrinkX"]) * Scale);
+				if (item.contains("shrinkY")) height = item["h"] * ((TileSize - item["shrinkY"]) * Scale);
 			}
 
-			m_ObstaclesPerLevel[m_LevelIndex].emplace_back(Rectangle{ m_X, m_Y, m_Width, m_Height });
+			m_ObstaclesPerLevel[m_LevelIndex].emplace_back(Rectangle{ x, y, width, height });
 		}
 	}
 

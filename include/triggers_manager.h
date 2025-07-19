@@ -47,6 +47,8 @@ private:
 		bool isActive() const { return state == InteractionState::STATE_ACTIVE; }
 	};
 
+	std::unordered_map<std::string, int> m_LevelMap;
+
 	const float m_TileSize;
 	const float m_Scale;
 	const std::array<std::array<Rectangle, 30>, 60>& m_GroundMap;
@@ -64,13 +66,13 @@ private:
 	int m_FrameDelay;
 	int m_FrameCounter;
 	unsigned int m_NextFrameDataOffset;
+
 	Vector2 m_OpacityBoxPosition;
 	Vector2 m_OpacityBoxSize;
 
 	std::vector<std::vector<Rectangle>> m_TriggersLevel;
 
 	Texture2D m_Scroll;
-	Texture2D m_Paper;
 	Texture2D m_E_Letter;
 	Texture2D m_Q_Letter;
 	Texture2D m_AnimOsu;
@@ -78,16 +80,14 @@ private:
 	Texture2D m_TexTelescope;
 
 	Texture2D m_BookDesk;
-
-	Image m_Image;
 	Image m_AnimOsuImage;
 
 public:
+
 	Triggers(const float& TileSize, const float& Scale, const int& ScreenWidth, const int& ScreenHeight, const std::array<std::array<Rectangle, 30>, 60>& groundMap);
 	~Triggers();
 
-	void triggerCoords();
-
+	void loadTriggersFromJSON(const std::string& filename);
 	void update(const Vector2& Pos,
 		std::function<void(Vector2)> changePos, 
 		Scene::Level currentLevel,

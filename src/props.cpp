@@ -104,16 +104,19 @@ std::vector<Rectangle>& Props::getCoordsLayer2(Scene::Level currentLevel) {
 	return m_PropsCoords[currentLevel][second];
 }
 
-std::vector<Props::propEntry> Props::loadPropsFromJSON(const std::string& filename)
+void Props::loadPropsFromJSON(const std::string& filename)
 {
-	m_File.open(filename);
-	if (!m_File.is_open()) {
+	nlohmann::json Data;
+	std::ifstream File;
+
+	File.open(filename);
+	if (!File.is_open()) {
 		std::cerr << "file couldn't open" << std::endl;
 	}
 
-	m_File >> m_Data;
+	File >> Data;
 
-	for (const auto& item : m_Data) {
+	for (const auto& item : Data) {
 		m_AllProps.push_back({
 			item["level"],
 			item["layer"],
@@ -123,15 +126,15 @@ std::vector<Props::propEntry> Props::loadPropsFromJSON(const std::string& filena
 			item["heightInTiles"] });
 	}
 
-	return m_AllProps;
+	File.close();
 }
 
 void Props::loadPropsCoordsFromJSON(const std::string& path)
 {
-	auto propEntries = loadPropsFromJSON(path);
+	loadPropsFromJSON(path);
 	int levelIndex = 0;
 	int layerIndex = 0;
-	for (const auto& entry : propEntries) {
+	for (const auto& entry : m_AllProps) {
 		levelIndex = (entry.Level == "village") ? Scene::Level::village : Scene::Level::insideHouse;
 		layerIndex = (entry.Layer == "first") ? first : second;
 
@@ -141,6 +144,6 @@ void Props::loadPropsCoordsFromJSON(const std::string& path)
 		float height = entry.HeightTile * m_TileSize * m_Scale;
 
 		Rectangle rect = { x, y, width, height };
-		m_PropsCoords[levelIndex][layerIndex].push_back(rect);
+		m_PropsCoords[levelIndex][layerIndex].emplace_back(rect);
 	}
 }

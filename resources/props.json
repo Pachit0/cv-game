@@ -19,7 +19,7 @@
     "level": "village",
     "layer": "first",
     "tileX": 40,
-    "tileY": 11,
+    "tileY": 12,
     "widthInTiles": 3,
     "heightInTiles": 2
   },
@@ -27,7 +27,7 @@
     "level": "village",
     "layer": "first",
     "tileX": 17,
-    "tileY": 12,
+    "tileY": 13,
     "widthInTiles": 4,
     "heightInTiles": 2
   },
@@ -35,7 +35,7 @@
     "level": "village",
     "layer": "first",
     "tileX": 37,
-    "tileY": 14,
+    "tileY": 15,
     "widthInTiles": 3,
     "heightInTiles": 2
   },
@@ -59,7 +59,7 @@
     "level": "village",
     "layer": "first",
     "tileX": 38,
-    "tileY": 4,
+    "tileY": 5,
     "widthInTiles": 3,
     "heightInTiles": 1
   },

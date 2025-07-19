@@ -1,0 +1,46 @@
+{
+  "village": [
+    {
+      "tileX": 34,
+      "tileY": 13,
+      "widthInTiles": 3,
+      "heightInTiles": 1
+    },
+    {
+      "tileX": 30,
+      "tileY": 12,
+      "widthInTiles": 1,
+      "heightInTiles": 1
+    },
+    {
+      "tileX": 18,
+      "tileY": 14,
+      "widthInTiles": 3,
+      "heightInTiles": 1
+    },
+    {
+      "tileX": 38,
+      "tileY": 4,
+      "widthInTiles": 1,
+      "heightInTiles": 1
+    }
+  ],
+  "insideHouse": [
+    {
+      "tileX": 38,
+      "tileY": 4,
+      "offsetX": -16,
+      "offsetY": 12,
+      "widthInTiles": 1,
+      "heightInTiles": 1,
+      "_note": "exit - insideHouse"
+    },
+    {
+      "tileX": 30,
+      "tileY": 13,
+      "widthInTiles": 1,
+      "heightInTiles": 1,
+      "_note": "Tv"
+    }
+  ]
+}

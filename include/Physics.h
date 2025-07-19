@@ -25,11 +25,4 @@ public:
     void draw(Scene::Level currentLevel);
 	Vector2 collisionObjectWall(const Vector2& Pos, Vector2 velocity, const float& deltaTime, Scene::Level currentLevel);
 
-private:
-
-    float m_X;
-    float m_Y;
-    float m_Width;
-    float m_Height;
-
 };

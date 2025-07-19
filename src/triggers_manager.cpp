@@ -28,8 +28,6 @@ Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenW
 	m_TriggersLevel.resize(3);
 	m_TriggersLevel[Scene::Level::village].reserve(5);
 	m_TriggersLevel[Scene::Level::insideHouse].reserve(3);
-
-	triggerCoords(); // todo: move the coords to json!
 }
 
 Triggers::~Triggers() {
@@ -42,13 +40,50 @@ Triggers::~Triggers() {
 	UnloadImage(m_AnimOsuImage);
 }
 
-void Triggers::triggerCoords() {
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[34][0].x, m_GroundMap[0][13].y, 3 * (m_TileSize * m_Scale), m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[30][0].x, m_GroundMap[0][12].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[18][0].x, m_GroundMap[0][14].y, 3 * (m_TileSize * m_Scale), m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::village].emplace_back(Rectangle{ m_GroundMap[38][0].x, m_GroundMap[0][4].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[38][0].x - m_TileSize, m_GroundMap[0][4].y + 12, m_TileSize * m_Scale, m_TileSize * m_Scale });
-	m_TriggersLevel[Scene::Level::insideHouse].emplace_back(Rectangle{ m_GroundMap[30][0].x, m_GroundMap[0][13].y, m_TileSize * m_Scale, m_TileSize * m_Scale });
+void Triggers::loadTriggersFromJSON(const std::string& filename) {
+	nlohmann::json Data;
+	std::ifstream File;
+
+	int levelIndex;
+	float x;
+	float y;
+	float width;
+	float height;
+
+	File.open(filename);
+	if (!File.is_open()) {
+		std::cerr << "file couldn't open" << std::endl;
+		return;
+	}
+
+	File >> Data;
+
+	m_LevelMap = {
+		{"village", Scene::Level::village},
+		{"insideHouse", Scene::Level::insideHouse}
+	};
+
+	for (const auto& [levelName, items] : Data.items()) {
+		auto it = m_LevelMap.find(levelName);
+		if (it == m_LevelMap.end()) continue;
+		levelIndex = it->second;
+
+		for (const auto& item : items) {
+			x = m_GroundMap[item["tileX"]][0].x;
+			y = m_GroundMap[0][item["tileY"]].y;
+
+			if (item.contains("offsetX")) x += item["offsetX"];
+			if (item.contains("offsetY")) y += item["offsetY"];
+
+			width = item["widthInTiles"] * (m_TileSize * m_Scale);
+			height = item["heightInTiles"] * (m_TileSize * m_Scale);
+
+			m_TriggersLevel[levelIndex].emplace_back(Rectangle{ x,y,width,height });
+		}
+	}
+
+	File.close();
+
 }
 
 void Triggers::update(const Vector2& Pos, std::function<void(Vector2)> changePos,

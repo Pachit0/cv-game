@@ -23,6 +23,7 @@ private:
 	Texture2D m_Book;
 	Texture2D m_Telescope;
 
+
 public:
 	struct propEntry {
 		std::string Level;
@@ -47,12 +48,10 @@ public:
 	bool underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCoords);
 	std::vector<Rectangle>& getCoordsLayer1(Scene::Level currentLevel);
 	std::vector<Rectangle>& getCoordsLayer2(Scene::Level currentLevel);
-	std::vector<propEntry> loadPropsFromJSON(const std::string& filename);
+	void loadPropsFromJSON(const std::string& filename);
 	void loadPropsCoordsFromJSON(const std::string& path);
 
 private:
 	std::vector<std::vector<std::vector<Rectangle>>> m_PropsCoords;
-	nlohmann::json m_Data;
-	std::ifstream m_File;
 	std::vector<propEntry> m_AllProps;
 };
