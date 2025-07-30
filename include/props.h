@@ -8,6 +8,7 @@ private:
 	const float m_TileSize;
 	const float m_Scale;
 	const std::array<std::array<Rectangle, 30>, 60>& m_GroundMap;
+	std::unordered_map<int, Texture2D> m_TextureMapID;
 
 	Image m_Image;
 	Texture2D m_Board;
@@ -34,10 +35,39 @@ public:
 		int HeightTile;
 	};
 
+	struct propCoordsEntry {
+		int texID;
+		int drawX;
+		int drawY;
+		int offsetX;
+		int offsetY;
+		int scale;
+		int zIndex;
+	};
+
 	enum propsLayer {
 		first,
 		second,
 		third
+	};
+
+	enum textureID {
+		BOARD,
+		HOUSE,
+		CAMPFIRE,
+		TABLE,
+		TREE,
+		CUT_TREE,
+		TREE_RIVER,
+		TREE_3,
+		BOOK,
+		TELESCOPE,
+		LAMP1,
+		LAMP2,
+		LAMP3,
+		LAMP4,
+		insideChair,
+		TEX_COUNT
 	};
 
 	Props(const float& TileSize, const float& Scale, const std::array<std::array<Rectangle, 30>, 60>& groundMap);
@@ -50,8 +80,10 @@ public:
 	std::vector<Rectangle>& getCoordsLayer2(Scene::Level currentLevel);
 	void loadPropsFromJSON(const std::string& filename);
 	void loadPropsCoordsFromJSON(const std::string& path);
+	void loadPropsTextureCoordsFromJSON(const std::string& path); // todo
 
 private:
 	std::vector<std::vector<std::vector<Rectangle>>> m_PropsCoords;
 	std::vector<propEntry> m_AllProps;
+	std::unordered_map<std::string, std::unordered_map<int, std::map<int ,std::vector<propCoordsEntry>>>> m_AllPropsTextureCoords; // I HATE THIS
 };

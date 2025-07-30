@@ -11,17 +11,6 @@ Props::Props(const float& TileSize, const float& Scale, const std::array<std::ar
 	m_PropsCoords[Scene::Level::insideHouse][first].reserve(1);
 	m_PropsCoords[Scene::Level::insideHouse][second].reserve(1);
 
-	m_Board = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Bulletin_Board.png");
-	m_House = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Buildings/House_Hay_Stone_1.png");
-	m_Campfire = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Fireplace_1.png");
-	m_Table = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Table_2.png");
-	m_Tree = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_1.png");
-	m_CutTree = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Chopped_Tree_1.png");
-	m_TreeRiver = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_2.png");
-	m_Tree3 = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_3.png");
-	m_Book = LoadFilteredTexture(RESOURCES_PATH "Map/5-ontable.png");
-	m_Telescope = LoadFilteredTexture(RESOURCES_PATH "Map/telescope.png");
-
 	m_Image = LoadImage(RESOURCES_PATH "Map/TileSetImages/Props/Lamp_1.png");
 	for (int i = 0; i < 4; i++) {
 		m_Lamp[i] = LoadTextureFromImage(m_Image);
@@ -30,7 +19,22 @@ Props::Props(const float& TileSize, const float& Scale, const std::array<std::ar
 	}
 	UnloadImage(m_Image);
 
-	m_InsideChair = LoadFilteredTexture(RESOURCES_PATH "Map/chair.png");
+	m_TextureMapID[BOARD] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Bulletin_Board.png");
+	m_TextureMapID[HOUSE] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Buildings/House_Hay_Stone_1.png");
+	m_TextureMapID[CAMPFIRE] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Fireplace_1.png");
+	m_TextureMapID[TABLE] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Table_2.png");
+	m_TextureMapID[TREE] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_1.png");
+	m_TextureMapID[CUT_TREE] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Props/Chopped_Tree_1.png");
+	m_TextureMapID[TREE_RIVER] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_2.png");
+	m_TextureMapID[TREE_3] = LoadFilteredTexture(RESOURCES_PATH "Map/TileSetImages/Trees and Bushes/Tree_Emerald_3.png");
+	m_TextureMapID[BOOK] = LoadFilteredTexture(RESOURCES_PATH "Map/5-ontable.png");
+	m_TextureMapID[TELESCOPE] = LoadFilteredTexture(RESOURCES_PATH "Map/telescope.png");
+	m_TextureMapID[insideChair] = LoadFilteredTexture(RESOURCES_PATH "Map/chair.png");
+	m_TextureMapID[LAMP1] = m_Lamp[0];
+	m_TextureMapID[LAMP2] = m_Lamp[1];
+	m_TextureMapID[LAMP3] = m_Lamp[2];
+	m_TextureMapID[LAMP4] = m_Lamp[3];
+
 }
 
 Props::~Props() {
@@ -50,24 +54,44 @@ Props::~Props() {
 }
 
 void Props::drawLayer1(Scene::Level currentLevel) const {
+	std::string levelStr;
+
 	switch (currentLevel) {
-	case Scene::Level::village: {
-		DrawTextureEx(m_Board, { m_GroundMap[35][0].x, m_GroundMap[0][12].y }, 0.0f, m_Scale, WHITE);
-		DrawTextureEx(m_House, { m_GroundMap[29][0].x - 4, m_GroundMap[0][9].y }, 0.0f, m_Scale, WHITE);
-		DrawTextureEx(m_Campfire, { m_GroundMap[42][0].x + 4, m_GroundMap[0][13].y + 12 }, 0.0f, m_Scale, WHITE);
-		DrawTextureEx(m_Table, {m_GroundMap[19][0].x + 12, m_GroundMap[0][14].y - 12}, 0.0f, m_Scale, WHITE);
-		DrawTextureEx(m_Tree, { m_GroundMap[24][0].x, m_GroundMap[0][11].y }, 0.0f, m_Scale, WHITE);
-		DrawTextureEx(m_CutTree, { m_GroundMap[39][0].x, m_GroundMap[0][16].y }, 0.0f, m_Scale, WHITE);
-		DrawTextureEx(m_TreeRiver, { m_GroundMap[25][0].x, m_GroundMap[0][3].y }, 0.0f, m_Scale, WHITE);
-		DrawTextureEx(m_Tree3, { m_GroundMap[47][0].x, m_GroundMap[0][9].y }, 0.0f, m_Scale, WHITE);
-		DrawTexture(m_Book, m_GroundMap[20][0].x, m_GroundMap[0][14].y + m_TileSize, WHITE);
-		DrawTexture(m_Telescope, m_GroundMap[40][0].x, m_GroundMap[0][4].y, WHITE);
+	case Scene::Level::village:
+		levelStr = "village";
 		break;
-	}
-	case Scene::Level::insideHouse: {
-		DrawTextureEx(m_InsideChair, { m_GroundMap[37][0].x - m_TileSize, m_GroundMap[0][12].y - 20 },0.0f,m_Scale, WHITE);
+	case Scene::Level::insideHouse:
+		levelStr = "insideHouse";
 		break;
+	default:
+		return;
 	}
+
+	auto it = m_AllPropsTextureCoords.find(levelStr);
+	if (it == m_AllPropsTextureCoords.end()) return;
+
+	auto layerIt = it->second.find(1);
+	if (layerIt == it->second.end()) return;
+
+	for (const auto& [zIndex, entries] : layerIt->second) {
+		for (const auto& entry : entries) {
+			auto texIt = m_TextureMapID.find(entry.texID);
+			if (texIt == m_TextureMapID.end()) {
+				std::cerr << "Missing texture for texID: " << entry.texID << std::endl;
+				continue;
+			}
+			Texture2D texture = texIt->second;
+			Vector2 position = {
+				float(entry.drawX) * m_TileSize * m_Scale + entry.offsetX,
+				float(entry.drawY) * m_TileSize * m_Scale + entry.offsetY
+			};
+			if (!entry.scale) {
+				DrawTextureEx(texture, position, 0.0f, 1.0f, WHITE);
+			}
+			else {
+				DrawTextureEx(texture, position, 0.0f, m_Scale, WHITE);
+			}
+		}
 	}
 
 	if (IsKeyDown(KEY_G)) {
@@ -80,11 +104,44 @@ void Props::drawLayer1(Scene::Level currentLevel) const {
 	}
 }
 
+
 void Props::drawLayer2(Scene::Level currentLevel) const {
-	DrawTextureEx(m_Lamp[0], { m_GroundMap[27][0].x + 4, m_GroundMap[0][15].y }, 0.0f, m_Scale, WHITE);
-	DrawTextureEx(m_Lamp[1], { m_GroundMap[35][0].x + 4, m_GroundMap[0][15].y }, 0.0f, m_Scale, WHITE);
-	DrawTextureEx(m_Lamp[2], { m_GroundMap[48][0].x + 4, m_GroundMap[0][13].y }, 0.0f, m_Scale, WHITE);
-	DrawTextureEx(m_Lamp[3], { m_GroundMap[13][0].x, m_GroundMap[0][10].y }, 0.0f, m_Scale, WHITE);
+	std::string levelStr;
+
+	switch (currentLevel) {
+	case Scene::Level::village:
+		levelStr = "village";
+		break;
+	case Scene::Level::insideHouse:
+		levelStr = "insideHouse";
+		break;
+	default:
+		return;
+	}
+
+	auto it = m_AllPropsTextureCoords.find(levelStr);
+	if (it == m_AllPropsTextureCoords.end()) return;
+
+	auto layerIt = it->second.find(2);
+	if (layerIt == it->second.end()) return;
+
+	for (const auto& [zIndex, entries] : layerIt->second) {
+		for (const auto& entry : entries) {
+			auto texIt = m_TextureMapID.find(entry.texID);
+			if (texIt == m_TextureMapID.end()) {
+				std::cerr << "Missing texture for texID: " << entry.texID << std::endl;
+				continue;
+			}
+			Texture2D texture = texIt->second;
+			Vector2 position = {
+				float(entry.drawX) * m_TileSize * m_Scale + entry.offsetX,
+				float(entry.drawY) * m_TileSize * m_Scale + entry.offsetY
+			};
+
+			float drawScale = entry.scale ? m_Scale : 1.0f;
+			DrawTextureEx(texture, position, 0.0f, drawScale, WHITE);
+		}
+	}
 }
 
 bool Props::underCheck(const Vector2& pos, const std::vector<Rectangle>& propsCoords) {
@@ -145,5 +202,35 @@ void Props::loadPropsCoordsFromJSON(const std::string& path)
 
 		Rectangle rect = { x, y, width, height };
 		m_PropsCoords[levelIndex][layerIndex].emplace_back(rect);
+	}
+}
+
+void Props::loadPropsTextureCoordsFromJSON(const std::string& path) {
+	nlohmann::json Data;
+	std::ifstream File(path);
+
+	if (!File.is_open()) {
+		std::cerr << "File failed to open: " << path << std::endl;
+		return;
+	}
+
+	File >> Data;
+	File.close();
+
+	for (const auto& item : Data) {
+		const std::string& level = item["currentLevel"];
+		int layer = item["layer"];
+
+		propCoordsEntry entry;
+		entry.texID = item["enumType"];
+		entry.drawX = item["drawPropX"];
+		entry.drawY = item["drawPropY"];
+		entry.scale = item["scale"];
+		entry.offsetX = item.value("drawOffsetX", 0);
+		entry.offsetY = item.value("drawOffsetY", 0);
+		int zIndex = item.value("zIndex", 0);
+
+		// HATEHATEHATE
+		m_AllPropsTextureCoords[level][layer][zIndex].emplace_back(entry);
 	}
 }

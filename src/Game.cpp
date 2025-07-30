@@ -12,6 +12,7 @@ Game::Game() : m_DeltaTime(0.0f),
 	init();
 	m_UI->Init();
 	m_Props->loadPropsCoordsFromJSON(RESOURCES_PATH "props.json");
+	m_Props->loadPropsTextureCoordsFromJSON(RESOURCES_PATH "propsdraw.json");
 	m_Triggers->loadTriggersFromJSON(RESOURCES_PATH "triggers.json");
 }
 

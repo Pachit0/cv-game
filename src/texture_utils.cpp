@@ -1,5 +1,7 @@
 #include "texture_utils.h"
 
+constexpr int FLAG_FLIPTEXTURE = 1;
+
 Texture2D LoadFilteredTexture(const char* filePath) {
 	Image image = LoadImage(filePath);
 	Texture2D texture = LoadTextureFromImage(image);

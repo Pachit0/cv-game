@@ -4,9 +4,9 @@
     "layer": 1,
     "enumType": 9,
     "drawPropX": 40,
-    "drawPropY": 3,
-    "drawOffsetX": 0,
-    "drawOffsetY": 0,
+    "drawPropY": 4,
+    "scale": 0,
+    "zIndex": 2,
     "_note": "Texture - telescope"
   },
   {
@@ -15,8 +15,8 @@
     "enumType": 7,
     "drawPropX": 47,
     "drawPropY": 9,
-    "drawOffsetX": 0,
-    "drawOffsetY": 0,
+    "scale": 1,
+    "zIndex": 3,
     "_note": "Texture - tree3"
   },
   {
@@ -24,9 +24,10 @@
     "layer": 1,
     "enumType": 8,
     "drawPropX": 20,
-    "drawPropY": 13,
-    "drawOffsetX": 0,
+    "drawPropY": 14,
     "drawOffsetY": 16,
+    "scale": 0,
+    "zIndex": 5,
     "_note": "Texture - book"
   },
   {
@@ -35,8 +36,8 @@
     "enumType": 0,
     "drawPropX": 35,
     "drawPropY": 12,
-    "drawOffsetX": 0,
-    "drawOffsetY": 0,
+    "scale": 1,
+    "zIndex": 1,
     "_note": "Texture - board"
   },
   {
@@ -45,8 +46,9 @@
     "enumType": 1,
     "drawPropX": 29,
     "drawPropY": 9,
-    "drawOffsetX": 4,
-    "drawOffsetY": 0,
+    "drawOffsetX": -6,
+    "scale": 1,
+    "zIndex": 1,
     "_note": "Texture - house"
   },
   {
@@ -54,9 +56,11 @@
     "layer": 1,
     "enumType": 2,
     "drawPropX": 42,
-    "drawPropY": 12,
+    "drawPropY": 13,
     "drawOffsetX": 4,
     "drawOffsetY": 12,
+    "scale": 1,
+    "zIndex": 3,
     "_note": "Texture - campfire"
   },
   {
@@ -64,9 +68,11 @@
     "layer": 1,
     "enumType": 3,
     "drawPropX": 19,
-    "drawPropY": 13,
+    "drawPropY": 14,
     "drawOffsetX": 12,
     "drawOffsetY": -12,
+    "scale": 1,
+    "zIndex": 4,
     "_note": "Texture - table"
   },
   {
@@ -74,9 +80,9 @@
     "layer": 1,
     "enumType": 4,
     "drawPropX": 24,
-    "drawPropY": 10,
-    "drawOffsetX": 0,
-    "drawOffsetY": 0,
+    "drawPropY": 11,
+    "scale": 1,
+    "zIndex": 3,
     "_note": "Texture - tree"
   },
   {
@@ -84,9 +90,9 @@
     "layer": 1,
     "enumType": 5,
     "drawPropX": 39,
-    "drawPropY": 15,
-    "drawOffsetX": 0,
-    "drawOffsetY": 0,
+    "drawPropY": 16,
+    "scale": 1,
+    "zIndex": 2,
     "_note": "Texture - cutTree"
   },
   {
@@ -95,8 +101,8 @@
     "enumType": 6,
     "drawPropX": 25,
     "drawPropY": 3,
-    "drawOffsetX": 0,
-    "drawOffsetY": 0,
+    "scale": 1,
+    "zIndex": 2,
     "_note": "Texture - treeRiver"
   },
   {
@@ -106,7 +112,8 @@
     "drawPropX": 27,
     "drawPropY": 15,
     "drawOffsetX": 4,
-    "drawOffsetY": 0,
+    "scale": 1,
+    "zIndex": 1,
     "_note": "Texture - lamp1"
   },
   {
@@ -116,7 +123,8 @@
     "drawPropX": 35,
     "drawPropY": 15,
     "drawOffsetX": 4,
-    "drawOffsetY": 0,
+    "scale": 1,
+    "zIndex": 1,
     "_note": "Texture - lamp2"
   },
   {
@@ -126,7 +134,8 @@
     "drawPropX": 48,
     "drawPropY": 13,
     "drawOffsetX": 4,
-    "drawOffsetY": 0,
+    "scale": 1,
+    "zIndex": 1,
     "_note": "Texture - lamp3"
   },
   {
@@ -135,8 +144,8 @@
     "enumType": 13,
     "drawPropX": 13,
     "drawPropY": 10,
-    "drawOffsetX": 0,
-    "drawOffsetY": 0,
+    "scale": 1,
+    "zIndex": 1,
     "_note": "Texture - lamp4"
   },
   {
@@ -147,6 +156,8 @@
     "drawPropY": 12,
     "drawOffsetX": -16,
     "drawOffsetY": -20,
+    "scale": 1,
+    "zIndex": 2,
     "_note": "Texture - insideChair"
   }
 ]
