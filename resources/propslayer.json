@@ -96,6 +96,30 @@
     "heightInTiles": 2
   },
   {
+    "level": "village",
+    "layer": "first",
+    "tileX": 3,
+    "tileY": 7,
+    "widthInTiles": 4,
+    "heightInTiles": 1
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 43,
+    "tileY": 7,
+    "widthInTiles": 4,
+    "heightInTiles": 1
+  },
+  {
+    "level": "village",
+    "layer": "first",
+    "tileX": 17,
+    "tileY": 10,
+    "widthInTiles": 4,
+    "heightInTiles": 1
+  },
+  {
     "level": "insideHouse",
     "layer": "first",
     "tileX": 26,

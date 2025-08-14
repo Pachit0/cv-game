@@ -3,7 +3,6 @@
 UIManager::UIManager()
 {
     m_Image = LoadImage(RESOURCES_PATH "pop-ups/2-adventurer.png");
-    ImageResize(&m_Image, m_Image.width * 1.67, m_Image.height * 1.30);
     m_Background = LoadTextureFromImage(m_Image);
     UnloadImage(m_Image);
 }

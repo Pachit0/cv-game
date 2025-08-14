@@ -38,18 +38,11 @@ Props::Props(const float& TileSize, const float& Scale, const std::array<std::ar
 }
 
 Props::~Props() {
-	UnloadTexture(m_Board);
-	UnloadTexture(m_House);
-	UnloadTexture(m_Campfire);
-	UnloadTexture(m_Table);
-	UnloadTexture(m_Tree);
-	UnloadTexture(m_CutTree);
-	UnloadTexture(m_TreeRiver);
-	UnloadTexture(m_Tree3);
-	UnloadTexture(m_InsideChair);
-	UnloadTexture(m_Telescope);
 	for (int i = 0; i < 4; i++) {
 		UnloadTexture(m_Lamp[i]);
+	}
+	for (int i = 0; i < TEX_COUNT; i++) {
+		UnloadTexture(m_TextureMapID[i]);
 	}
 }
 

@@ -11,19 +11,7 @@ private:
 	std::unordered_map<int, Texture2D> m_TextureMapID;
 
 	Image m_Image;
-	Texture2D m_Board;
-	Texture2D m_House;
-	Texture2D m_Campfire;
 	Texture2D m_Lamp[4];
-	Texture2D m_Table;
-	Texture2D m_Tree;
-	Texture2D m_TreeRiver;
-	Texture2D m_Tree3;
-	Texture2D m_CutTree;
-	Texture2D m_InsideChair;
-	Texture2D m_Book;
-	Texture2D m_Telescope;
-
 
 public:
 	struct propEntry {

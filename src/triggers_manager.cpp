@@ -12,10 +12,22 @@ Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenW
 	m_TileSize(TileSize),
 	m_Scale(Scale),
 	m_OpacityBoxPosition({ 0,0 }),
-	m_OpacityBoxSize({ (float)ScreenWidth * 2, (float)ScreenHeight * 2 }),
-	m_GroundMap(groundMap)
+	m_OpacityBoxSize({ (float)ScreenWidth * 3, (float)ScreenHeight * 3 }),
+	m_GroundMap(groundMap),
+	m_NoteCycleErasmus(STATE_INTRO),
+	m_NoteCycleUniversity(STATE_INTRO),
+	m_OsuCycle(STATE_INTRO)
 {
-	m_Scroll = LoadFilteredTexture(RESOURCES_PATH "Map/description of me.png");
+	m_Board = LoadFilteredTexture(RESOURCES_PATH "Map/description of me.png");
+	m_Board2 = LoadFilteredTexture(RESOURCES_PATH "Map/description of work at btl.png");
+	m_Board3_1 = LoadFilteredTexture(RESOURCES_PATH "Map/description of Erasmus1.png");
+	m_Board3_2 = LoadFilteredTexture(RESOURCES_PATH "Map/description of Erasmus2.png");
+	m_Board3_3 = LoadFilteredTexture(RESOURCES_PATH "Map/description of Erasmus3.png");
+	m_Board4_1 = LoadFilteredTexture(RESOURCES_PATH "Map/description of university1.png");
+	m_Board4_2 = LoadFilteredTexture(RESOURCES_PATH "Map/description of university2.png");
+	m_Board4_4 = LoadFilteredTexture(RESOURCES_PATH "Map/description of university3.png");
+	m_Board4_3 = LoadFilteredTexture(RESOURCES_PATH "Map/description of university4.png");
+	m_OsuNote = LoadFilteredTexture(RESOURCES_PATH "Map/osuletter1.png");
 	m_E_Letter = LoadFilteredTexture(RESOURCES_PATH "letters/letter_e_press.png");
 	m_Q_Letter = LoadFilteredTexture(RESOURCES_PATH "letters/letter_q_press.png");
 	m_BookDesk = LoadFilteredTexture(RESOURCES_PATH "pop-ups/5-manga+comment.png");
@@ -31,7 +43,15 @@ Triggers::Triggers(const float& TileSize, const float& Scale, const int& ScreenW
 }
 
 Triggers::~Triggers() {
-	UnloadTexture(m_Scroll);
+	UnloadTexture(m_Board);
+	UnloadTexture(m_Board2);
+	UnloadTexture(m_Board3_1);
+	UnloadTexture(m_Board3_2);
+	UnloadTexture(m_Board3_3);
+	UnloadTexture(m_Board4_1);
+	UnloadTexture(m_Board4_2);
+	UnloadTexture(m_Board4_3);
+	UnloadTexture(m_Board4_4);
 	UnloadTexture(m_E_Letter);
 	UnloadTexture(m_Q_Letter);
 	UnloadTexture(m_BookDesk);
@@ -99,6 +119,9 @@ void Triggers::update(const Vector2& Pos, std::function<void(Vector2)> changePos
 		m_NoteTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_NOTE]);
 		m_TelescopeTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_TELESCOPE]);
 		m_BookTrigger.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_BOOK]);
+		m_NoteTrigger2.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_NOTE2]);
+		m_NoteTrigger3_1.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_NOTE3]);
+		m_NoteTrigger4_1.updateTrigger(correctCollision, m_TriggersLevel[Scene::Level::village][TRIGGER_NOTE4]);
 		break;
 	}
 	case Scene::Level::insideHouse: {
@@ -145,7 +168,7 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 	}
 	if (m_NoteTrigger.isActive()) {
 		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
-		DrawTexture(m_Scroll, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+		DrawTexture(m_Board, cameraPos.x - 400, cameraPos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, cameraPos.x - 100, cameraPos.y + 300, WHITE);
 	}
 
@@ -161,25 +184,44 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
 	}
 
-
 	if (m_TvTrigger.isActive()) {
-		m_FrameCounter++;
 
-		if (m_FrameCounter >= m_FrameDelay)
-		{
-			m_CurrentAnimFrame++;
-			if (m_CurrentAnimFrame >= m_Frames) m_CurrentAnimFrame = 0;
-
-			m_NextFrameDataOffset = m_AnimOsu.width * m_AnimOsu.height * 4 * m_CurrentAnimFrame;
-
-			UpdateTexture(m_AnimOsu, ((unsigned char*)m_AnimOsuImage.data) + m_NextFrameDataOffset);
-
-			m_FrameCounter = 0;
+		if (IsKeyPressed(KEY_E)) {
+			++m_OsuCycle;
+			m_OsuCycle %= 3;
 		}
 		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
-		DrawTexture(m_TexTv, m_GroundMap[28][0].x, m_GroundMap[0][3].y, WHITE);
-		DrawTexture(m_AnimOsu, m_GroundMap[32][0].x - m_TileSize, m_GroundMap[0][7].y + m_TileSize, WHITE);
-		DrawTexture(m_Q_Letter, m_GroundMap[34][0].x + (m_TileSize * 2), m_GroundMap[0][14].y, WHITE);
+		switch (m_OsuCycle) {
+		case STATE_INTRO: {
+			DrawTexture(m_OsuNote, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 105, cameraPos.y + 250, WHITE);
+			break;
+		}
+		case STATE_DESCRIPTION: {
+			m_FrameCounter++;
+			if (m_FrameCounter >= m_FrameDelay)
+			{
+				m_CurrentAnimFrame++;
+				if (m_CurrentAnimFrame >= m_Frames) m_CurrentAnimFrame = 0;
+
+				m_NextFrameDataOffset = m_AnimOsu.width * m_AnimOsu.height * 4 * m_CurrentAnimFrame;
+
+				UpdateTexture(m_AnimOsu, ((unsigned char*)m_AnimOsuImage.data) + m_NextFrameDataOffset);
+
+				m_FrameCounter = 0;
+			}
+
+			DrawTexture(m_TexTv, m_GroundMap[31][0].x + 8, m_GroundMap[0][7].y, WHITE);
+			DrawTexture(m_AnimOsu, m_GroundMap[32][0].x - m_TileSize, m_GroundMap[0][7].y + m_TileSize, WHITE);
+			DrawTexture(m_Q_Letter, m_GroundMap[34][0].x + (m_TileSize * 2), m_GroundMap[0][14].y, WHITE);
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	else {
+		m_OsuCycle = 0;
 	}
 
 	if (m_BookTrigger.isPrompting()) {
@@ -200,5 +242,89 @@ void Triggers::draw(const Vector2& Pos, const Vector2& cameraPos, Scene::Level c
 		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, BLACK);
 		DrawTexture(m_TexTelescope, cameraPos.x - 475, cameraPos.y - 300, WHITE);
 		DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 225, WHITE);
+	}
+
+	if (m_NoteTrigger2.isPrompting()) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	}
+
+	if (m_NoteTrigger2.isActive()) {
+		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
+		DrawTexture(m_Board2, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+		DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+	}
+
+
+	if (m_NoteTrigger3_1.isPrompting()) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	}
+
+	if (m_NoteTrigger3_1.isActive()) {
+		if (IsKeyPressed(KEY_E)) {
+			++m_NoteCycleErasmus;
+			m_NoteCycleErasmus %= 3;
+		}
+		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
+		switch (m_NoteCycleErasmus) {
+		case STATE_INTRO: {
+			DrawTexture(m_Board3_1, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+			break;
+			}
+		case STATE_DESCRIPTION: {
+			DrawTexture(m_Board3_2, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+			break;
+			}
+		case STATE_ENDING: {
+			DrawTexture(m_Board3_3, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+			break;
+			}
+		default:
+			break;
+		}
+	}
+	else {
+		m_NoteCycleErasmus = 0;
+	}
+
+	if (m_NoteTrigger4_1.isPrompting()) {
+		DrawTexture(m_E_Letter, Pos.x + 5, Pos.y - 5, WHITE);
+	}
+
+	if (m_NoteTrigger4_1.isActive()) {
+		if (IsKeyPressed(KEY_E)) {
+			++m_NoteCycleUniversity;
+			m_NoteCycleUniversity %= 4;
+		}
+		DrawRectangleV(m_OpacityBoxPosition, m_OpacityBoxSize, Fade(BLACK, 0.75));
+		switch (m_NoteCycleUniversity) {
+		case STATE_INTRO: {
+			DrawTexture(m_Board4_1, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+			break;
+		}
+		case STATE_DESCRIPTION: {
+			DrawTexture(m_Board4_2, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+			break;
+		}
+		case STATE_DESCRIPTION2: {
+			DrawTexture(m_Board4_4, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+			break;
+		}
+		case STATE_ENDING: {
+			DrawTexture(m_Board4_3, cameraPos.x - 400, cameraPos.y - 300, WHITE);
+			DrawTexture(m_Q_Letter, cameraPos.x - 75, cameraPos.y + 300, WHITE);
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	else {
+		m_NoteCycleUniversity = 0;
 	}
 }

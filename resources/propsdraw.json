@@ -43,6 +43,36 @@
   {
     "currentLevel": "village",
     "layer": 1,
+    "enumType": 0,
+    "drawPropX": 5,
+    "drawPropY": 6,
+    "scale": 1,
+    "zIndex": 1,
+    "_note": "Texture - board"
+  },
+  {
+    "currentLevel": "village",
+    "layer": 1,
+    "enumType": 0,
+    "drawPropX": 45,
+    "drawPropY": 6,
+    "scale": 1,
+    "zIndex": 1,
+    "_note": "Texture - board"
+  },
+  {
+    "currentLevel": "village",
+    "layer": 1,
+    "enumType": 0,
+    "drawPropX": 19,
+    "drawPropY": 9,
+    "scale": 1,
+    "zIndex": 1,
+    "_note": "Texture - board"
+  },
+  {
+    "currentLevel": "village",
+    "layer": 1,
     "enumType": 1,
     "drawPropX": 29,
     "drawPropY": 9,

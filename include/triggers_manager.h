@@ -10,7 +10,10 @@ private:
 		TRIGGER_NOTE,
 		TRIGGER_ENTER_EXIT_HOUSE,
 		TRIGGER_BOOK,
-		TRIGGER_TELESCOPE
+		TRIGGER_TELESCOPE,
+		TRIGGER_NOTE2,
+		TRIGGER_NOTE3,
+		TRIGGER_NOTE4
 	};
 
 	enum InteractionObjectsInsideHouse {
@@ -21,6 +24,13 @@ private:
 		STATE_INACTIVE,
 		STATE_PROMPT,
 		STATE_ACTIVE
+	};
+
+	enum NoteCycle {
+		STATE_ENDING,
+		STATE_INTRO,
+		STATE_DESCRIPTION,
+		STATE_DESCRIPTION2
 	};
 
 	struct TriggerInteraction {
@@ -57,6 +67,9 @@ private:
 	TriggerInteraction m_BookTrigger;
 	TriggerInteraction m_TelescopeTrigger;
 	TriggerInteraction m_NoteTrigger;
+	TriggerInteraction m_NoteTrigger2;
+	TriggerInteraction m_NoteTrigger3_1;
+	TriggerInteraction m_NoteTrigger4_1;
 
 	bool m_EnterHousePrompt;
 	bool m_ExitHousePrompt;
@@ -67,16 +80,29 @@ private:
 	int m_FrameCounter;
 	unsigned int m_NextFrameDataOffset;
 
+	int m_NoteCycleErasmus;
+	int m_NoteCycleUniversity;
+	int m_OsuCycle;
+
 	Vector2 m_OpacityBoxPosition;
 	Vector2 m_OpacityBoxSize;
 
 	std::vector<std::vector<Rectangle>> m_TriggersLevel;
 
-	Texture2D m_Scroll;
+	Texture2D m_Board;
+	Texture2D m_Board2;
+	Texture2D m_Board3_1;
+	Texture2D m_Board3_2;
+	Texture2D m_Board3_3;
+	Texture2D m_Board4_1;
+	Texture2D m_Board4_2;
+	Texture2D m_Board4_3;
+	Texture2D m_Board4_4;
 	Texture2D m_E_Letter;
 	Texture2D m_Q_Letter;
 	Texture2D m_AnimOsu;
 	Texture2D m_TexTv;
+	Texture2D m_OsuNote;
 	Texture2D m_TexTelescope;
 
 	Texture2D m_BookDesk;

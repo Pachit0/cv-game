@@ -23,6 +23,24 @@
       "tileY": 4,
       "widthInTiles": 1,
       "heightInTiles": 1
+    },
+    {
+      "tileX": 4,
+      "tileY": 7,
+      "widthInTiles": 3,
+      "heightInTiles": 1
+    },
+    {
+      "tileX": 44,
+      "tileY": 7,
+      "widthInTiles": 3,
+      "heightInTiles": 1
+    },
+    {
+      "tileX": 18,
+      "tileY": 10,
+      "widthInTiles": 3,
+      "heightInTiles": 1
     }
   ],
   "insideHouse": [
